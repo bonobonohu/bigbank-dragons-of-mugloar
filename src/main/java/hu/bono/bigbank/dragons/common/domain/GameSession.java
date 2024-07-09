@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.session;
+package hu.bono.bigbank.dragons.common.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,10 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
-public class Session {
+public class GameSession {
 
+    private final Instant creationTimestamp;
     private final String gameId;
-    private final Instant timestamp;
     private Integer lives;
     private Integer gold;
     private Integer level;
@@ -22,9 +22,9 @@ public class Session {
 
     public String getLogFileName() {
         final String dateTimeString = DateTimeFormatter
-                .ofPattern("yyyy-MM-dd_HHmmss")
-                .withZone(ZoneId.of("UTC"))
-                .format(timestamp);
+            .ofPattern("yyyy-MM-dd_HHmmss")
+            .withZone(ZoneId.of("UTC"))
+            .format(creationTimestamp);
         return String.format("%s_%s", dateTimeString, gameId);
     }
 }

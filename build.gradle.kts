@@ -29,10 +29,12 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.mapstruct:mapstruct:${property("mapstructVersion")}")
 
     compileOnly("org.projectlombok:lombok")
 
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${property("mapstructVersion")}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -61,6 +63,8 @@ tasks.withType<JacocoReport> {
         xml.required.set(true)
         csv.required.set(true)
     }
+
+    additionalSourceDirs.setFrom(files("${layout.buildDirectory.get()}/generated/sources/annotationProcessor/java/main"))
 }
 
 tasks.withType<JacocoCoverageVerification> {
