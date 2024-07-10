@@ -1,5 +1,6 @@
 package hu.bono.bigbank.dragons.common.domain;
 
+import hu.bono.bigbank.dragons.TestUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,15 +8,9 @@ import java.time.Instant;
 
 class GameSessionTest {
 
-    private final GameSession underTest = new GameSession(
+    private final GameSession underTest = TestUtils.createGameSession(
         Instant.parse("2024-07-09T20:27:42Z"),
-        "GameId123",
-        3,
-        0,
-        0,
-        0,
-        0,
-        0
+        "GameId123"
     );
 
     @Test
