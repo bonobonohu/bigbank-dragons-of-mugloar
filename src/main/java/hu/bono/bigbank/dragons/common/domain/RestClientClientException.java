@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.game.domain;
+package hu.bono.bigbank.dragons.common.domain;
 
 public class RestClientClientException extends RestClientException {
 
