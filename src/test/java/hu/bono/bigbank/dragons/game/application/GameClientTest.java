@@ -24,34 +24,34 @@ class GameClientTest {
     private final GameClient underTest = new GameClient(RestClient.create(restTemplate), apiConfiguration);
 
     @Test
-    void testPostGameReturnsPostGameResponseWhenHttpStatusIs2xx() throws Exception {
-        final PostGameResponse expected = TestUtils.createPostGameResponse();
-        final String postGameResponseString = objectMapper.writeValueAsString(expected);
+    void testPostGameStartReturnsPostGameStartResponseWhenHttpStatusIs2Xx() throws Exception {
+        final PostGameStartResponse expected = TestUtils.createPostGameStartResponse();
+        final String postGameStartResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
                 requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
             )
-            .andRespond(withSuccess(postGameResponseString, MediaType.APPLICATION_JSON));
-        final PostGameResponse actual = underTest.postGame();
+            .andRespond(withSuccess(postGameStartResponseString, MediaType.APPLICATION_JSON));
+        final PostGameStartResponse actual = underTest.postGameStart();
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void testPostGameReturnsRestClientClientExceptionWhenHttpStatusIs4xx() {
+    void testPostGameStartReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
                 requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withBadRequest());
-        Assertions.assertThatThrownBy(underTest::postGame)
+        Assertions.assertThatThrownBy(underTest::postGameStart)
             .isInstanceOf(RestClientClientException.class);
     }
 
     @Test
-    void testPostGameReturnsRestClientServerExceptionWhenHttpStatusIs5xx() {
+    void testPostGameStartReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
                 requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withServerError());
-        Assertions.assertThatThrownBy(underTest::postGame)
+        Assertions.assertThatThrownBy(underTest::postGameStart)
             .isInstanceOf(RestClientServerException.class);
     }
 }

@@ -15,7 +15,7 @@ public class GameClient {
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;
 
-    public PostGameResponse postGame() {
+    public PostGameStartResponse postGameStart() {
         try {
             return restClient.post()
                 .uri(
@@ -23,7 +23,7 @@ public class GameClient {
                         apiConfiguration.getEndpoints().getGameStart()
                 )
                 .retrieve()
-                .body(PostGameResponse.class);
+                .body(PostGameStartResponse.class);
         } catch (RestClientResponseException exception) {
             if (exception.getStatusCode().is4xxClientError()) {
                 throw new RestClientClientException(exception);

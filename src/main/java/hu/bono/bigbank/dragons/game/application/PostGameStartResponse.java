@@ -3,7 +3,7 @@ package hu.bono.bigbank.dragons.game.application;
 import lombok.Builder;
 
 @Builder
-public record PostGameResponse(
+public record PostGameStartResponse(
     String gameId,
     Integer lives,
     Integer gold,

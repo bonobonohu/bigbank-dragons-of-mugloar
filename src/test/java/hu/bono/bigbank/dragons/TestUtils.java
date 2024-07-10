@@ -2,7 +2,7 @@ package hu.bono.bigbank.dragons;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.game.application.PostGameResponse;
+import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
 
 import java.time.Instant;
 
@@ -25,8 +25,8 @@ public class TestUtils {
         return createGameSession(timestamp, "GameId123");
     }
 
-    public static PostGameResponse createPostGameResponse(String gameId) {
-        return PostGameResponse.builder()
+    public static PostGameStartResponse createPostGameStartResponse(String gameId) {
+        return PostGameStartResponse.builder()
             .gameId(gameId)
             .lives(3)
             .gold(0)
@@ -37,8 +37,8 @@ public class TestUtils {
             .build();
     }
 
-    public static PostGameResponse createPostGameResponse() {
-        return createPostGameResponse("GameId123");
+    public static PostGameStartResponse createPostGameStartResponse() {
+        return createPostGameStartResponse("GameId123");
     }
 
     public static ApiConfiguration createApiConfiguration() {
