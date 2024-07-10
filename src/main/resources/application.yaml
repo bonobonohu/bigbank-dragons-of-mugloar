@@ -1,1 +1,4 @@
-spring.application.name=Dragons of Mugloar
+spring:
+  application:
+    name: "Dragons of Mugloar"
+
