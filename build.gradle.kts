@@ -30,6 +30,8 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.mapstruct:mapstruct:${property("mapstructVersion")}")
+    implementation("org.apache.commons:commons-io:${property("apacheCommonsIoVersion")}")
+    implementation("org.apache.commons:commons-csv:${property("apacheCommonsCsvVersion")}")
 
     compileOnly("org.projectlombok:lombok")
 

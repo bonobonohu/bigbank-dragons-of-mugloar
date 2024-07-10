@@ -24,7 +24,7 @@ public class GameSession {
 
     public String getLogFileName() {
         final String dateTimeString = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd_HHmmss")
+            .ofPattern("yyyyMMdd_HHmmss")
             .withZone(ZoneId.of("UTC"))
             .format(creationTimestamp);
         return String.format("%s_%s", dateTimeString, gameId);

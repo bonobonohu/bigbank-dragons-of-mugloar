@@ -15,7 +15,7 @@ class GameSessionTest {
 
     @Test
     void testGetLogFileNameReturnsTimestampAndGameIdInGivenFormat() {
-        final String expected = "2024-07-09_202742_GameId123";
+        final String expected = "20240709_202742_GameId123";
         final String actual = underTest.getLogFileName();
         Assertions.assertThat(actual).isEqualTo(expected);
     }
