@@ -28,9 +28,7 @@ class PostGameResponseMapperTest {
             mockedInstant.when(Instant::now).thenReturn(fixedInstant);
 
             final GameSession expected = TestUtils.createGameSession(fixedInstant);
-            final GameSession actual = underTest.postGameResponseToGameSession(
-                TestUtils.createPostGameResponse()
-            );
+            final GameSession actual = underTest.postGameResponseToGameSession(TestUtils.createPostGameResponse());
             Assertions.assertThat(actual).isEqualTo(expected);
         }
     }

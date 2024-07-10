@@ -1,8 +1,8 @@
 package hu.bono.bigbank.dragons.game.application;
 
-import lombok.Generated;
+import lombok.Builder;
 
-@Generated
+@Builder
 public record PostGameResponse(
     String gameId,
     Integer lives,

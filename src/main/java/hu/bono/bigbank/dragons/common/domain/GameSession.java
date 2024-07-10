@@ -1,6 +1,7 @@
 package hu.bono.bigbank.dragons.common.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class GameSession {
 
     private final Instant creationTimestamp;

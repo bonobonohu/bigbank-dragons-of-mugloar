@@ -2,3 +2,13 @@ spring:
   application:
     name: "Dragons of Mugloar"
 
+dragons:
+  api:
+    base-url: "https://dragonsofmugloar.com/api/v2"
+    endpoints:
+      game-start: "/game/start"
+      investigate-reputation: "/{gameId}/investigate/reputation"
+      messages: "/{gameId}/messages"
+      solve-ad: "/{gameId}/solve/{adId}"
+      shop: "/{gameId}/shop"
+      shop-buy-item: "/{gameId}/shop/buy/{itemId}"
