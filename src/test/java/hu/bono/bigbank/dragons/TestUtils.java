@@ -9,6 +9,10 @@ import hu.bono.bigbank.dragons.message.application.GetMessagesResponseItem;
 import hu.bono.bigbank.dragons.message.application.PostSolveAdResponse;
 import hu.bono.bigbank.dragons.message.domain.Message;
 import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.shop.application.GetShopResponseItem;
+import hu.bono.bigbank.dragons.shop.application.PostShopBuyItemResponse;
+import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
+import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
 import java.util.List;
@@ -256,5 +260,100 @@ public class TestUtils {
 
     public static MissionOutcome createMissionOutcome() {
         return createMissionOutcome(true, 3, 100, 200, 42);
+    }
+
+    public static GetShopResponseItem createGetShopResponseItem(
+        String id,
+        String name,
+        Integer cost
+    ) {
+        return GetShopResponseItem.builder()
+            .id(id)
+            .name(name)
+            .cost(cost)
+            .build();
+    }
+
+
+    public static GetShopResponseItem createGetShopResponseItem() {
+        return createGetShopResponseItem(
+            "hpot",
+            "Healing potion",
+            50
+        );
+    }
+
+    public static List<GetShopResponseItem> createGetShopResponseItems() {
+        return List.of(
+            createGetShopResponseItem(),
+            createGetShopResponseItem("gas", "Gasoline", 100)
+        );
+    }
+
+    public static ShopItem createShopItem(
+        String id,
+        String name,
+        Integer cost
+    ) {
+        return ShopItem.builder()
+            .id(id)
+            .name(name)
+            .cost(cost)
+            .build();
+    }
+
+    public static ShopItem createShopItem() {
+        return createShopItem(
+            "hpot",
+            "Healing potion",
+            50
+        );
+    }
+
+    public static List<ShopItem> createShopItems() {
+        return List.of(
+            createShopItem(),
+            createShopItem("gas", "Gasoline", 100)
+        );
+    }
+
+    public static PostShopBuyItemResponse createPostShopBuyItemResponse(
+        Boolean shoppingSuccess,
+        Integer gold,
+        Integer lives,
+        Integer level,
+        Integer turn
+    ) {
+        return PostShopBuyItemResponse.builder()
+            .shoppingSuccess(shoppingSuccess)
+            .gold(gold)
+            .lives(lives)
+            .level(level)
+            .turn(turn)
+            .build();
+    }
+
+    public static PostShopBuyItemResponse createPostShopBuyItemResponse() {
+        return createPostShopBuyItemResponse(true, 100, 3, 2, 42);
+    }
+
+    public static PurchaseOutcome createPurchaseOutcome(
+        Boolean shoppingSuccess,
+        Integer gold,
+        Integer lives,
+        Integer level,
+        Integer turn
+    ) {
+        return PurchaseOutcome.builder()
+            .shoppingSuccess(shoppingSuccess)
+            .gold(gold)
+            .lives(lives)
+            .level(level)
+            .turn(turn)
+            .build();
+    }
+
+    public static PurchaseOutcome createPurchaseOutcome() {
+        return createPurchaseOutcome(true, 100, 3, 2, 42);
     }
 }

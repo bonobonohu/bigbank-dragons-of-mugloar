@@ -16,9 +16,8 @@ class PostGameStartResponseMapperTest {
 
     @Test
     void testPostGameStartResponseToGameSessionWhenPostGameStartResponseIsNull() {
-        final GameSession expected = null;
         final GameSession actual = underTest.postGameStartResponseToGameSession(null);
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isNull();
     }
 
     @Test

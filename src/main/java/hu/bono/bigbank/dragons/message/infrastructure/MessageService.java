@@ -33,16 +33,16 @@ public class MessageService {
     }
 
     public MissionOutcome solveAd(GameSession gameSession, Message message) {
-        final PostSolveAdResponse PostSolveAdResponse =
+        final PostSolveAdResponse postSolveAdResponse =
             messageClient.postSolveAd(gameSession.getGameId(), message.adId());
-        final MissionOutcome MissionOutcome = PostSolveAdResponseMapper.MAPPER
-            .postSolveAdResponseToMissionOutcome(PostSolveAdResponse);
+        final MissionOutcome missionOutcome = PostSolveAdResponseMapper.MAPPER
+            .postSolveAdResponseToMissionOutcome(postSolveAdResponse);
         logWriter.log(
             gameSession,
             "solveAd",
             "Solve ad",
-            PostSolveAdResponse
+            postSolveAdResponse
         );
-        return MissionOutcome;
+        return missionOutcome;
     }
 }

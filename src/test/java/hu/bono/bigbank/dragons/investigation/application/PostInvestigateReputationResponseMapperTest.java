@@ -11,9 +11,8 @@ class PostInvestigateReputationResponseMapperTest {
 
     @Test
     void testPostInvestigateReputationResponseToReputationWhenPostInvestigateReputationResponseIsNull() {
-        final Reputation expected = null;
         final Reputation actual = underTest.postInvestigateReputationResponseToReputation(null);
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isNull();
     }
 
     @Test

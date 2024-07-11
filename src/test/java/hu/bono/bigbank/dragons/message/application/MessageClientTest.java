@@ -30,7 +30,7 @@ class MessageClientTest {
     private final MessageClient underTest = new MessageClient(RestClient.create(restTemplate), apiConfiguration);
 
     @Test
-    void testGetMessagesReturnsGetMessagesResponseItemsWhenHttpStatusIs2Xx() throws Exception {
+    void testGetMessagesReturnsGetMessagesResponseItemsWhenHttpStatusIs2Xx() {
         final List<GetMessagesResponseItem> expected = TestUtils.createGetMessagesResponseItems();
         final String getMessagesResponseItemsString = """
                 [

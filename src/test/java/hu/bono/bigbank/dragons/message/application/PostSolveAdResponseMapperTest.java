@@ -11,9 +11,8 @@ class PostSolveAdResponseMapperTest {
 
     @Test
     void testPostSolveAdResponseToMissionOutcomeWhenPostSolveAdResponseIsNull() {
-        final MissionOutcome expected = null;
         final MissionOutcome actual = underTest.postSolveAdResponseToMissionOutcome(null);
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isNull();
     }
 
     @Test

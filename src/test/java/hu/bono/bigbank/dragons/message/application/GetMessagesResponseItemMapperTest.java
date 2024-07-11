@@ -11,9 +11,8 @@ class GetMessagesResponseItemMapperTest {
 
     @Test
     void testGetMessagesResponseItemToMessageWhenGetMessagesResponseItemIsNull() {
-        final Message expected = null;
         final Message actual = underTest.getMessagesResponseItemToMessage(null);
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isNull();
     }
 
     @Test
