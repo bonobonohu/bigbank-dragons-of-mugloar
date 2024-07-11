@@ -1,7 +1,6 @@
-package hu.bono.bigbank.dragons.game.infrastructure;
+package hu.bono.bigbank.dragons.game.application;
 
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

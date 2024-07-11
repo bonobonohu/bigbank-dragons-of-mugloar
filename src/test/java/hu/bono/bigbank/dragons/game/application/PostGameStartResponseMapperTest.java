@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.game.infrastructure;
+package hu.bono.bigbank.dragons.game.application;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -28,7 +28,9 @@ class PostGameStartResponseMapperTest {
             mockedInstant.when(Instant::now).thenReturn(fixedInstant);
 
             final GameSession expected = TestUtils.createGameSession(fixedInstant);
-            final GameSession actual = underTest.postGameStartResponseToGameSession(TestUtils.createPostGameStartResponse());
+            final GameSession actual = underTest.postGameStartResponseToGameSession(
+                TestUtils.createPostGameStartResponse()
+            );
             Assertions.assertThat(actual).isEqualTo(expected);
         }
     }

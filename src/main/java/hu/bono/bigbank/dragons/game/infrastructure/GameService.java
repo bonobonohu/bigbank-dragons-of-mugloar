@@ -4,6 +4,7 @@ import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
 import hu.bono.bigbank.dragons.game.application.GameClient;
 import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
+import hu.bono.bigbank.dragons.game.application.PostGameStartResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

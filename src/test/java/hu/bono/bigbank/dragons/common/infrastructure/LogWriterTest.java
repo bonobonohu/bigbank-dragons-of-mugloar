@@ -78,7 +78,11 @@ class LogWriterTest {
 
         Assertions.assertThat(lines).hasSize(3);
         Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Details", "Response");
-        Assertions.assertThat(lines.get(1)).contains(GAME_ID, "gameStart", "New game started", POST_GAME_START_RESPONSE.toString());
-        Assertions.assertThat(lines.get(2)).contains(GAME_ID, "gameEnd", "Game ended", POST_GAME_START_RESPONSE.toString());
+        Assertions.assertThat(
+            lines.get(1)).contains(GAME_ID, "gameStart", "New game started", POST_GAME_START_RESPONSE.toString()
+        );
+        Assertions.assertThat(
+            lines.get(2)).contains(GAME_ID, "gameEnd", "Game ended", POST_GAME_START_RESPONSE.toString()
+        );
     }
 }
