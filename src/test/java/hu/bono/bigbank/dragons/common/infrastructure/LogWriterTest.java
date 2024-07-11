@@ -65,8 +65,9 @@ class LogWriterTest {
             .when(resourceFactory).createCSVPrinter(any());
 
         Assertions.assertThatThrownBy(
-            () -> underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE)
-        ).isInstanceOf(LogWriterException.class);
+                () -> underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE)
+            )
+            .isInstanceOf(LogWriterException.class);
     }
 
     @Test
