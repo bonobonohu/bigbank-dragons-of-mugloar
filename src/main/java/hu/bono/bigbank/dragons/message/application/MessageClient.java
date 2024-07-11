@@ -13,13 +13,19 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class MessagesClient {
+public class MessageClient {
 
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;
 
     static String prepareUri(String endpointTemplate, String gameId) {
         return endpointTemplate.replace("{gameId}", gameId);
+    }
+
+    static String prepareUri(String endpointTemplate, String gameId, String adId) {
+        return endpointTemplate
+            .replace("{gameId}", gameId)
+            .replace("{adId}", adId);
     }
 
     public List<GetMessagesResponseItem> getMessages(String gameId) {
@@ -34,6 +40,24 @@ public class MessagesClient {
                     new ParameterizedTypeReference<>() {
                     })
                 ;
+        } catch (RestClientResponseException exception) {
+            if (exception.getStatusCode().is4xxClientError()) {
+                throw new RestClientClientException(exception);
+            } else {
+                throw new RestClientServerException(exception);
+            }
+        }
+    }
+
+    public PostSolveAdResponse postSolveAd(String gameId, String adId) {
+        try {
+            return restClient.post()
+                .uri(
+                    apiConfiguration.getBaseUrl() +
+                        prepareUri(apiConfiguration.getEndpoints().getSolveAd(), gameId, adId)
+                )
+                .retrieve()
+                .body(PostSolveAdResponse.class);
         } catch (RestClientResponseException exception) {
             if (exception.getStatusCode().is4xxClientError()) {
                 throw new RestClientClientException(exception);

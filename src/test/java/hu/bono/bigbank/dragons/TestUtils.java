@@ -6,7 +6,9 @@ import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.message.application.GetMessagesResponseItem;
+import hu.bono.bigbank.dragons.message.application.PostSolveAdResponse;
 import hu.bono.bigbank.dragons.message.domain.Message;
+import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
 
 import java.time.Instant;
 import java.util.List;
@@ -210,5 +212,49 @@ public class TestUtils {
             createMessage(),
             createWasEncryptedMessage()
         );
+    }
+
+    public static PostSolveAdResponse createPostSolveAdResponse(
+        Boolean success,
+        Integer lives,
+        Integer gold,
+        Integer score,
+        Integer turn
+    ) {
+        return PostSolveAdResponse.builder()
+            .success(success)
+            .lives(lives)
+            .gold(gold)
+            .score(score)
+            .highScore(0)
+            .turn(turn)
+            .message("You successfully solved the mission!")
+            .build();
+    }
+
+    public static PostSolveAdResponse createPostSolveAdResponse() {
+        return createPostSolveAdResponse(true, 3, 100, 200, 42);
+    }
+
+    public static MissionOutcome createMissionOutcome(
+        Boolean success,
+        Integer lives,
+        Integer gold,
+        Integer score,
+        Integer turn
+    ) {
+        return MissionOutcome.builder()
+            .success(success)
+            .lives(lives)
+            .gold(gold)
+            .score(score)
+            .highScore(0)
+            .turn(turn)
+            .message("You successfully solved the mission!")
+            .build();
+    }
+
+    public static MissionOutcome createMissionOutcome() {
+        return createMissionOutcome(true, 3, 100, 200, 42);
     }
 }

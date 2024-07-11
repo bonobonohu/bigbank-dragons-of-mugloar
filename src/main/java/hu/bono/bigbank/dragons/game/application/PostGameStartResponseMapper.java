@@ -13,5 +13,7 @@ public interface PostGameStartResponseMapper {
     PostGameStartResponseMapper MAPPER = Mappers.getMapper(PostGameStartResponseMapper.class);
 
     @Mapping(target = "creationTimestamp", expression = "java(Instant.now())")
-    GameSession postGameStartResponseToGameSession(PostGameStartResponse postGameStartResponse);
+    GameSession postGameStartResponseToGameSession(
+        PostGameStartResponse postGameStartResponse
+    );
 }

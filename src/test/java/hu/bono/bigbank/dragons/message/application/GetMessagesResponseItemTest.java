@@ -37,8 +37,11 @@ class GetMessagesResponseItemTest {
             "UGxheWluZyB3aXRoIGZpcmU=",
             1
         );
-        Assertions.assertThat(actual.decryptedAdId()).isEqualTo("uaLjgkri");
-        Assertions.assertThat(actual.decryptedMessage()).isEqualTo("Infiltrate The Eagle Soldiers and recover their secrets.");
-        Assertions.assertThat(actual.decryptedProbability()).isEqualTo("Playing with fire");
+        Assertions.assertThat(actual.decryptedAdId())
+            .isEqualTo("uaLjgkri");
+        Assertions.assertThat(actual.decryptedMessage())
+            .isEqualTo("Infiltrate The Eagle Soldiers and recover their secrets.");
+        Assertions.assertThat(actual.decryptedProbability())
+            .isEqualTo("Playing with fire");
     }
 }

@@ -1,5 +1,6 @@
 package hu.bono.bigbank.dragons.message.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
 import hu.bono.bigbank.dragons.common.domain.RestClientClientException;
@@ -13,18 +14,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static hu.bono.bigbank.dragons.message.application.MessagesClient.prepareUri;
+import static hu.bono.bigbank.dragons.message.application.MessageClient.prepareUri;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
-class MessagesClientTest {
+class MessageClientTest {
 
     private static final String GAME_ID = "GameId123";
+    private static final String AD_ID = "AdId123";
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
     private final MockRestServiceServer restServiceServer = MockRestServiceServer.createServer(restTemplate);
     private final ApiConfiguration apiConfiguration = TestUtils.createApiConfiguration();
-    private final MessagesClient underTest = new MessagesClient(RestClient.create(restTemplate), apiConfiguration);
+    private final MessageClient underTest = new MessageClient(RestClient.create(restTemplate), apiConfiguration);
 
     @Test
     void testGetMessagesReturnsGetMessagesResponseItemsWhenHttpStatusIs2Xx() throws Exception {
@@ -66,6 +69,44 @@ class MessagesClientTest {
             )
             .andRespond(withServerError());
         Assertions.assertThatThrownBy(() -> underTest.getMessages(GAME_ID))
+            .isInstanceOf(RestClientServerException.class);
+    }
+
+    @Test
+    void testPostSolveAdReturnsPostSolveAdResponseWhenHttpStatusIs2Xx() throws Exception {
+        final PostSolveAdResponse expected = TestUtils.createPostSolveAdResponse();
+        final String postSolveAdResponseString = objectMapper.writeValueAsString(expected);
+        restServiceServer.expect(
+                requestTo(apiConfiguration.getBaseUrl()
+                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                )
+            )
+            .andRespond(withSuccess(postSolveAdResponseString, MediaType.APPLICATION_JSON));
+        final PostSolveAdResponse actual = underTest.postSolveAd(GAME_ID, AD_ID);
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void testPostSolveAdReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
+        restServiceServer.expect(
+                requestTo(apiConfiguration.getBaseUrl()
+                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                )
+            )
+            .andRespond(withBadRequest());
+        Assertions.assertThatThrownBy(() -> underTest.postSolveAd(GAME_ID, AD_ID))
+            .isInstanceOf(RestClientClientException.class);
+    }
+
+    @Test
+    void testPostSolveAdReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
+        restServiceServer.expect(
+                requestTo(apiConfiguration.getBaseUrl()
+                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                )
+            )
+            .andRespond(withServerError());
+        Assertions.assertThatThrownBy(() -> underTest.postSolveAd(GAME_ID, AD_ID))
             .isInstanceOf(RestClientServerException.class);
     }
 }
