@@ -1,7 +1,7 @@
-package hu.bono.bigbank.dragons.investigate.application;
+package hu.bono.bigbank.dragons.investigation.application;
 
 import hu.bono.bigbank.dragons.TestUtils;
-import hu.bono.bigbank.dragons.investigate.domain.Reputation;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

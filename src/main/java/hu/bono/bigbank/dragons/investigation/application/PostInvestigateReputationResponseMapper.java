@@ -1,6 +1,6 @@
-package hu.bono.bigbank.dragons.investigate.application;
+package hu.bono.bigbank.dragons.investigation.application;
 
-import hu.bono.bigbank.dragons.investigate.domain.Reputation;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

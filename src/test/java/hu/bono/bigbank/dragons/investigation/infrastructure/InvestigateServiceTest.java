@@ -1,11 +1,11 @@
-package hu.bono.bigbank.dragons.investigate.infrastructure;
+package hu.bono.bigbank.dragons.investigation.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
-import hu.bono.bigbank.dragons.investigate.application.InvestigateClient;
-import hu.bono.bigbank.dragons.investigate.application.PostInvestigateReputationResponse;
-import hu.bono.bigbank.dragons.investigate.domain.Reputation;
+import hu.bono.bigbank.dragons.investigation.application.InvestigateClient;
+import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ class InvestigateServiceTest {
 
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
 
-    private final hu.bono.bigbank.dragons.investigate.application.InvestigateClient InvestigateClient =
+    private final hu.bono.bigbank.dragons.investigation.application.InvestigateClient InvestigateClient =
         Mockito.mock(InvestigateClient.class);
     private final LogWriter logWriter = Mockito.mock(LogWriter.class);
     private final InvestigateService underTest = new InvestigateService(InvestigateClient, logWriter);

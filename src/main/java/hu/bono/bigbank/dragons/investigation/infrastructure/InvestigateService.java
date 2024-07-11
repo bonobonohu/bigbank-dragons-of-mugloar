@@ -1,11 +1,11 @@
-package hu.bono.bigbank.dragons.investigate.infrastructure;
+package hu.bono.bigbank.dragons.investigation.infrastructure;
 
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
-import hu.bono.bigbank.dragons.investigate.application.InvestigateClient;
-import hu.bono.bigbank.dragons.investigate.application.PostInvestigateReputationResponse;
-import hu.bono.bigbank.dragons.investigate.application.PostInvestigateReputationResponseMapper;
-import hu.bono.bigbank.dragons.investigate.domain.Reputation;
+import hu.bono.bigbank.dragons.investigation.application.InvestigateClient;
+import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
+import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponseMapper;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

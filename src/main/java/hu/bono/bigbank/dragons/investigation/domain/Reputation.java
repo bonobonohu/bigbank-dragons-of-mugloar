@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.investigate.domain;
+package hu.bono.bigbank.dragons.investigation.domain;
 
 import lombok.Builder;
 

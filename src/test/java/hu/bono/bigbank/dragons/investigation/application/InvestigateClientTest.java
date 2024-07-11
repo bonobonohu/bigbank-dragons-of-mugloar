@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.investigate.application;
+package hu.bono.bigbank.dragons.investigation.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.bono.bigbank.dragons.TestUtils;
@@ -12,7 +12,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
-import static hu.bono.bigbank.dragons.investigate.application.InvestigateClient.prepareUri;
+import static hu.bono.bigbank.dragons.investigation.application.InvestigateClient.prepareUri;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 

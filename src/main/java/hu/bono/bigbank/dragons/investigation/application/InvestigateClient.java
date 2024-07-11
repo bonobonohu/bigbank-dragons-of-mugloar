@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.investigate.application;
+package hu.bono.bigbank.dragons.investigation.application;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
 import hu.bono.bigbank.dragons.common.domain.RestClientClientException;

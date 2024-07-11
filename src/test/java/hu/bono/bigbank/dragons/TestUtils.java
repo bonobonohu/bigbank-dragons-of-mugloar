@@ -3,8 +3,8 @@ package hu.bono.bigbank.dragons;
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
-import hu.bono.bigbank.dragons.investigate.application.PostInvestigateReputationResponse;
-import hu.bono.bigbank.dragons.investigate.domain.Reputation;
+import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 
 import java.time.Instant;
 
