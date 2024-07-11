@@ -44,14 +44,14 @@ class LogWriterTest {
     private final LogWriter underTest = new LogWriter(resourceFactory);
 
     @BeforeEach
-    public void beforeEach() throws IOException {
+    void beforeEach() throws IOException {
         Files.deleteIfExists(LOG_FILE_PATH);
         Files.deleteIfExists(LOG_DIR_PATH);
         Mockito.reset(resourceFactory);
     }
 
     @AfterEach
-    public void afterEach() throws IOException {
+    void afterEach() throws IOException {
         Files.deleteIfExists(LOG_FILE_PATH);
         Files.deleteIfExists(LOG_DIR_PATH);
     }

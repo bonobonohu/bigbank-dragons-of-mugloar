@@ -4,9 +4,7 @@ import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.time.Instant;
-
-@Mapper(imports = Instant.class)
+@Mapper
 public interface PostInvestigateReputationResponseMapper {
 
     PostInvestigateReputationResponseMapper MAPPER = Mappers.getMapper(PostInvestigateReputationResponseMapper.class);
