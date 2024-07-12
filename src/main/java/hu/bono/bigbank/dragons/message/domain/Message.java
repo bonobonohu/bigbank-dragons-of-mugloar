@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 @Builder
 public record Message(
@@ -48,5 +49,35 @@ public record Message(
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No Probability with text " + text));
         }
+    }
+
+    public boolean possiblyIncreasesPeopleReputation() {
+        return Pattern.compile("^Steal.*share some of the profits with the people\\.")
+            .matcher(message)
+            .matches()
+            || Pattern.compile("^Help defending.*")
+            .matcher(message)
+            .matches();
+    }
+
+    public boolean possiblyIncreasesStateReputation() {
+        return Pattern.compile("^Help defending.*")
+            .matcher(message)
+            .matches();
+    }
+
+    public boolean possiblyDecreasesStateReputation() {
+        return Pattern.compile("^Steal.*")
+            .matcher(message)
+            .matches()
+            || Pattern.compile("^.*weed.*")
+            .matcher(message)
+            .matches();
+    }
+
+    public boolean itsATrap() {
+        return Pattern.compile("^Steal super awesome diamond.*")
+            .matcher(message)
+            .matches();
     }
 }
