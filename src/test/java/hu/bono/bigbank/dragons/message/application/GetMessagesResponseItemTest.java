@@ -12,7 +12,9 @@ import java.util.stream.Stream;
 class GetMessagesResponseItemTest {
 
     @ParameterizedTest
-    @MethodSource("provideStringsForIsBlank")
+    @MethodSource(
+        "provideStringsForIsBlank"
+    )
     void testIsEncrypted(
         final Integer encrypted,
         final Boolean expected
