@@ -54,6 +54,7 @@ spotless {
 
         removeUnusedImports()
         trimTrailingWhitespace()
+        endWithNewline()
     }
 }
 
