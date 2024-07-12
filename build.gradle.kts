@@ -49,9 +49,11 @@ dependencies {
 
 spotless {
     java {
-        removeUnusedImports()
         // eclipse().configFile("config/spotless/eclipse.xml")
         // googleJavaFormat("1.22.0")
+
+        removeUnusedImports()
+        trimTrailingWhitespace()
     }
 }
 
