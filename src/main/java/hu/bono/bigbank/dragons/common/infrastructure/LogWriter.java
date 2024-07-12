@@ -43,10 +43,10 @@ public class LogWriter {
     }
 
     public void log(
-        GameSession gameSession,
-        String event,
-        String details,
-        Object object
+        final GameSession gameSession,
+        final String event,
+        final String details,
+        final Object object
     ) {
         try {
             final Resources resources = open(gameSession);
@@ -61,7 +61,9 @@ public class LogWriter {
         }
     }
 
-    private Resources open(GameSession gameSession) throws IOException {
+    private Resources open(
+        final GameSession gameSession
+    ) throws IOException {
         final File file = getFileInSessionDir(gameSession);
         final boolean fileExists = file.exists();
 
@@ -79,7 +81,9 @@ public class LogWriter {
             .build();
     }
 
-    private File getFileInSessionDir(GameSession gameSession) throws IOException {
+    private File getFileInSessionDir(
+        final GameSession gameSession
+    ) throws IOException {
         final String sessionDate = DATE_FORMATTER.format(gameSession.getCreationTimestamp());
         final File directory = Paths.get(USER_DIR, LOG_DIR, sessionDate).toFile();
 
@@ -90,7 +94,9 @@ public class LogWriter {
         return new File(directory, gameSession.getLogFileName() + LOG_FILE_EXTENSION);
     }
 
-    private void close(Resources resources) throws IOException {
+    private void close(
+        final Resources resources
+    ) throws IOException {
         if (resources.csvPrinter != null) {
             resources.csvPrinter.close();
         }

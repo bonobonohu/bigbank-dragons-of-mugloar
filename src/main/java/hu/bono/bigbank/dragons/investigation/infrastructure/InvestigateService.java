@@ -16,7 +16,9 @@ public class InvestigateService {
     private final InvestigateClient investigateClient;
     private final LogWriter logWriter;
 
-    public Reputation investigateReputation(GameSession gameSession) {
+    public Reputation investigateReputation(
+        final GameSession gameSession
+    ) {
         final PostInvestigateReputationResponse postInvestigateReputationResponse =
             investigateClient.postInvestigateReputation(gameSession.getGameId());
         final Reputation reputation = PostInvestigateReputationResponseMapper.MAPPER

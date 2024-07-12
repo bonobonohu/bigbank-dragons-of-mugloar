@@ -17,7 +17,9 @@ public class ShopService {
     private final ShopClient shopClient;
     private final LogWriter logWriter;
 
-    public List<ShopItem> getAvailableItems(GameSession gameSession) {
+    public List<ShopItem> getAvailableItems(
+        final GameSession gameSession
+    ) {
         final List<GetShopResponseItem> getShopResponseItems =
             shopClient.getShop(gameSession.getGameId());
         final List<ShopItem> shopItems = getShopResponseItems.stream()
@@ -32,7 +34,10 @@ public class ShopService {
         return shopItems;
     }
 
-    public PurchaseOutcome purchaseItem(GameSession gameSession, ShopItem shopItem) {
+    public PurchaseOutcome purchaseItem(
+        final GameSession gameSession,
+        final ShopItem shopItem
+    ) {
         final PostShopBuyItemResponse postShopBuyItemResponse =
             shopClient.postShopBuyItem(gameSession.getGameId(), shopItem.id());
         final PurchaseOutcome purchaseOutcome = PostShopBuyItemResponseMapper.MAPPER

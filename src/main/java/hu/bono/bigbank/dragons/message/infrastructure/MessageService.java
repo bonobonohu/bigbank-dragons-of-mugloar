@@ -17,7 +17,9 @@ public class MessageService {
     private final MessageClient messageClient;
     private final LogWriter logWriter;
 
-    public List<Message> getAllMessages(GameSession gameSession) {
+    public List<Message> getAllMessages(
+        final GameSession gameSession
+    ) {
         final List<GetMessagesResponseItem> getMessagesResponseItems =
             messageClient.getMessages(gameSession.getGameId());
         final List<Message> messages = getMessagesResponseItems.stream()
@@ -32,7 +34,10 @@ public class MessageService {
         return messages;
     }
 
-    public MissionOutcome solveAd(GameSession gameSession, Message message) {
+    public MissionOutcome solveAd(
+        final GameSession gameSession,
+        final Message message
+    ) {
         final PostSolveAdResponse postSolveAdResponse =
             messageClient.postSolveAd(gameSession.getGameId(), message.adId());
         final MissionOutcome missionOutcome = PostSolveAdResponseMapper.MAPPER

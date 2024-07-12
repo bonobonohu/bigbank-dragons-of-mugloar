@@ -5,7 +5,9 @@
 
 <suppressions>
     <suppress checks="HideUtilityClassConstructor"
-        files="hu[\\/]bono[\\/]bigbank[\\/]dragons[\\/]Application.java"/>
+        files="hu[\\/]bono[\\/]bigbank[\\/]dragons[\\/]Application\.java"/>
     <suppress checks="FinalParameters"
-        files="hu[\\/]bono[\\/]bigbank[\\/]dragons[\\/]Application.java"/>
+        files="hu[\\/]bono[\\/]bigbank[\\/]dragons[\\/]Application\.java"/>
+    <!-- <suppress checks="FinalParameters"
+        files=".*Exception\.java"/> -->
 </suppressions>

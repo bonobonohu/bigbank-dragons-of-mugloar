@@ -32,12 +32,17 @@ public record Message(
         private final Integer value;
         private final String text;
 
-        Probability(Integer value, String text) {
+        Probability(
+            final Integer value,
+            final String text
+        ) {
             this.value = value;
             this.text = text;
         }
 
-        public static Probability fromText(String text) {
+        public static Probability fromText(
+            final String text
+        ) {
             return Arrays.stream(Probability.values())
                 .filter(level -> level.getText().equalsIgnoreCase(text))
                 .findFirst()

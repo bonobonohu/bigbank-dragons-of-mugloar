@@ -15,16 +15,21 @@ public class InvestigateClient {
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;
 
-    static String prepareUri(String endpointTemplate, String gameId) {
+    static String prepareUri(
+        final String endpointTemplate,
+        final String gameId
+    ) {
         return endpointTemplate.replace("{gameId}", gameId);
     }
 
-    public PostInvestigateReputationResponse postInvestigateReputation(String gameId) {
+    public PostInvestigateReputationResponse postInvestigateReputation(
+        final String gameId
+    ) {
         try {
             return restClient.post()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), gameId)
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), gameId)
                 )
                 .retrieve()
                 .body(PostInvestigateReputationResponse.class);

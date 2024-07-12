@@ -18,28 +18,36 @@ public class ShopClient {
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;
 
-    static String prepareUri(String endpointTemplate, String gameId) {
+    static String prepareUri(
+        final String endpointTemplate,
+        final String gameId
+    ) {
         return endpointTemplate.replace("{gameId}", gameId);
     }
 
-    static String prepareUri(String endpointTemplate, String gameId, String itemId) {
+    static String prepareUri(
+        final String endpointTemplate,
+        final String gameId,
+        final String itemId
+    ) {
         return endpointTemplate
             .replace("{gameId}", gameId)
             .replace("{itemId}", itemId);
     }
 
-    public List<GetShopResponseItem> getShop(String gameId) {
+    public List<GetShopResponseItem> getShop(
+        final String gameId
+    ) {
         try {
             return restClient.get()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        prepareUri(apiConfiguration.getEndpoints().getShop(), gameId)
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShop(), gameId)
                 )
                 .retrieve()
                 .body(
                     new ParameterizedTypeReference<>() {
-                    })
-                ;
+                    });
         } catch (RestClientResponseException exception) {
             if (exception.getStatusCode().is4xxClientError()) {
                 throw new RestClientClientException(exception);
@@ -49,12 +57,15 @@ public class ShopClient {
         }
     }
 
-    public PostShopBuyItemResponse postShopBuyItem(String gameId, String itemId) {
+    public PostShopBuyItemResponse postShopBuyItem(
+        final String gameId,
+        final String itemId
+    ) {
         try {
             return restClient.post()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), gameId, itemId)
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), gameId, itemId)
                 )
                 .retrieve()
                 .body(PostShopBuyItemResponse.class);

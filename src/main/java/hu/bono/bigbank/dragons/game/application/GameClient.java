@@ -19,8 +19,8 @@ public class GameClient {
         try {
             return restClient.post()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        apiConfiguration.getEndpoints().getGameStart()
+                    apiConfiguration.getBaseUrl()
+                        + apiConfiguration.getEndpoints().getGameStart()
                 )
                 .retrieve()
                 .body(PostGameStartResponse.class);

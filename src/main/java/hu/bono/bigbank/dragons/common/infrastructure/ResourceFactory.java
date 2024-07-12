@@ -13,11 +13,15 @@ import java.io.IOException;
 @Component
 public class ResourceFactory {
 
-    public BufferedWriter createBufferedWriter(File file) throws IOException {
+    public BufferedWriter createBufferedWriter(
+        final File file
+    ) throws IOException {
         return new BufferedWriter(new FileWriter(file, true));
     }
 
-    public CSVPrinter createCSVPrinter(BufferedWriter writer) throws IOException {
+    public CSVPrinter createCSVPrinter(
+        final BufferedWriter writer
+    ) throws IOException {
         return new CSVPrinter(
             writer,
             CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL_NON_NULL).build()

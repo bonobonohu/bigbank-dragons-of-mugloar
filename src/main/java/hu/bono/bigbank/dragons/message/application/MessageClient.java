@@ -18,28 +18,36 @@ public class MessageClient {
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;
 
-    static String prepareUri(String endpointTemplate, String gameId) {
+    static String prepareUri(
+        final String endpointTemplate,
+        final String gameId
+    ) {
         return endpointTemplate.replace("{gameId}", gameId);
     }
 
-    static String prepareUri(String endpointTemplate, String gameId, String adId) {
+    static String prepareUri(
+        final String endpointTemplate,
+        final String gameId,
+        final String adId
+    ) {
         return endpointTemplate
             .replace("{gameId}", gameId)
             .replace("{adId}", adId);
     }
 
-    public List<GetMessagesResponseItem> getMessages(String gameId) {
+    public List<GetMessagesResponseItem> getMessages(
+        final String gameId
+    ) {
         try {
             return restClient.get()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        prepareUri(apiConfiguration.getEndpoints().getMessages(), gameId)
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getMessages(), gameId)
                 )
                 .retrieve()
                 .body(
                     new ParameterizedTypeReference<>() {
-                    })
-                ;
+                    });
         } catch (RestClientResponseException exception) {
             if (exception.getStatusCode().is4xxClientError()) {
                 throw new RestClientClientException(exception);
@@ -49,12 +57,15 @@ public class MessageClient {
         }
     }
 
-    public PostSolveAdResponse postSolveAd(String gameId, String adId) {
+    public PostSolveAdResponse postSolveAd(
+        final String gameId,
+        final String adId
+    ) {
         try {
             return restClient.post()
                 .uri(
-                    apiConfiguration.getBaseUrl() +
-                        prepareUri(apiConfiguration.getEndpoints().getSolveAd(), gameId, adId)
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getSolveAd(), gameId, adId)
                 )
                 .retrieve()
                 .body(PostSolveAdResponse.class);
