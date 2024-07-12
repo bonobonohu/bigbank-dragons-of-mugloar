@@ -13,7 +13,7 @@ class GetMessagesResponseItemTest {
 
     @ParameterizedTest
     @MethodSource(
-        "provideStringsForIsBlank"
+        "provideEncryptedExpectedPairs"
     )
     void testIsEncrypted(
         final Integer encrypted,
@@ -24,7 +24,7 @@ class GetMessagesResponseItemTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> provideStringsForIsBlank() {
+    static Stream<Arguments> provideEncryptedExpectedPairs() {
         return Stream.of(
             Arguments.of(null, false),
             Arguments.of(0, false),

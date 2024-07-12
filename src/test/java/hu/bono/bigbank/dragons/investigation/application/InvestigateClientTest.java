@@ -32,8 +32,9 @@ class InvestigateClientTest {
         final PostInvestigateReputationResponse expected = TestUtils.createPostInvestigateReputationResponse();
         final String postInvestigateReputationResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
                 )
             )
             .andRespond(withSuccess(postInvestigateReputationResponseString, MediaType.APPLICATION_JSON));
@@ -44,8 +45,9 @@ class InvestigateClientTest {
     @Test
     void testPostInvestigateReputationReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -56,8 +58,9 @@ class InvestigateClientTest {
     @Test
     void testPostInvestigateReputationReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getInvestigateReputation(), GAME_ID)
                 )
             )
             .andRespond(withServerError());

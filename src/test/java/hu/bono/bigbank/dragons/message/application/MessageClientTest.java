@@ -53,8 +53,9 @@ class MessageClientTest {
                 ]
             """.trim();
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
                 )
             )
             .andRespond(withSuccess(getMessagesResponseItemsString, MediaType.APPLICATION_JSON));
@@ -65,8 +66,9 @@ class MessageClientTest {
     @Test
     void testGetMessagesReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -77,8 +79,9 @@ class MessageClientTest {
     @Test
     void testGetMessagesReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getMessages(), GAME_ID)
                 )
             )
             .andRespond(withServerError());
@@ -91,8 +94,9 @@ class MessageClientTest {
         final PostSolveAdResponse expected = TestUtils.createPostSolveAdResponse();
         final String postSolveAdResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withSuccess(postSolveAdResponseString, MediaType.APPLICATION_JSON));
@@ -103,8 +107,9 @@ class MessageClientTest {
     @Test
     void testPostSolveAdReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -115,8 +120,9 @@ class MessageClientTest {
     @Test
     void testPostSolveAdReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withServerError());

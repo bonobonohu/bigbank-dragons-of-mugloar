@@ -34,8 +34,9 @@ class ShopClientTest {
         final List<GetShopResponseItem> expected = TestUtils.createGetShopResponseItems();
         final String getShopResponseItemsString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
                 )
             )
             .andRespond(withSuccess(getShopResponseItemsString, MediaType.APPLICATION_JSON));
@@ -46,8 +47,9 @@ class ShopClientTest {
     @Test
     void testGetShopReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -58,8 +60,9 @@ class ShopClientTest {
     @Test
     void testGetShopReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShop(), GAME_ID)
                 )
             )
             .andRespond(withServerError());
@@ -72,8 +75,9 @@ class ShopClientTest {
         final PostShopBuyItemResponse expected = TestUtils.createPostShopBuyItemResponse();
         final String postShopBuyItemResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
                 )
             )
             .andRespond(withSuccess(postShopBuyItemResponseString, MediaType.APPLICATION_JSON));
@@ -84,8 +88,9 @@ class ShopClientTest {
     @Test
     void testPostShopBuyItemReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -96,8 +101,9 @@ class ShopClientTest {
     @Test
     void testPostShopBuyItemReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl()
-                    + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + prepareUri(apiConfiguration.getEndpoints().getShopBuyItem(), GAME_ID, ITEM_ID)
                 )
             )
             .andRespond(withServerError());

@@ -28,7 +28,9 @@ class GameClientTest {
         final PostGameStartResponse expected = TestUtils.createPostGameStartResponse();
         final String postGameStartResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-            requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withSuccess(postGameStartResponseString, MediaType.APPLICATION_JSON));
         final PostGameStartResponse actual = underTest.postGameStart();
@@ -38,7 +40,9 @@ class GameClientTest {
     @Test
     void testPostGameStartReturnsRestClientClientExceptionWhenHttpStatusIs4Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withBadRequest());
         Assertions.assertThatThrownBy(underTest::postGameStart)
@@ -48,7 +52,9 @@ class GameClientTest {
     @Test
     void testPostGameStartReturnsRestClientServerExceptionWhenHttpStatusIs5Xx() {
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
+                requestTo(
+                    apiConfiguration.getBaseUrl()
+                        + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withServerError());
         Assertions.assertThatThrownBy(underTest::postGameStart)
