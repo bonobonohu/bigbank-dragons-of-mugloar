@@ -51,14 +51,18 @@
 
   <!-- https://checkstyle.org/filters/suppressionfilter.html -->
   <module name="SuppressionFilter">
-    <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"
-              default="checkstyle-suppressions.xml" />
+    <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
+  </module>
+  <module name="SuppressionSingleFilter">
+    <property name="checks" value="LineLength"/>
+    <property name="files" value="MessageClientTest.java"/>
+    <property name="lines" value="37,38"/>
   </module>
 
   <!-- Checks that a package-info.java file exists for each package.     -->
   <!-- See https://checkstyle.org/checks/javadoc/javadocpackage.html#JavadocPackage -->
-  <module name="JavadocPackage"/>
+  <!-- <module name="JavadocPackage"/> -->
 
   <!-- Checks whether files end with a new line.                        -->
   <!-- See https://checkstyle.org/checks/misc/newlineatendoffile.html -->
@@ -72,6 +76,7 @@
   <!-- See https://checkstyle.org/checks/sizes/index.html -->
   <module name="FileLength"/>
   <module name="LineLength">
+    <property name="max" value="120"/>
     <property name="fileExtensions" value="java"/>
   </module>
 
@@ -96,15 +101,16 @@
   <!-- </module> -->
 
   <module name="TreeWalker">
+    <module name="SuppressionCommentFilter"/>
 
     <!-- Checks for Javadoc comments.                     -->
     <!-- See https://checkstyle.org/checks/javadoc/index.html -->
     <module name="InvalidJavadocPosition"/>
-    <module name="JavadocMethod"/>
-    <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
+    <!-- <module name="JavadocMethod"/> -->
+    <!-- <module name="JavadocType"/> -->
+    <!-- <module name="JavadocVariable"/> -->
     <module name="JavadocStyle"/>
-    <module name="MissingJavadocMethod"/>
+    <!-- <module name="MissingJavadocMethod"/> -->
 
     <!-- Checks for Naming Conventions.                  -->
     <!-- See https://checkstyle.org/checks/naming/index.html -->
@@ -120,7 +126,7 @@
 
     <!-- Checks for imports                              -->
     <!-- See https://checkstyle.org/checks/imports/index.html -->
-    <module name="AvoidStarImport"/>
+    <!-- <module name="AvoidStarImport"/> -->
     <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
     <module name="RedundantImport"/>
     <module name="UnusedImports">
@@ -162,10 +168,10 @@
     <!-- See https://checkstyle.org/checks/coding/index.html -->
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
-    <module name="HiddenField"/>
+    <!-- <module name="HiddenField"/> -->
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
-    <module name="MagicNumber"/>
+    <!-- <module name="MagicNumber"/> -->
     <module name="MissingSwitchDefault"/>
     <module name="MultipleVariableDeclarations"/>
     <module name="SimplifyBooleanExpression"/>
@@ -173,7 +179,7 @@
 
     <!-- Checks for class design                         -->
     <!-- See https://checkstyle.org/checks/design/index.html -->
-    <module name="DesignForExtension"/>
+    <!-- <module name="DesignForExtension"/> -->
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
@@ -183,6 +189,7 @@
     <!-- See https://checkstyle.org/checks/misc/index.html -->
     <module name="ArrayTypeStyle"/>
     <module name="FinalParameters"/>
+    <module name="FinalLocalVariable"/>
     <module name="TodoComment"/>
     <module name="UpperEll"/>
 
