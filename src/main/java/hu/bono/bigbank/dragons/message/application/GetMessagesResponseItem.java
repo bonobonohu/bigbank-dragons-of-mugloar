@@ -13,7 +13,7 @@ public record GetMessagesResponseItem(
     String probability
 ) {
 
-    public Boolean isEncrypted() {
+    public boolean isEncrypted() {
         return encrypted != null && encrypted == 1;
     }
 
