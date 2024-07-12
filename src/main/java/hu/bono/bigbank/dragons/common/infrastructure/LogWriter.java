@@ -24,13 +24,11 @@ public class LogWriter {
     static final String USER_DIR = System.getProperty("user.dir");
     static final String LOG_DIR = "game_logs";
     static final String LOG_FILE_EXTENSION = ".csv";
-    static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        .withZone(ZoneId.of("UTC"));
-    static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        .withZone(ZoneId.of("UTC"));
-    static final List<String> CSV_FIELDS = List.of(
-        "Timestamp", "GameId", "Event", "Details", "Response"
-    );
+    static final DateTimeFormatter DATE_FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("UTC"));
+    static final DateTimeFormatter TIMESTAMP_FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.of("UTC"));
+    static final List<String> CSV_FIELDS = List.of("Timestamp", "GameId", "Event", "Details", "Response");
 
     private final ResourceFactory resourceFactory;
 

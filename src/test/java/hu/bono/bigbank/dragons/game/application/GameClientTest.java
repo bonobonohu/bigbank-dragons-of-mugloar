@@ -28,7 +28,7 @@ class GameClientTest {
         final PostGameStartResponse expected = TestUtils.createPostGameStartResponse();
         final String postGameStartResponseString = objectMapper.writeValueAsString(expected);
         restServiceServer.expect(
-                requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
+            requestTo(apiConfiguration.getBaseUrl() + apiConfiguration.getEndpoints().getGameStart())
             )
             .andRespond(withSuccess(postGameStartResponseString, MediaType.APPLICATION_JSON));
         final PostGameStartResponse actual = underTest.postGameStart();

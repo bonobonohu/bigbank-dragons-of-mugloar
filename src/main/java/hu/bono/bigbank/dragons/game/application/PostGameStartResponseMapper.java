@@ -7,7 +7,9 @@ import org.mapstruct.factory.Mappers;
 
 import java.time.Instant;
 
-@Mapper(imports = Instant.class)
+@Mapper(
+    imports = Instant.class
+)
 public interface PostGameStartResponseMapper {
 
     PostGameStartResponseMapper MAPPER = Mappers.getMapper(PostGameStartResponseMapper.class);

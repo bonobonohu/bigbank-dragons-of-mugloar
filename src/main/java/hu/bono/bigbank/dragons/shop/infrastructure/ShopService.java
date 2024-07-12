@@ -20,8 +20,7 @@ public class ShopService {
     public List<ShopItem> getAvailableItems(
         final GameSession gameSession
     ) {
-        final List<GetShopResponseItem> getShopResponseItems =
-            shopClient.getShop(gameSession.getGameId());
+        final List<GetShopResponseItem> getShopResponseItems = shopClient.getShop(gameSession.getGameId());
         final List<ShopItem> shopItems = getShopResponseItems.stream()
             .map(GetShopResponseItemMapper.MAPPER::getShopResponseItemToShopItem)
             .toList();

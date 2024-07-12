@@ -32,8 +32,7 @@ class ShopServiceTest {
 
     @Test
     void testGetAvailableItems() {
-        final List<GetShopResponseItem> getShopResponseItems =
-            TestUtils.createGetShopResponseItems();
+        final List<GetShopResponseItem> getShopResponseItems = TestUtils.createGetShopResponseItems();
         final List<ShopItem> expected = TestUtils.createShopItems();
         Mockito.when(shopClient.getShop(GAME_SESSION.getGameId()))
             .thenReturn(getShopResponseItems);

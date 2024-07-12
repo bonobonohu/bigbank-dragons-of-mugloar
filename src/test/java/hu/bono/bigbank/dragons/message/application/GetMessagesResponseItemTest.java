@@ -17,9 +17,7 @@ class GetMessagesResponseItemTest {
         final Integer encrypted,
         final Boolean expected
     ) {
-        final Boolean actual = TestUtils.createGetMessagesResponseItem(
-            encrypted
-        ).isEncrypted();
+        final Boolean actual = TestUtils.createGetMessagesResponseItem(encrypted).isEncrypted();
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 

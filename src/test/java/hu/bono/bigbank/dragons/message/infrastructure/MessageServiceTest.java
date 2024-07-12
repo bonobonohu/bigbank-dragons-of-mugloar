@@ -32,8 +32,7 @@ class MessageServiceTest {
 
     @Test
     void testGetAllMessages() {
-        final List<GetMessagesResponseItem> getMessagesResponseItems =
-            TestUtils.createGetMessagesResponseItems();
+        final List<GetMessagesResponseItem> getMessagesResponseItems = TestUtils.createGetMessagesResponseItems();
         final List<Message> expected = TestUtils.createMessages();
         Mockito.when(messageClient.getMessages(GAME_SESSION.getGameId()))
             .thenReturn(getMessagesResponseItems);

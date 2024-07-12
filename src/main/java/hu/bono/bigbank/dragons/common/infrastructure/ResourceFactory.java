@@ -24,7 +24,9 @@ public class ResourceFactory {
     ) throws IOException {
         return new CSVPrinter(
             writer,
-            CSVFormat.DEFAULT.builder().setQuoteMode(QuoteMode.ALL_NON_NULL).build()
+            CSVFormat.DEFAULT.builder()
+                .setQuoteMode(QuoteMode.ALL_NON_NULL)
+                .build()
         );
     }
 }

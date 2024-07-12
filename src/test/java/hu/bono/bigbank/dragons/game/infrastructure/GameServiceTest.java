@@ -31,7 +31,8 @@ class GameServiceTest {
             .thenReturn(postGameStartResponse);
         final GameSession actual = underTest.gameStart();
         Assertions.assertThat(actual.getGameId()).isEqualTo(expected.getGameId());
-        Mockito.verify(gameClient, Mockito.times(1)).postGameStart();
+        Mockito.verify(gameClient, Mockito.times(1))
+            .postGameStart();
         Mockito.verify(logWriter, Mockito.times(1))
             .log(actual, "gameStart", "New game started", postGameStartResponse);
     }

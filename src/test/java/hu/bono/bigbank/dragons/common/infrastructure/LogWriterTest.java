@@ -64,7 +64,6 @@ class LogWriterTest {
             .when(csvPrinter).flush();
         Mockito.doReturn(csvPrinter)
             .when(resourceFactory).createCSVPrinter(any());
-
         Assertions.assertThatThrownBy(
                 () -> underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE)
             )
@@ -75,9 +74,7 @@ class LogWriterTest {
     void testLogCreatesFileWithHeaderAndEntries() throws IOException {
         underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE);
         underTest.log(GAME_SESSION, "gameEnd", "Game ended", POST_GAME_START_RESPONSE);
-
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
-
         Assertions.assertThat(lines).hasSize(3);
         Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Details", "Response");
         Assertions.assertThat(

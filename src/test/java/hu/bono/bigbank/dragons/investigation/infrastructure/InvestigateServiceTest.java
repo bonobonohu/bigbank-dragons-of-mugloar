@@ -17,8 +17,7 @@ class InvestigateServiceTest {
 
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
 
-    private final InvestigateClient investigateClient =
-        Mockito.mock(InvestigateClient.class);
+    private final InvestigateClient investigateClient = Mockito.mock(InvestigateClient.class);
     private final LogWriter logWriter = Mockito.mock(LogWriter.class);
     private final InvestigateService underTest = new InvestigateService(investigateClient, logWriter);
 

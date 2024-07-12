@@ -34,8 +34,22 @@ class MessageClientTest {
         final List<GetMessagesResponseItem> expected = TestUtils.createGetMessagesResponseItems();
         final String getMessagesResponseItemsString = """
                 [
-                    {"adId":"AdId123","message":"Help Tarquinius Reynell to fix their bucket","reward":100,"expiresIn":10,"encrypted":null,"probability":"Piece of cake"},
-                    {"adId":"dWFMamdrcmk=","message":"SW5maWx0cmF0ZSBUaGUgRWFnbGUgU29sZGllcnMgYW5kIHJlY292ZXIgdGhlaXIgc2VjcmV0cy4=","reward":100,"expiresIn":10,"encrypted":1,"probability":"UGxheWluZyB3aXRoIGZpcmU="}
+                    {
+                        "adId":"AdId123",
+                        "message":"Help Tarquinius Reynell to fix their bucket",
+                        "reward":100,
+                        "expiresIn":10,
+                        "encrypted":null,
+                        "probability":"Piece of cake"
+                    },
+                    {
+                        "adId":"dWFMamdrcmk=",
+                        "message":"SW5maWx0cmF0ZSBUaGUgRWFnbGUgU29sZGllcnMgYW5kIHJlY292ZXIgdGhlaXIgc2VjcmV0cy4=",
+                        "reward":100,
+                        "expiresIn":10,
+                        "encrypted":1,
+                        "probability":"UGxheWluZyB3aXRoIGZpcmU="
+                    }
                 ]
             """.trim();
         restServiceServer.expect(
