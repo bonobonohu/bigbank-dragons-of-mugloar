@@ -112,34 +112,6 @@ public final class TestUtils {
     public static GetMessagesResponseItem createGetMessagesResponseItem(
         final String adId,
         final String message,
-        final String probability
-    ) {
-        return GetMessagesResponseItem.builder()
-            .adId(adId)
-            .message(message)
-            .reward(100)
-            .expiresIn(10)
-            .encrypted(null)
-            .probability(probability)
-            .build();
-    }
-
-    public static GetMessagesResponseItem createGetMessagesResponseItem(
-        final Integer encrypted
-    ) {
-        return GetMessagesResponseItem.builder()
-            .adId("AdId123")
-            .message("Help Tarquinius Reynell to fix their bucket")
-            .reward(100)
-            .expiresIn(10)
-            .encrypted(encrypted)
-            .probability("Piece of cake")
-            .build();
-    }
-
-    public static GetMessagesResponseItem createGetMessagesResponseItem(
-        final String adId,
-        final String message,
         final String probability,
         final Integer encrypted
     ) {
@@ -151,6 +123,14 @@ public final class TestUtils {
             .encrypted(encrypted)
             .probability(probability)
             .build();
+    }
+
+    public static GetMessagesResponseItem createGetMessagesResponseItem(
+        final String adId,
+        final String message,
+        final String probability
+    ) {
+        return createGetMessagesResponseItem(adId, message, probability, null);
     }
 
     public static GetMessagesResponseItem createGetMessagesResponseItem() {
@@ -180,21 +160,6 @@ public final class TestUtils {
     public static Message createMessage(
         final String adId,
         final String message,
-        final Message.Probability probability
-    ) {
-        return Message.builder()
-            .adId(adId)
-            .message(message)
-            .reward(100)
-            .expiresIn(10)
-            .wasEncrypted(false)
-            .probability(probability)
-            .build();
-    }
-
-    public static Message createMessage(
-        final String adId,
-        final String message,
         final Message.Probability probability,
         final Boolean wasEncrypted
     ) {
@@ -206,6 +171,14 @@ public final class TestUtils {
             .wasEncrypted(wasEncrypted)
             .probability(probability)
             .build();
+    }
+
+    public static Message createMessage(
+        final String adId,
+        final String message,
+        final Message.Probability probability
+    ) {
+        return createMessage(adId, message, probability, false);
     }
 
     public static Message createMessage() {
@@ -287,7 +260,6 @@ public final class TestUtils {
             .cost(cost)
             .build();
     }
-
 
     public static GetShopResponseItem createGetShopResponseItem() {
         return createGetShopResponseItem(
