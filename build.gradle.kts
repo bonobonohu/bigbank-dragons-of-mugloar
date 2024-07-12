@@ -5,6 +5,8 @@ plugins {
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
 
+    id("com.diffplug.spotless") version "6.25.0"
+    id("checkstyle")
     id("jacoco")
 }
 
@@ -28,6 +30,8 @@ repositories {
 }
 
 dependencies {
+    checkstyle("com.puppycrawl.tools:checkstyle:${property("checkstyleVersion")}")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.mapstruct:mapstruct:${property("mapstructVersion")}")
     implementation("org.apache.commons:commons-io:${property("apacheCommonsIoVersion")}")
@@ -41,6 +45,25 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        // eclipse().configFile("config/spotless/eclipse.xml")
+        // googleJavaFormat("1.22.0")
+    }
+}
+
+checkstyle {
+    toolVersion = property("checkstyleVersion").toString()
+}
+
+tasks.withType<Checkstyle> {
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+    }
 }
 
 configure<JacocoPluginExtension> {
