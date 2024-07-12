@@ -24,7 +24,8 @@ class InvestigateClientTest {
     private final RestTemplate restTemplate = new RestTemplate();
     private final MockRestServiceServer restServiceServer = MockRestServiceServer.createServer(restTemplate);
     private final ApiConfiguration apiConfiguration = TestUtils.createApiConfiguration();
-    private final InvestigateClient underTest = new InvestigateClient(RestClient.create(restTemplate), apiConfiguration);
+    private final InvestigateClient underTest =
+        new InvestigateClient(RestClient.create(restTemplate), apiConfiguration);
 
     @Test
     void testPostInvestigateReputationReturnsPostInvestigateReputationResponseWhenHttpStatusIs2Xx() throws Exception {

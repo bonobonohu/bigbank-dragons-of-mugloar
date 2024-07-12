@@ -25,7 +25,8 @@ class LogWriterTest {
 
     private static final Instant TIMESTAMP = Instant.parse("2024-07-09T20:27:42Z");
     private static final String GAME_ID = "GameId123";
-    private static final PostGameStartResponse POST_GAME_START_RESPONSE = TestUtils.createPostGameStartResponse(GAME_ID);
+    private static final PostGameStartResponse POST_GAME_START_RESPONSE =
+        TestUtils.createPostGameStartResponse(GAME_ID);
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(TIMESTAMP, GAME_ID);
     private static final Path LOG_DIR_PATH = Paths.get(
         USER_DIR,

@@ -17,7 +17,11 @@ import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import java.time.Instant;
 import java.util.List;
 
-public class TestUtils {
+public final class TestUtils {
+
+    private TestUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
 
     public static ApiConfiguration createApiConfiguration() {
         return ApiConfiguration.builder()
@@ -35,7 +39,9 @@ public class TestUtils {
             .build();
     }
 
-    public static PostGameStartResponse createPostGameStartResponse(String gameId) {
+    public static PostGameStartResponse createPostGameStartResponse(
+        final String gameId
+    ) {
         return PostGameStartResponse.builder()
             .gameId(gameId)
             .lives(3)
@@ -51,7 +57,10 @@ public class TestUtils {
         return createPostGameStartResponse("GameId123");
     }
 
-    public static GameSession createGameSession(Instant timestamp, String gameId) {
+    public static GameSession createGameSession(
+        final Instant timestamp,
+        final String gameId
+    ) {
         return GameSession.builder()
             .creationTimestamp(timestamp)
             .gameId(gameId)
@@ -64,13 +73,15 @@ public class TestUtils {
             .build();
     }
 
-    public static GameSession createGameSession(Instant timestamp) {
+    public static GameSession createGameSession(
+        final Instant timestamp
+    ) {
         return createGameSession(timestamp, "GameId123");
     }
 
     public static PostInvestigateReputationResponse createPostInvestigateReputationResponse(
-        Double people,
-        Integer state
+        final Double people,
+        final Integer state
     ) {
         return PostInvestigateReputationResponse.builder()
             .people(people)
@@ -83,7 +94,10 @@ public class TestUtils {
         return createPostInvestigateReputationResponse(2.2, -1);
     }
 
-    public static Reputation createReputation(Double people, Integer state) {
+    public static Reputation createReputation(
+        final Double people,
+        final Integer state
+    ) {
         return Reputation.builder()
             .people(people)
             .state(state)
@@ -96,9 +110,9 @@ public class TestUtils {
     }
 
     public static GetMessagesResponseItem createGetMessagesResponseItem(
-        String adId,
-        String message,
-        String probability
+        final String adId,
+        final String message,
+        final String probability
     ) {
         return GetMessagesResponseItem.builder()
             .adId(adId)
@@ -111,7 +125,7 @@ public class TestUtils {
     }
 
     public static GetMessagesResponseItem createGetMessagesResponseItem(
-        Integer encrypted
+        final Integer encrypted
     ) {
         return GetMessagesResponseItem.builder()
             .adId("AdId123")
@@ -124,10 +138,10 @@ public class TestUtils {
     }
 
     public static GetMessagesResponseItem createGetMessagesResponseItem(
-        String adId,
-        String message,
-        String probability,
-        Integer encrypted
+        final String adId,
+        final String message,
+        final String probability,
+        final Integer encrypted
     ) {
         return GetMessagesResponseItem.builder()
             .adId(adId)
@@ -164,9 +178,9 @@ public class TestUtils {
     }
 
     public static Message createMessage(
-        String adId,
-        String message,
-        Message.Probability probability
+        final String adId,
+        final String message,
+        final Message.Probability probability
     ) {
         return Message.builder()
             .adId(adId)
@@ -179,10 +193,10 @@ public class TestUtils {
     }
 
     public static Message createMessage(
-        String adId,
-        String message,
-        Message.Probability probability,
-        Boolean wasEncrypted
+        final String adId,
+        final String message,
+        final Message.Probability probability,
+        final Boolean wasEncrypted
     ) {
         return Message.builder()
             .adId(adId)
@@ -219,11 +233,11 @@ public class TestUtils {
     }
 
     public static PostSolveAdResponse createPostSolveAdResponse(
-        Boolean success,
-        Integer lives,
-        Integer gold,
-        Integer score,
-        Integer turn
+        final Boolean success,
+        final Integer lives,
+        final Integer gold,
+        final Integer score,
+        final Integer turn
     ) {
         return PostSolveAdResponse.builder()
             .success(success)
@@ -241,11 +255,11 @@ public class TestUtils {
     }
 
     public static MissionOutcome createMissionOutcome(
-        Boolean success,
-        Integer lives,
-        Integer gold,
-        Integer score,
-        Integer turn
+        final Boolean success,
+        final Integer lives,
+        final Integer gold,
+        final Integer score,
+        final Integer turn
     ) {
         return MissionOutcome.builder()
             .success(success)
@@ -263,9 +277,9 @@ public class TestUtils {
     }
 
     public static GetShopResponseItem createGetShopResponseItem(
-        String id,
-        String name,
-        Integer cost
+        final String id,
+        final String name,
+        final Integer cost
     ) {
         return GetShopResponseItem.builder()
             .id(id)
@@ -291,9 +305,9 @@ public class TestUtils {
     }
 
     public static ShopItem createShopItem(
-        String id,
-        String name,
-        Integer cost
+        final String id,
+        final String name,
+        final Integer cost
     ) {
         return ShopItem.builder()
             .id(id)
@@ -318,11 +332,11 @@ public class TestUtils {
     }
 
     public static PostShopBuyItemResponse createPostShopBuyItemResponse(
-        Boolean shoppingSuccess,
-        Integer gold,
-        Integer lives,
-        Integer level,
-        Integer turn
+        final Boolean shoppingSuccess,
+        final Integer gold,
+        final Integer lives,
+        final Integer level,
+        final Integer turn
     ) {
         return PostShopBuyItemResponse.builder()
             .shoppingSuccess(shoppingSuccess)
@@ -338,11 +352,11 @@ public class TestUtils {
     }
 
     public static PurchaseOutcome createPurchaseOutcome(
-        Boolean shoppingSuccess,
-        Integer gold,
-        Integer lives,
-        Integer level,
-        Integer turn
+        final Boolean shoppingSuccess,
+        final Integer gold,
+        final Integer lives,
+        final Integer level,
+        final Integer turn
     ) {
         return PurchaseOutcome.builder()
             .shoppingSuccess(shoppingSuccess)

@@ -17,14 +17,14 @@ class InvestigateServiceTest {
 
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
 
-    private final InvestigateClient InvestigateClient =
+    private final InvestigateClient investigateClient =
         Mockito.mock(InvestigateClient.class);
     private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final InvestigateService underTest = new InvestigateService(InvestigateClient, logWriter);
+    private final InvestigateService underTest = new InvestigateService(investigateClient, logWriter);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(InvestigateClient, logWriter);
+        Mockito.reset(investigateClient, logWriter);
     }
 
     @Test
@@ -32,11 +32,11 @@ class InvestigateServiceTest {
         final PostInvestigateReputationResponse postInvestigateReputationResponse =
             TestUtils.createPostInvestigateReputationResponse(2.2, -1);
         final Reputation expected = TestUtils.createReputation(2.2, -1);
-        Mockito.when(InvestigateClient.postInvestigateReputation(GAME_SESSION.getGameId()))
+        Mockito.when(investigateClient.postInvestigateReputation(GAME_SESSION.getGameId()))
             .thenReturn(postInvestigateReputationResponse);
         final Reputation actual = underTest.investigateReputation(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(InvestigateClient, Mockito.times(1))
+        Mockito.verify(investigateClient, Mockito.times(1))
             .postInvestigateReputation(GAME_SESSION.getGameId());
         Mockito.verify(logWriter, Mockito.times(1))
             .log(

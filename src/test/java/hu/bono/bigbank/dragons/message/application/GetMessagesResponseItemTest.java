@@ -13,7 +13,10 @@ class GetMessagesResponseItemTest {
 
     @ParameterizedTest
     @MethodSource("provideStringsForIsBlank")
-    void testIsEncrypted(Integer encrypted, Boolean expected) {
+    void testIsEncrypted(
+        final Integer encrypted,
+        final Boolean expected
+    ) {
         final Boolean actual = TestUtils.createGetMessagesResponseItem(
             encrypted
         ).isEncrypted();
