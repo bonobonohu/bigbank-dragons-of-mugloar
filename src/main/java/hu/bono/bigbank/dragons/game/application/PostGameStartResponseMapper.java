@@ -18,6 +18,22 @@ public interface PostGameStartResponseMapper {
         target = "creationTimestamp",
         expression = "java(Instant.now())"
     )
+    @Mapping(
+        target = "reputation",
+        ignore = true
+    )
+    @Mapping(
+        target = "shopCache",
+        ignore = true
+    )
+    @Mapping(
+        target = "purchasedItems",
+        ignore = true
+    )
+    @Mapping(
+        target = "messages",
+        ignore = true
+    )
     GameSession postGameStartResponseToGameSession(
         PostGameStartResponse postGameStartResponse
     );
