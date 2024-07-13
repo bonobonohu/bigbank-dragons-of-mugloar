@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.common.domain;
 
-import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.message.domain.Message;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import lombok.AllArgsConstructor;
@@ -19,15 +18,9 @@ public class GameSession {
 
     private final Instant creationTimestamp;
     private final String gameId;
-    private Integer lives;
-    private Integer gold;
-    private Integer level;
-    private Integer score;
-    private Integer highScore;
+    private final CharacterSheet characterSheet;
     private Integer turn;
-    private Reputation reputation;
-    private List<ShopItem> shopCache;
-    private List<ShopItem> purchasedItems;
+    private List<ShopItem> shop;
     private List<Message> messages;
 
     public String getLogFileName() {

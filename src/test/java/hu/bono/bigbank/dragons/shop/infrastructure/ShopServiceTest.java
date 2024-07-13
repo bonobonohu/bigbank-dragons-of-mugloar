@@ -2,7 +2,6 @@ package hu.bono.bigbank.dragons.shop.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
 import hu.bono.bigbank.dragons.shop.application.GetShopResponseItem;
 import hu.bono.bigbank.dragons.shop.application.PostShopBuyItemResponse;
 import hu.bono.bigbank.dragons.shop.application.ShopClient;
@@ -22,12 +21,11 @@ class ShopServiceTest {
     private static final ShopItem SHOP_ITEM = TestUtils.createShopItem();
 
     private final ShopClient shopClient = Mockito.mock(ShopClient.class);
-    private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final ShopService underTest = new ShopService(shopClient, logWriter);
+    private final ShopService underTest = new ShopService(shopClient);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(shopClient, logWriter);
+        Mockito.reset(shopClient);
     }
 
     @Test
@@ -38,15 +36,8 @@ class ShopServiceTest {
             .thenReturn(getShopResponseItems);
         final List<ShopItem> actual = underTest.getAvailableItems(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(shopClient, Mockito.times(1))
+        Mockito.verify(shopClient)
             .getShop(GAME_SESSION.getGameId());
-        Mockito.verify(logWriter, Mockito.times(1))
-            .log(
-                GAME_SESSION,
-                "getAvailableItems",
-                "Get available items",
-                getShopResponseItems
-            );
     }
 
     @Test
@@ -59,14 +50,7 @@ class ShopServiceTest {
             .thenReturn(postShopBuyItemResponse);
         final PurchaseOutcome actual = underTest.purchaseItem(GAME_SESSION, SHOP_ITEM);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(shopClient, Mockito.times(1))
+        Mockito.verify(shopClient)
             .postShopBuyItem(GAME_SESSION.getGameId(), SHOP_ITEM.id());
-        Mockito.verify(logWriter, Mockito.times(1))
-            .log(
-                GAME_SESSION,
-                "purchaseItem",
-                "Purchase item",
-                postShopBuyItemResponse
-            );
     }
 }

@@ -2,7 +2,6 @@ package hu.bono.bigbank.dragons.message.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
 import hu.bono.bigbank.dragons.message.application.GetMessagesResponseItem;
 import hu.bono.bigbank.dragons.message.application.MessageClient;
 import hu.bono.bigbank.dragons.message.application.PostSolveAdResponse;
@@ -22,12 +21,11 @@ class MessageServiceTest {
     private static final Message MESSAGE = TestUtils.createMessage();
 
     private final MessageClient messageClient = Mockito.mock(MessageClient.class);
-    private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final MessageService underTest = new MessageService(messageClient, logWriter);
+    private final MessageService underTest = new MessageService(messageClient);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(messageClient, logWriter);
+        Mockito.reset(messageClient);
     }
 
     @Test
@@ -38,15 +36,8 @@ class MessageServiceTest {
             .thenReturn(getMessagesResponseItems);
         final List<Message> actual = underTest.getAllMessages(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(messageClient, Mockito.times(1))
+        Mockito.verify(messageClient)
             .getMessages(GAME_SESSION.getGameId());
-        Mockito.verify(logWriter, Mockito.times(1))
-            .log(
-                GAME_SESSION,
-                "getAllMessages",
-                "Get all messages",
-                getMessagesResponseItems
-            );
     }
 
     @Test
@@ -59,14 +50,7 @@ class MessageServiceTest {
             .thenReturn(postSolveAdResponse);
         final MissionOutcome actual = underTest.solveAd(GAME_SESSION, MESSAGE);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(messageClient, Mockito.times(1))
+        Mockito.verify(messageClient)
             .postSolveAd(GAME_SESSION.getGameId(), MESSAGE.adId());
-        Mockito.verify(logWriter, Mockito.times(1))
-            .log(
-                GAME_SESSION,
-                "solveAd",
-                "Solve ad",
-                postSolveAdResponse
-            );
     }
 }

@@ -2,7 +2,6 @@ package hu.bono.bigbank.dragons.investigation.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
 import hu.bono.bigbank.dragons.investigation.application.InvestigateClient;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
@@ -18,12 +17,11 @@ class InvestigateServiceTest {
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
 
     private final InvestigateClient investigateClient = Mockito.mock(InvestigateClient.class);
-    private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final InvestigateService underTest = new InvestigateService(investigateClient, logWriter);
+    private final InvestigateService underTest = new InvestigateService(investigateClient);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(investigateClient, logWriter);
+        Mockito.reset(investigateClient);
     }
 
     @Test
@@ -35,14 +33,7 @@ class InvestigateServiceTest {
             .thenReturn(postInvestigateReputationResponse);
         final Reputation actual = underTest.investigateReputation(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(investigateClient, Mockito.times(1))
+        Mockito.verify(investigateClient)
             .postInvestigateReputation(GAME_SESSION.getGameId());
-        Mockito.verify(logWriter, Mockito.times(1))
-            .log(
-                GAME_SESSION,
-                "investigateReputation",
-                "Investigate reputation",
-                postInvestigateReputationResponse
-            );
     }
 }

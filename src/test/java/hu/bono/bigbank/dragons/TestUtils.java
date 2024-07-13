@@ -1,8 +1,10 @@
 package hu.bono.bigbank.dragons;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
+import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
+import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.message.application.GetMessagesResponseItem;
@@ -15,6 +17,7 @@ import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 public final class TestUtils {
@@ -39,6 +42,69 @@ public final class TestUtils {
             .build();
     }
 
+    public static CharacterSheet createCharacterSheet(
+        final String name,
+        final Reputation reputation,
+        final List<ShopItem> purchasedItems
+    ) {
+        return CharacterSheet.builder()
+            .name(name)
+            .lives(3)
+            .gold(0)
+            .level(0)
+            .score(0)
+            .highScore(0)
+            .reputation(reputation)
+            .purchasedItems(purchasedItems)
+            .build();
+    }
+
+    public static CharacterSheet createCharacterSheet(
+        final String name
+    ) {
+        return createCharacterSheet(name, Reputation.builder().build(), Collections.emptyList());
+    }
+
+    public static CharacterSheet createCharacterSheet() {
+        return createCharacterSheet("Joseph Cornelius Hallenbeck");
+    }
+
+    public static GameSession createGameSession(
+        final Instant timestamp,
+        final String gameId,
+        final CharacterSheet characterSheet,
+        final List<ShopItem> shop,
+        final List<Message> messages
+    ) {
+        return GameSession.builder()
+            .creationTimestamp(timestamp)
+            .gameId(gameId)
+            .characterSheet(characterSheet)
+            .turn(0)
+            .shop(shop)
+            .messages(messages)
+            .build();
+    }
+
+    public static GameSession createGameSession(
+        final Instant timestamp,
+        final String gameId
+    ) {
+        return createGameSession(
+            timestamp,
+            gameId,
+            createCharacterSheet(),
+            Collections.emptyList(),
+            Collections.emptyList()
+        );
+    }
+
+    public static GameSession createGameSession(
+        final Instant timestamp
+    ) {
+        return createGameSession(timestamp, "GameId123");
+    }
+
     public static PostGameStartResponse createPostGameStartResponse(
         final String gameId
     ) {
@@ -57,12 +123,10 @@ public final class TestUtils {
         return createPostGameStartResponse("GameId123");
     }
 
-    public static GameSession createGameSession(
-        final Instant timestamp,
+    public static Game createGame(
         final String gameId
     ) {
-        return GameSession.builder()
-            .creationTimestamp(timestamp)
+        return Game.builder()
             .gameId(gameId)
             .lives(3)
             .gold(0)
@@ -73,10 +137,8 @@ public final class TestUtils {
             .build();
     }
 
-    public static GameSession createGameSession(
-        final Instant timestamp
-    ) {
-        return createGameSession(timestamp, "GameId123");
+    public static Game createGame() {
+        return createGame("GameId123");
     }
 
     public static PostInvestigateReputationResponse createPostInvestigateReputationResponse(
