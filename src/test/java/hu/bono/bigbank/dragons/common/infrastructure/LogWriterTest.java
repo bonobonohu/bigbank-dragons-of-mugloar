@@ -77,13 +77,12 @@ class LogWriterTest {
         underTest.log(GAME_SESSION, "endGame", null, GAME_SESSION);
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
         Assertions.assertThat(lines).hasSize(3);
-        Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Input", "Output");
-        Assertions.assertThat(
-            lines.get(1)).contains(GAME_ID, "startGame", "null", GAME_SESSION.toString()
-        );
-        Assertions.assertThat(
-            lines.get(2)).contains(GAME_ID, "endGame", "null", GAME_SESSION.toString()
-        );
+        Assertions.assertThat(lines.get(0))
+            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output");
+        Assertions.assertThat(lines.get(1))
+            .contains("Joseph Cornelius Hallenbeck", GAME_ID, "startGame", "null", GAME_SESSION.toString());
+        Assertions.assertThat(lines.get(2))
+            .contains("Joseph Cornelius Hallenbeck", GAME_ID, "endGame", "null", GAME_SESSION.toString());
     }
 
     @Test
@@ -92,12 +91,23 @@ class LogWriterTest {
         underTest.log(GAME_SESSION, "purchaseItem2", SHOP_ITEM, PURCHASE_OUTCOME);
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
         Assertions.assertThat(lines).hasSize(3);
-        Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Input", "Output");
-        Assertions.assertThat(
-            lines.get(1)).contains(GAME_ID, "purchaseItem1", SHOP_ITEM.toString(), PURCHASE_OUTCOME.toString()
-        );
-        Assertions.assertThat(
-            lines.get(2)).contains(GAME_ID, "purchaseItem2", SHOP_ITEM.toString(), PURCHASE_OUTCOME.toString()
-        );
+        Assertions.assertThat(lines.get(0))
+            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output");
+        Assertions.assertThat(lines.get(1))
+            .contains(
+                "Joseph Cornelius Hallenbeck",
+                GAME_ID,
+                "purchaseItem1",
+                SHOP_ITEM.toString(),
+                PURCHASE_OUTCOME.toString()
+            );
+        Assertions.assertThat(lines.get(2))
+            .contains(
+                "Joseph Cornelius Hallenbeck",
+                GAME_ID,
+                "purchaseItem2",
+                SHOP_ITEM.toString(),
+                PURCHASE_OUTCOME.toString()
+            );
     }
 }

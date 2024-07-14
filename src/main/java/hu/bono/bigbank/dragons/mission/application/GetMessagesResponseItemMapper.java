@@ -35,7 +35,7 @@ public class GetMessagesResponseItemMapper {
             case null -> withoutDecrypt(messageBuilder, getMessagesResponseItem);
             case 1 -> decryptWithBase64(messageBuilder, getMessagesResponseItem);
             case 2 -> decryptWithRot13(messageBuilder, getMessagesResponseItem);
-            default -> throw new RuntimeException("Unknown encryption!");
+            default -> throw new RuntimeException("Unknown encryption");
         };
     }
 

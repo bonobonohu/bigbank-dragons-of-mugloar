@@ -28,7 +28,7 @@ public class LogWriter {
         DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("UTC"));
     static final DateTimeFormatter TIMESTAMP_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.of("UTC"));
-    static final List<String> CSV_FIELDS = List.of("Timestamp", "GameId", "Event", "Input", "Output");
+    static final List<String> CSV_FIELDS = List.of("Timestamp", "Character name", "GameId", "Event", "Input", "Output");
 
     private final ResourceFactory resourceFactory;
 
@@ -52,6 +52,7 @@ public class LogWriter {
             final String timestamp = TIMESTAMP_FORMATTER.format(Instant.now());
             resources.csvPrinter.printRecord(
                 timestamp,
+                gameSession.getCharacterSheet().getName(),
                 gameSession.getGameId(),
                 event,
                 (input == null ? "null" : input.toString()),
