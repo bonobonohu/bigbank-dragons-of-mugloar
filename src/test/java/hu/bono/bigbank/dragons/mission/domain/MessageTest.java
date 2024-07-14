@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.message.domain;
+package hu.bono.bigbank.dragons.mission.domain;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import org.assertj.core.api.Assertions;

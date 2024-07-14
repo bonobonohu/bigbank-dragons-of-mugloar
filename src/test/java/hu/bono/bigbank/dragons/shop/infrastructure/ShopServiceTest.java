@@ -29,12 +29,12 @@ class ShopServiceTest {
     }
 
     @Test
-    void testGetAvailableItems() {
+    void testGetItems() {
         final List<GetShopResponseItem> getShopResponseItems = TestUtils.createGetShopResponseItems();
         final List<ShopItem> expected = TestUtils.createShopItems();
         Mockito.when(shopClient.getShop(GAME_SESSION.getGameId()))
             .thenReturn(getShopResponseItems);
-        final List<ShopItem> actual = underTest.getAvailableItems(GAME_SESSION);
+        final List<ShopItem> actual = underTest.getItems(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(shopClient)
             .getShop(GAME_SESSION.getGameId());

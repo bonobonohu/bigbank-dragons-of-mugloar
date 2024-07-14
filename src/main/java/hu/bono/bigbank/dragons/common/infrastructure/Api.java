@@ -3,8 +3,8 @@ package hu.bono.bigbank.dragons.common.infrastructure;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
-import hu.bono.bigbank.dragons.message.domain.Message;
-import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
@@ -15,22 +15,22 @@ import java.util.List;
  */
 public interface Api {
 
-    Game gameStart();
+    Game startGame();
 
     Reputation investigateReputation(
         GameSession gameSession
     );
 
-    List<Message> getAllMessages(
+    List<Message> getMessages(
         GameSession gameSession
     );
 
-    MissionOutcome solveAd(
+    MissionOutcome goOnMission(
         GameSession gameSession,
         Message message
     );
 
-    List<ShopItem> getAvailableItems(
+    List<ShopItem> getShopItems(
         GameSession gameSession
     );
 

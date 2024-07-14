@@ -1,7 +1,7 @@
-package hu.bono.bigbank.dragons.message.application;
+package hu.bono.bigbank.dragons.mission.application;
 
 import hu.bono.bigbank.dragons.TestUtils;
-import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

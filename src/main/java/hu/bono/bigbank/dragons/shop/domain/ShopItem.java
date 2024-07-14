@@ -9,4 +9,9 @@ public record ShopItem(
     Integer cost
 ) {
 
+    public static final String HEALING_POT = "hpot";
+
+    public boolean isHealingPot() {
+        return id.equals(HEALING_POT);
+    }
 }

@@ -13,7 +13,7 @@ public class GameService {
 
     private final GameClient gameClient;
 
-    public Game gameStart() {
+    public Game startGame() {
         final PostGameStartResponse postGameStartResponse = gameClient.postGameStart();
         return PostGameStartResponseMapper.MAPPER
             .postGameStartResponseToGame(postGameStartResponse);

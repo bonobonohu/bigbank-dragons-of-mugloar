@@ -3,7 +3,8 @@ package hu.bono.bigbank.dragons.common.infrastructure;
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.common.domain.LogWriterException;
-import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
+import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
+import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import org.apache.commons.csv.CSVPrinter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -25,9 +26,9 @@ class LogWriterTest {
 
     private static final Instant TIMESTAMP = Instant.parse("2024-07-09T20:27:42Z");
     private static final String GAME_ID = "GameId123";
-    private static final PostGameStartResponse POST_GAME_START_RESPONSE =
-        TestUtils.createPostGameStartResponse(GAME_ID);
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(TIMESTAMP, GAME_ID);
+    private static final ShopItem SHOP_ITEM = TestUtils.createShopItem();
+    private static final PurchaseOutcome PURCHASE_OUTCOME = TestUtils.createPurchaseOutcome();
     private static final Path LOG_DIR_PATH = Paths.get(
         USER_DIR,
         LOG_DIR,
@@ -65,23 +66,38 @@ class LogWriterTest {
         Mockito.doReturn(csvPrinter)
             .when(resourceFactory).createCSVPrinter(any());
         Assertions.assertThatThrownBy(
-                () -> underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE)
+                () -> underTest.log(GAME_SESSION, "startGame", null, GAME_SESSION)
             )
             .isInstanceOf(LogWriterException.class);
     }
 
     @Test
-    void testLogCreatesFileWithHeaderAndEntries() throws IOException {
-        underTest.log(GAME_SESSION, "gameStart", "New game started", POST_GAME_START_RESPONSE);
-        underTest.log(GAME_SESSION, "gameEnd", "Game ended", POST_GAME_START_RESPONSE);
+    void testLogCreatesFileWithHeaderAndEntriesWhenInputObjectIsNull() throws IOException {
+        underTest.log(GAME_SESSION, "startGame", null, GAME_SESSION);
+        underTest.log(GAME_SESSION, "endGame", null, GAME_SESSION);
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
         Assertions.assertThat(lines).hasSize(3);
-        Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Details", "Response");
+        Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Input", "Output");
         Assertions.assertThat(
-            lines.get(1)).contains(GAME_ID, "gameStart", "New game started", POST_GAME_START_RESPONSE.toString()
+            lines.get(1)).contains(GAME_ID, "startGame", "null", GAME_SESSION.toString()
         );
         Assertions.assertThat(
-            lines.get(2)).contains(GAME_ID, "gameEnd", "Game ended", POST_GAME_START_RESPONSE.toString()
+            lines.get(2)).contains(GAME_ID, "endGame", "null", GAME_SESSION.toString()
+        );
+    }
+
+    @Test
+    void testLogCreatesFileWithHeaderAndEntriesWhenInputObjectIsNotNull() throws IOException {
+        underTest.log(GAME_SESSION, "purchaseItem1", SHOP_ITEM, PURCHASE_OUTCOME);
+        underTest.log(GAME_SESSION, "purchaseItem2", SHOP_ITEM, PURCHASE_OUTCOME);
+        final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
+        Assertions.assertThat(lines).hasSize(3);
+        Assertions.assertThat(lines.get(0)).contains("Timestamp", "GameId", "Event", "Input", "Output");
+        Assertions.assertThat(
+            lines.get(1)).contains(GAME_ID, "purchaseItem1", SHOP_ITEM.toString(), PURCHASE_OUTCOME.toString()
+        );
+        Assertions.assertThat(
+            lines.get(2)).contains(GAME_ID, "purchaseItem2", SHOP_ITEM.toString(), PURCHASE_OUTCOME.toString()
         );
     }
 }

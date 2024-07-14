@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.message.application;
+package hu.bono.bigbank.dragons.mission.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.bono.bigbank.dragons.TestUtils;
@@ -14,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static hu.bono.bigbank.dragons.message.application.MessageClient.prepareUri;
+import static hu.bono.bigbank.dragons.mission.application.MissionClient.prepareUri;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
-class MessageClientTest {
+class MissionClientTest {
 
     private static final String GAME_ID = "GameId123";
     private static final String AD_ID = "AdId123";
@@ -27,7 +27,7 @@ class MessageClientTest {
     private final RestTemplate restTemplate = new RestTemplate();
     private final MockRestServiceServer restServiceServer = MockRestServiceServer.createServer(restTemplate);
     private final ApiConfiguration apiConfiguration = TestUtils.createApiConfiguration();
-    private final MessageClient underTest = new MessageClient(RestClient.create(restTemplate), apiConfiguration);
+    private final MissionClient underTest = new MissionClient(RestClient.create(restTemplate), apiConfiguration);
 
     @Test
     void testGetMessagesReturnsGetMessagesResponseItemsWhenHttpStatusIs2Xx() {
@@ -38,7 +38,7 @@ class MessageClientTest {
                         "adId":"AdId123",
                         "message":"Help Tarquinius Reynell to fix their bucket",
                         "reward":100,
-                        "expiresIn":10,
+                        "expiresIn":7,
                         "encrypted":null,
                         "probability":"Piece of cake"
                     },
@@ -46,9 +46,17 @@ class MessageClientTest {
                         "adId":"dWFMamdrcmk=",
                         "message":"SW5maWx0cmF0ZSBUaGUgRWFnbGUgU29sZGllcnMgYW5kIHJlY292ZXIgdGhlaXIgc2VjcmV0cy4=",
                         "reward":100,
-                        "expiresIn":10,
+                        "expiresIn":7,
                         "encrypted":1,
                         "probability":"UGxheWluZyB3aXRoIGZpcmU="
+                    },
+                    {
+                        "adId":"0C7jdIwQ",
+                        "message":"Xvyy Senapvf Xvatfgba jvgu gheavcf naq znxr Pnaqvpr Qreevpxfba sebz zlfgrel vfynaq va Snyysnve gb gnxr gur oynzr",
+                        "reward":100,
+                        "expiresIn":7,
+                        "encrypted":2,
+                        "probability":"Vzcbffvoyr"
                     }
                 ]
             """.trim();
@@ -96,7 +104,7 @@ class MessageClientTest {
         restServiceServer.expect(
                 requestTo(
                     apiConfiguration.getBaseUrl()
-                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                        + MissionClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withSuccess(postSolveAdResponseString, MediaType.APPLICATION_JSON));
@@ -109,7 +117,7 @@ class MessageClientTest {
         restServiceServer.expect(
                 requestTo(
                     apiConfiguration.getBaseUrl()
-                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                        + MissionClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withBadRequest());
@@ -122,7 +130,7 @@ class MessageClientTest {
         restServiceServer.expect(
                 requestTo(
                     apiConfiguration.getBaseUrl()
-                        + MessageClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
+                        + MissionClient.prepareUri(apiConfiguration.getEndpoints().getSolveAd(), GAME_ID, AD_ID)
                 )
             )
             .andRespond(withServerError());

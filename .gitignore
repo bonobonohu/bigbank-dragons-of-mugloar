@@ -1,5 +1,6 @@
 ## Dragons ##
 game_logs/
+*.hprof
 
 ## GitHub ##
 # Compiled class file

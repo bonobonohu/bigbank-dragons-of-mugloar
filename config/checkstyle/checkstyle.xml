@@ -54,11 +54,11 @@
     <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
   </module>
-  <!-- <module name="SuppressionSingleFilter">
+   <module name="SuppressionSingleFilter">
     <property name="checks" value="LineLength"/>
-    <property name="files" value="MessageClientTest.java"/>
-    <property name="lines" value="37,38"/>
-  </module> -->
+    <property name="files" value="MissionClientTest.java"/>
+    <property name="lines" value="55"/>
+  </module>
 
   <!-- Checks that a package-info.java file exists for each package.     -->
   <!-- See https://checkstyle.org/checks/javadoc/javadocpackage.html#JavadocPackage -->

@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.message.domain;
+package hu.bono.bigbank.dragons.mission.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ public record Message(
     String message,
     Integer reward,
     Integer expiresIn,
-    Boolean wasEncrypted,
+    Integer encrypted,
     Probability probability
 ) {
 
@@ -47,7 +47,9 @@ public record Message(
             return Arrays.stream(Probability.values())
                 .filter(level -> level.getText().equalsIgnoreCase(text))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No Probability with text " + text));
+                .orElseThrow(() -> new IllegalArgumentException(
+                    String.format("No Probability with text %s", text)
+                ));
         }
     }
 

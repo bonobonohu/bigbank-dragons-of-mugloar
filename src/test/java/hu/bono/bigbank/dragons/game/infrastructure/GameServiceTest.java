@@ -20,12 +20,12 @@ class GameServiceTest {
     }
 
     @Test
-    void testGameStart() {
+    void testStartGame() {
         final PostGameStartResponse postGameStartResponse = TestUtils.createPostGameStartResponse("GameId123");
         final Game expected = TestUtils.createGame("GameId123");
         Mockito.when(gameClient.postGameStart())
             .thenReturn(postGameStartResponse);
-        final Game actual = underTest.gameStart();
+        final Game actual = underTest.startGame();
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(gameClient)
             .postGameStart();

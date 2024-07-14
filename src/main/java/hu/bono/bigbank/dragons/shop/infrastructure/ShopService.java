@@ -15,7 +15,7 @@ public class ShopService {
 
     private final ShopClient shopClient;
 
-    public List<ShopItem> getAvailableItems(
+    public List<ShopItem> getItems(
         final GameSession gameSession
     ) {
         final List<GetShopResponseItem> getShopResponseItems = shopClient.getShop(gameSession.getGameId());

@@ -5,7 +5,8 @@ import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @Component
 public class GameMapper {
@@ -32,12 +33,13 @@ public class GameMapper {
                     .score(game.score())
                     .highScore(game.highScore())
                     .reputation(Reputation.builder().build())
-                    .purchasedItems(new ArrayList<>())
+                    .purchasedItems(new HashSet<>())
                     .build()
             )
             .turn(game.turn())
-            .shop(new ArrayList<>())
-            .messages(new ArrayList<>())
+            .shop(new HashMap<>())
+            .messages(new HashSet<>())
+            .expiredMessages(new HashSet<>())
             .build();
     }
 }

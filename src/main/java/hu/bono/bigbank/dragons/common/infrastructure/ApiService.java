@@ -5,9 +5,9 @@ import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.game.infrastructure.GameService;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.investigation.infrastructure.InvestigateService;
-import hu.bono.bigbank.dragons.message.domain.Message;
-import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
-import hu.bono.bigbank.dragons.message.infrastructure.MessageService;
+import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.mission.infrastructure.MissionService;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import hu.bono.bigbank.dragons.shop.infrastructure.ShopService;
@@ -22,12 +22,12 @@ public class ApiService implements Api {
 
     private final GameService gameService;
     private final InvestigateService investigateService;
-    private final MessageService messageService;
+    private final MissionService missionService;
     private final ShopService shopService;
 
     @Override
-    public Game gameStart() {
-        return gameService.gameStart();
+    public Game startGame() {
+        return gameService.startGame();
     }
 
     @Override
@@ -38,25 +38,25 @@ public class ApiService implements Api {
     }
 
     @Override
-    public List<Message> getAllMessages(
+    public List<Message> getMessages(
         final GameSession gameSession
     ) {
-        return messageService.getAllMessages(gameSession);
+        return missionService.getMessages(gameSession);
     }
 
     @Override
-    public MissionOutcome solveAd(
+    public MissionOutcome goOnMission(
         final GameSession gameSession,
         final Message message
     ) {
-        return messageService.solveAd(gameSession, message);
+        return missionService.goOnMission(gameSession, message);
     }
 
     @Override
-    public List<ShopItem> getAvailableItems(
+    public List<ShopItem> getShopItems(
         final GameSession gameSession
     ) {
-        return shopService.getAvailableItems(gameSession);
+        return shopService.getItems(gameSession);
     }
 
     @Override

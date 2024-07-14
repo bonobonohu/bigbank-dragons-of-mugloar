@@ -6,9 +6,9 @@ import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.game.infrastructure.GameService;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.investigation.infrastructure.InvestigateService;
-import hu.bono.bigbank.dragons.message.domain.Message;
-import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
-import hu.bono.bigbank.dragons.message.infrastructure.MessageService;
+import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.mission.infrastructure.MissionService;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import hu.bono.bigbank.dragons.shop.infrastructure.ShopService;
@@ -28,24 +28,24 @@ class ApiServiceTest {
 
     private final GameService gameService = Mockito.mock(GameService.class);
     private final InvestigateService investigateService = Mockito.mock(InvestigateService.class);
-    private final MessageService messageService = Mockito.mock(MessageService.class);
+    private final MissionService missionService = Mockito.mock(MissionService.class);
     private final ShopService shopService = Mockito.mock(ShopService.class);
-    private final ApiService underTest = new ApiService(gameService, investigateService, messageService, shopService);
+    private final ApiService underTest = new ApiService(gameService, investigateService, missionService, shopService);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(gameService, investigateService, messageService, shopService);
+        Mockito.reset(gameService, investigateService, missionService, shopService);
     }
 
     @Test
-    void testGameStart() {
+    void testStartGame() {
         final Game expected = TestUtils.createGame();
-        Mockito.when(gameService.gameStart())
+        Mockito.when(gameService.startGame())
             .thenReturn(expected);
-        final Game actual = underTest.gameStart();
+        final Game actual = underTest.startGame();
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(gameService)
-            .gameStart();
+            .startGame();
     }
 
     @Test
@@ -60,36 +60,36 @@ class ApiServiceTest {
     }
 
     @Test
-    void testGetAllMessages() {
+    void testGetMessages() {
         final List<Message> expected = TestUtils.createMessages();
-        Mockito.when(messageService.getAllMessages(GAME_SESSION))
+        Mockito.when(missionService.getMessages(GAME_SESSION))
             .thenReturn(expected);
-        final List<Message> actual = underTest.getAllMessages(GAME_SESSION);
+        final List<Message> actual = underTest.getMessages(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(messageService)
-            .getAllMessages(GAME_SESSION);
+        Mockito.verify(missionService)
+            .getMessages(GAME_SESSION);
     }
 
     @Test
-    void testSolveAd() {
+    void testGoOnMission() {
         final MissionOutcome expected = TestUtils.createMissionOutcome();
-        Mockito.when(messageService.solveAd(GAME_SESSION, MESSAGE))
+        Mockito.when(missionService.goOnMission(GAME_SESSION, MESSAGE))
             .thenReturn(expected);
-        final MissionOutcome actual = underTest.solveAd(GAME_SESSION, MESSAGE);
+        final MissionOutcome actual = underTest.goOnMission(GAME_SESSION, MESSAGE);
         Assertions.assertThat(actual).isEqualTo(expected);
-        Mockito.verify(messageService)
-            .solveAd(GAME_SESSION, MESSAGE);
+        Mockito.verify(missionService)
+            .goOnMission(GAME_SESSION, MESSAGE);
     }
 
     @Test
-    void testGetAvailableItems() {
+    void testGetShopItems() {
         final List<ShopItem> expected = TestUtils.createShopItems();
-        Mockito.when(shopService.getAvailableItems(GAME_SESSION))
+        Mockito.when(shopService.getItems(GAME_SESSION))
             .thenReturn(expected);
-        final List<ShopItem> actual = underTest.getAvailableItems(GAME_SESSION);
+        final List<ShopItem> actual = underTest.getShopItems(GAME_SESSION);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(shopService)
-            .getAvailableItems(GAME_SESSION);
+            .getItems(GAME_SESSION);
     }
 
     @Test

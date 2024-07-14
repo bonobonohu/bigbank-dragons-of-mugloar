@@ -1,6 +1,6 @@
 package hu.bono.bigbank.dragons.common.domain;
 
-import hu.bono.bigbank.dragons.message.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.Message;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.Data;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -20,8 +21,9 @@ public class GameSession {
     private final String gameId;
     private final CharacterSheet characterSheet;
     private Integer turn;
-    private List<ShopItem> shop;
-    private List<Message> messages;
+    private Map<String, ShopItem> shop;
+    private Set<Message> messages;
+    private Set<Message> expiredMessages;
 
     public String getLogFileName() {
         final String dateTimeString = DateTimeFormatter

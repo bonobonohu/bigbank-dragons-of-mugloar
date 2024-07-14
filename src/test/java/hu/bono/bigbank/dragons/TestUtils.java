@@ -7,18 +7,17 @@ import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
-import hu.bono.bigbank.dragons.message.application.GetMessagesResponseItem;
-import hu.bono.bigbank.dragons.message.application.PostSolveAdResponse;
-import hu.bono.bigbank.dragons.message.domain.Message;
-import hu.bono.bigbank.dragons.message.domain.MissionOutcome;
+import hu.bono.bigbank.dragons.mission.application.GetMessagesResponseItem;
+import hu.bono.bigbank.dragons.mission.application.PostSolveAdResponse;
+import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
 import hu.bono.bigbank.dragons.shop.application.GetShopResponseItem;
 import hu.bono.bigbank.dragons.shop.application.PostShopBuyItemResponse;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public final class TestUtils {
 
@@ -45,7 +44,7 @@ public final class TestUtils {
     public static CharacterSheet createCharacterSheet(
         final String name,
         final Reputation reputation,
-        final List<ShopItem> purchasedItems
+        final Set<ShopItem> purchasedItems
     ) {
         return CharacterSheet.builder()
             .name(name)
@@ -62,7 +61,7 @@ public final class TestUtils {
     public static CharacterSheet createCharacterSheet(
         final String name
     ) {
-        return createCharacterSheet(name, Reputation.builder().build(), Collections.emptyList());
+        return createCharacterSheet(name, Reputation.builder().build(), new HashSet<>());
     }
 
     public static CharacterSheet createCharacterSheet() {
@@ -70,39 +69,42 @@ public final class TestUtils {
     }
 
     public static GameSession createGameSession(
-        final Instant timestamp,
+        final Instant creationTimestamp,
         final String gameId,
         final CharacterSheet characterSheet,
-        final List<ShopItem> shop,
-        final List<Message> messages
+        final Map<String, ShopItem> shop,
+        final Set<Message> messages,
+        final Set<Message> expiredMessages
     ) {
         return GameSession.builder()
-            .creationTimestamp(timestamp)
+            .creationTimestamp(creationTimestamp)
             .gameId(gameId)
             .characterSheet(characterSheet)
             .turn(0)
             .shop(shop)
             .messages(messages)
+            .expiredMessages(expiredMessages)
             .build();
     }
 
     public static GameSession createGameSession(
-        final Instant timestamp,
+        final Instant creationTimestamp,
         final String gameId
     ) {
         return createGameSession(
-            timestamp,
+            creationTimestamp,
             gameId,
             createCharacterSheet(),
-            Collections.emptyList(),
-            Collections.emptyList()
+            new HashMap<>(),
+            new HashSet<>(),
+            new HashSet<>()
         );
     }
 
     public static GameSession createGameSession(
-        final Instant timestamp
+        final Instant creationTimestamp
     ) {
-        return createGameSession(timestamp, "GameId123");
+        return createGameSession(creationTimestamp, "GameId123");
     }
 
     public static PostGameStartResponse createPostGameStartResponse(
@@ -181,7 +183,7 @@ public final class TestUtils {
             .adId(adId)
             .message(message)
             .reward(100)
-            .expiresIn(10)
+            .expiresIn(7)
             .encrypted(encrypted)
             .probability(probability)
             .build();
@@ -203,7 +205,7 @@ public final class TestUtils {
         );
     }
 
-    public static GetMessagesResponseItem createEncryptedGetMessagesResponseItem() {
+    public static GetMessagesResponseItem createBase64EncryptedGetMessagesResponseItem() {
         return createGetMessagesResponseItem(
             "dWFMamdrcmk=",
             "SW5maWx0cmF0ZSBUaGUgRWFnbGUgU29sZGllcnMgYW5kIHJlY292ZXIgdGhlaXIgc2VjcmV0cy4=",
@@ -212,25 +214,36 @@ public final class TestUtils {
         );
     }
 
+    public static GetMessagesResponseItem createRot13EncryptedGetMessagesResponseItem() {
+        return createGetMessagesResponseItem(
+            "0C7jdIwQ",
+            "Xvyy Senapvf Xvatfgba jvgu gheavcf naq znxr Pnaqvpr Qreevpxfba"
+                + " sebz zlfgrel vfynaq va Snyysnve gb gnxr gur oynzr",
+            "Vzcbffvoyr",
+            2
+        );
+    }
+
     public static List<GetMessagesResponseItem> createGetMessagesResponseItems() {
         return List.of(
             createGetMessagesResponseItem(),
-            createEncryptedGetMessagesResponseItem()
+            createBase64EncryptedGetMessagesResponseItem(),
+            createRot13EncryptedGetMessagesResponseItem()
         );
     }
 
     public static Message createMessage(
         final String adId,
         final String message,
-        final Message.Probability probability,
-        final Boolean wasEncrypted
+        final Integer encrypted,
+        final Message.Probability probability
     ) {
         return Message.builder()
             .adId(adId)
             .message(message)
             .reward(100)
-            .expiresIn(10)
-            .wasEncrypted(wasEncrypted)
+            .expiresIn(7)
+            .encrypted(encrypted)
             .probability(probability)
             .build();
     }
@@ -240,7 +253,7 @@ public final class TestUtils {
         final String message,
         final Message.Probability probability
     ) {
-        return createMessage(adId, message, probability, false);
+        return createMessage(adId, message, null, probability);
     }
 
     public static Message createMessage() {
@@ -251,19 +264,30 @@ public final class TestUtils {
         );
     }
 
-    public static Message createWasEncryptedMessage() {
+    public static Message createBase64EncryptedMessage() {
         return createMessage(
             "uaLjgkri",
             "Infiltrate The Eagle Soldiers and recover their secrets.",
-            Message.Probability.PLAYING_WITH_FIRE,
-            true
+            1,
+            Message.Probability.PLAYING_WITH_FIRE
+        );
+    }
+
+    public static Message createRot13EncryptedMessage() {
+        return createMessage(
+            "0P7wqVjD",
+            "Kill Francis Kingston with turnips and make Candice Derrickson"
+                + " from mystery island in Fallfair to take the blame",
+            2,
+            Message.Probability.IMPOSSIBLE
         );
     }
 
     public static List<Message> createMessages() {
         return List.of(
             createMessage(),
-            createWasEncryptedMessage()
+            createBase64EncryptedMessage(),
+            createRot13EncryptedMessage()
         );
     }
 

@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.message.application;
+package hu.bono.bigbank.dragons.mission.application;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
 import hu.bono.bigbank.dragons.common.domain.RestClientClientException;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class MessageClient {
+public class MissionClient {
 
     private final RestClient restClient;
     private final ApiConfiguration apiConfiguration;

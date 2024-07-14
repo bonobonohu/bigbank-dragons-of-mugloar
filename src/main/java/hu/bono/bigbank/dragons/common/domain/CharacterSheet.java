@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +20,5 @@ public class CharacterSheet {
     private Integer score;
     private Integer highScore;
     private Reputation reputation;
-    private List<ShopItem> purchasedItems;
+    private Set<ShopItem> purchasedItems;
 }

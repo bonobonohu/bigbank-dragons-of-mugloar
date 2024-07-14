@@ -1,4 +1,4 @@
-package hu.bono.bigbank.dragons.message.application;
+package hu.bono.bigbank.dragons.mission.application;
 
 import lombok.Builder;
 
