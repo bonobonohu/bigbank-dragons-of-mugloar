@@ -24,6 +24,14 @@ public class GameSession {
     private Map<String, ShopItem> shop;
     private Set<Message> messages;
     private Set<Message> expiredMessages;
+    private MyBook myBook;
+
+    @Data
+    @Builder
+    public static class MyBook {
+
+        private Integer turn;
+    }
 
     public String getLogFileName() {
         final String dateTimeString = DateTimeFormatter

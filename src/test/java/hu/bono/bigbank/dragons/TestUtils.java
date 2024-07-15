@@ -55,6 +55,14 @@ public final class TestUtils {
             .highScore(0)
             .reputation(reputation)
             .purchasedItems(purchasedItems)
+            .myBook(
+                CharacterSheet.MyBook.builder()
+                    .lives(3)
+                    .gold(0)
+                    .level(0)
+                    .score(0)
+                    .build()
+            )
             .build();
     }
 
@@ -84,6 +92,11 @@ public final class TestUtils {
             .shop(shop)
             .messages(messages)
             .expiredMessages(expiredMessages)
+            .myBook(
+                GameSession.MyBook.builder()
+                    .turn(0)
+                    .build()
+            )
             .build();
     }
 

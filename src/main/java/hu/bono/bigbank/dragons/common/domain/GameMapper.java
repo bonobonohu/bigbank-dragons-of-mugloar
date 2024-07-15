@@ -34,12 +34,25 @@ public class GameMapper {
                     .highScore(game.highScore())
                     .reputation(Reputation.builder().build())
                     .purchasedItems(new HashSet<>())
+                    .myBook(
+                        CharacterSheet.MyBook.builder()
+                            .lives(game.lives())
+                            .gold(game.gold())
+                            .level(game.level())
+                            .score(game.score())
+                            .build()
+                    )
                     .build()
             )
             .turn(game.turn())
             .shop(new HashMap<>())
             .messages(new HashSet<>())
             .expiredMessages(new HashSet<>())
+            .myBook(
+                GameSession.MyBook.builder()
+                    .turn(game.turn())
+                    .build()
+            )
             .build();
     }
 }

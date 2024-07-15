@@ -21,4 +21,15 @@ public class CharacterSheet {
     private Integer highScore;
     private Reputation reputation;
     private Set<ShopItem> purchasedItems;
+    private MyBook myBook;
+
+    @Data
+    @Builder
+    public static class MyBook {
+
+        private Integer lives;
+        private Integer gold;
+        private Integer level;
+        private Integer score;
+    }
 }
