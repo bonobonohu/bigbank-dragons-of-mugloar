@@ -14,8 +14,8 @@ import java.util.*;
 public class Player {
 
     private static final int MAX_RUNS = 255;
-    private static final int BUY_LIVES_THRESHOLD = 2;
-    private static final int EXTRA_LIVES = 1;
+    static final int BUY_LIVES_THRESHOLD = 2;
+    static final int EXTRA_LIVES = 1;
 
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
@@ -58,7 +58,7 @@ public class Player {
         doLevelUp(gameSession);
     }
 
-    private void doHeal(
+    void doHeal(
         final GameSession gameSession
     ) {
         if (needToHeal(gameSession) && haveMoney(gameSession, ShopItem.HEALING_POT_COST)) {
@@ -87,7 +87,7 @@ public class Player {
         return gameSession.getCharacterSheet().getGold() >= cost;
     }
 
-    private void doLevelUp(
+    void doLevelUp(
         final GameSession gameSession
     ) {
         ShopItem shopItemToPurchase = getShopItemToPurchase(gameSession);
@@ -129,7 +129,7 @@ public class Player {
             + shopItem.cost();
     }
 
-    private void doMission(
+    void doMission(
         final GameSession gameSession
     ) {
         dungeonMaster.refreshMessages(gameSession);
