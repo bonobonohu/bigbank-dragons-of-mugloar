@@ -222,7 +222,7 @@ public class DungeonMaster {
     ) {
         gameSession.getCharacterSheet().getMyBook().setLives(
             gameSession.getCharacterSheet().getMyBook().getLives()
-                + (missionOutcome.success() ? 1 : -1)
+                + (missionOutcome.success() ? 0 : -1)
         );
         gameSession.getCharacterSheet().getMyBook().setGold(
             gameSession.getCharacterSheet().getMyBook().getGold()
