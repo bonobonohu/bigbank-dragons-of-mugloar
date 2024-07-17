@@ -1,11 +1,9 @@
-package hu.bono.bigbank.dragons.dungeonmaster.infrastructure;
+package hu.bono.bigbank.dragons.common.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
-import hu.bono.bigbank.dragons.common.infrastructure.Api;
-import hu.bono.bigbank.dragons.common.infrastructure.LogWriter;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,15 +29,15 @@ class DungeonMasterTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet("Joseph Cornelius Hallenbeck");
         final Game game = TestUtils.createGame("GameId123");
         final GameSession expected = TestUtils.createGameSession(Instant.now(), "GameId123");
-        Mockito.when(api.gameStart())
+        Mockito.when(api.startGame())
             .thenReturn(game);
         Mockito.when(gameMapper.gameToGameSession(game, characterSheet))
             .thenReturn(expected);
         final GameSession actual = underTest.startGame(characterSheet);
         Assertions.assertThat(actual.getGameId()).isEqualTo(expected.getGameId());
         Mockito.verify(api)
-            .gameStart();
+            .startGame();
         Mockito.verify(logWriter)
-            .log(actual, "startGame", "New game started", actual);
+            .log(actual, "startGame", null, actual);
     }
 }

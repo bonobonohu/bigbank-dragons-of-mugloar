@@ -81,8 +81,7 @@ public final class TestUtils {
         final String gameId,
         final CharacterSheet characterSheet,
         final Map<String, ShopItem> shop,
-        final Set<Message> messages,
-        final Set<Message> expiredMessages
+        final Set<Message> messages
     ) {
         return GameSession.builder()
             .creationTimestamp(creationTimestamp)
@@ -91,7 +90,6 @@ public final class TestUtils {
             .turn(0)
             .shop(shop)
             .messages(messages)
-            .expiredMessages(expiredMessages)
             .myBook(
                 GameSession.MyBook.builder()
                     .turn(0)
@@ -109,7 +107,6 @@ public final class TestUtils {
             gameId,
             createCharacterSheet(),
             new HashMap<>(),
-            new HashSet<>(),
             new HashSet<>()
         );
     }

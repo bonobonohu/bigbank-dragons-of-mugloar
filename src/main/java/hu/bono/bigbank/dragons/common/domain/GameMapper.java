@@ -47,7 +47,6 @@ public class GameMapper {
             .turn(game.turn())
             .shop(new HashMap<>())
             .messages(new HashSet<>())
-            .expiredMessages(new HashSet<>())
             .myBook(
                 GameSession.MyBook.builder()
                     .turn(game.turn())

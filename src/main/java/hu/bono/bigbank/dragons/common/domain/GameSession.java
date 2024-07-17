@@ -23,7 +23,6 @@ public class GameSession {
     private Integer turn;
     private Map<String, ShopItem> shop;
     private Set<Message> messages;
-    private Set<Message> expiredMessages;
     private MyBook myBook;
 
     @Data

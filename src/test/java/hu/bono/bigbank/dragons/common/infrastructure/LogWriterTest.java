@@ -78,11 +78,29 @@ class LogWriterTest {
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
         Assertions.assertThat(lines).hasSize(3);
         Assertions.assertThat(lines.get(0))
-            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output");
+            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output", "Character Sheet");
         Assertions.assertThat(lines.get(1))
-            .contains("Joseph Cornelius Hallenbeck", GAME_ID, "startGame", "null", GAME_SESSION.toString());
+            .contains(
+                "Joseph Cornelius Hallenbeck",
+                GAME_ID,
+                "startGame",
+                "null",
+                GAME_SESSION.toString(),
+                "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
+                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
+            );
         Assertions.assertThat(lines.get(2))
-            .contains("Joseph Cornelius Hallenbeck", GAME_ID, "endGame", "null", GAME_SESSION.toString());
+            .contains(
+                "Joseph Cornelius Hallenbeck",
+                GAME_ID,
+                "endGame",
+                "null",
+                GAME_SESSION.toString(),
+                "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
+                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
+            );
     }
 
     @Test
@@ -92,14 +110,17 @@ class LogWriterTest {
         final List<String> lines = Files.readAllLines(LOG_FILE_PATH);
         Assertions.assertThat(lines).hasSize(3);
         Assertions.assertThat(lines.get(0))
-            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output");
+            .contains("Timestamp", "Character name", "GameId", "Event", "Input", "Output", "Character Sheet");
         Assertions.assertThat(lines.get(1))
             .contains(
                 "Joseph Cornelius Hallenbeck",
                 GAME_ID,
                 "purchaseItem1",
                 SHOP_ITEM.toString(),
-                PURCHASE_OUTCOME.toString()
+                PURCHASE_OUTCOME.toString(),
+                "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
+                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
         Assertions.assertThat(lines.get(2))
             .contains(
@@ -107,7 +128,10 @@ class LogWriterTest {
                 GAME_ID,
                 "purchaseItem2",
                 SHOP_ITEM.toString(),
-                PURCHASE_OUTCOME.toString()
+                PURCHASE_OUTCOME.toString(),
+                "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
+                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
     }
 }
