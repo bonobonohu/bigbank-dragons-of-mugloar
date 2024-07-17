@@ -97,7 +97,7 @@ public class Player {
                 && shopItemToPurchase != null
                 && !shopItemToPurchase.equals(purchasedShopItem)
         ) {
-            dungeonMaster.purchaseItem(gameSession, getShopItemToPurchase(gameSession));
+            dungeonMaster.purchaseItem(gameSession, shopItemToPurchase);
             purchasedShopItem = shopItemToPurchase;
             shopItemToPurchase = getShopItemToPurchase(gameSession);
         }
