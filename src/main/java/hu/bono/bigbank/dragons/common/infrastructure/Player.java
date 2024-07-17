@@ -103,14 +103,6 @@ public class Player {
         }
     }
 
-    private int levelUpMoneyThreshold(
-        final GameSession gameSession,
-        final ShopItem shopItem
-    ) {
-        return (gameSession.getShop().get(ShopItem.HEALING_POT_ID).cost() * (EXTRA_LIVES + 1))
-            + shopItem.cost();
-    }
-
     private ShopItem getShopItemToPurchase(
         final GameSession gameSession
     ) {
@@ -127,6 +119,14 @@ public class Player {
             LOG.error("Can't find ShopItem to purchase");
         }
         return shopItemToPurchase.orElse(null);
+    }
+
+    private int levelUpMoneyThreshold(
+        final GameSession gameSession,
+        final ShopItem shopItem
+    ) {
+        return (gameSession.getShop().get(ShopItem.HEALING_POT_ID).cost() * (EXTRA_LIVES + 1))
+            + shopItem.cost();
     }
 
     private void doMission(
