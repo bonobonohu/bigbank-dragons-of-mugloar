@@ -18,8 +18,8 @@ https://www.dragonsofmugloar.com/
 
 ### Player
 
-- `player.purchase-lives-threshold`: Below (inclusive) how many lives we should try to buy new lives (healing potions)
-- `player.extra-lives`: How many extra lives (healing potions) should be bought when we buy lives (healing potions)
+- `player.purchase-lives-threshold`: Below (inclusive) how many lives we should try to purchase new lives (healing potions)
+- `player.extra-lives`: How many extra lives should be purchased
 
 ## CSV logs
 
