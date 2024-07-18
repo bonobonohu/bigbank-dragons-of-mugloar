@@ -20,37 +20,26 @@ import java.util.concurrent.Future;
 @RequiredArgsConstructor
 public class Runner {
 
-    private static final int NO_OF_CHARACTERS_TO_PLAY_WITH = 3;
-    private static final Set<String> CHARACTER_NAMES = Set.of(
-        "Joe Hallenbeck", "John McClane", "Butch Coolidge",
-        "Malcolm Crowe", "Hartigan", "General Joe Colton",
-        "Lt. Muldoon", "David Dunn", "Jimmy Tudeski",
-        "Harry S. Stamper", "The Jackal", "Korben Dallas",
-        "John Smith", "Hudson Hawk", "James Cole",
-        "Lieutenant A.K. Waters", "Old Joe", "Paul Kersey",
-        "Valmora", "Leonard", "Steve Ford"
-    );
-    private static final int MAX_RUNS = 255;
-
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
 
+    private final RunnerConfiguration runnerConfiguration;
     private final DungeonMaster dungeonMaster;
     private final PlayerFactory playerFactory;
 
     public void run() {
         final Instant start = Instant.now();
         final int availableProcessors = Runtime.getRuntime().availableProcessors();
-        final int noOfThreads = NO_OF_CHARACTERS_TO_PLAY_WITH + 1;
+        final int noOfThreads = runnerConfiguration.getNoOfCharacters() + 1;
         try (ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors)) {
             final Set<String> usedNames = new HashSet<>();
             final List<Future<?>> futures = new ArrayList<>();
-            for (int i = 0; i < NO_OF_CHARACTERS_TO_PLAY_WITH; i++) {
+            for (int i = 0; i < runnerConfiguration.getNoOfCharacters(); i++) {
                 final Future<?> future = executorService.submit(() -> {
                     final Player player = playerFactory.createPlayer(dungeonMaster);
                     final String characterName = getCharacterName(usedNames);
                     usedNames.add(characterName);
                     LOG.info("Starting to play with: {}", characterName);
-                    player.play(characterName, MAX_RUNS);
+                    player.play(characterName, runnerConfiguration.getMaxRuns());
                 });
                 futures.add(future);
             }
@@ -73,7 +62,7 @@ public class Runner {
         LOG.info(
             "Application ran {} seconds with {} players, {} processors and {} threads",
             Duration.between(start, finish).getSeconds(),
-            NO_OF_CHARACTERS_TO_PLAY_WITH,
+            runnerConfiguration.getNoOfCharacters(),
             availableProcessors,
             noOfThreads
         );
@@ -82,7 +71,7 @@ public class Runner {
     private String getCharacterName(
         final Set<String> usedNames
     ) {
-        final List<String> availableNames = new ArrayList<>(CHARACTER_NAMES);
+        final List<String> availableNames = new ArrayList<>(runnerConfiguration.getCharacterNames());
         availableNames.removeAll(usedNames);
         if (availableNames.isEmpty()) {
             throw new RuntimeException("No available character names left");

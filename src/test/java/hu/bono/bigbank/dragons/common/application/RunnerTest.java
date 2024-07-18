@@ -1,5 +1,6 @@
 package hu.bono.bigbank.dragons.common.application;
 
+import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.infrastructure.DungeonMaster;
 import hu.bono.bigbank.dragons.common.infrastructure.Player;
 import hu.bono.bigbank.dragons.common.infrastructure.PlayerFactory;
@@ -13,7 +14,8 @@ class RunnerTest {
 
     private final DungeonMaster dungeonMaster = Mockito.mock(DungeonMaster.class);
     private final PlayerFactory playerFactory = Mockito.mock(PlayerFactory.class);
-    private final Runner underTest = new Runner(dungeonMaster, playerFactory);
+    private final RunnerConfiguration runnerConfiguration = TestUtils.createRunnerConfiguration();
+    private final Runner underTest = new Runner(runnerConfiguration, dungeonMaster, playerFactory);
 
     @BeforeEach
     void beforeEach() {

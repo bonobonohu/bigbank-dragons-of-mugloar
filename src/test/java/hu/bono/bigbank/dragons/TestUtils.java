@@ -1,6 +1,7 @@
 package hu.bono.bigbank.dragons;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
+import hu.bono.bigbank.dragons.common.application.RunnerConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.application.PostGameStartResponse;
@@ -18,10 +19,7 @@ import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class TestUtils {
 
@@ -57,6 +55,24 @@ public final class TestUtils {
                     .shopBuyItem("/{gameId}/shop/buy/{itemId}")
                     .build()
             )
+            .build();
+    }
+
+    public static RunnerConfiguration createRunnerConfiguration() {
+        return RunnerConfiguration.builder()
+            .noOfCharacters(3)
+            .characterNames(
+                Set.of(
+                    "Joe Hallenbeck", "John McClane", "Butch Coolidge",
+                    "Malcolm Crowe", "Hartigan", "General Joe Colton",
+                    "Lt. Muldoon", "David Dunn", "Jimmy Tudeski",
+                    "Harry S. Stamper", "The Jackal", "Korben Dallas",
+                    "John Smith", "Hudson Hawk", "James Cole",
+                    "Lieutenant A.K. Waters", "Old Joe", "Paul Kersey",
+                    "Valmora", "Leonard", "Steve Ford"
+                )
+            )
+            .maxRuns(255)
             .build();
     }
 

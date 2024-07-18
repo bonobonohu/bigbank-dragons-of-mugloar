@@ -14,3 +14,28 @@ dragons:
       solve-ad: "/{gameId}/solve/{adId}"
       shop: "/{gameId}/shop"
       shop-buy-item: "/{gameId}/shop/buy/{itemId}"
+  runner:
+    no-of-characters: 3
+    character-names:
+      - "Joe Hallenbeck"
+      - "John McClane"
+      - "Butch Coolidge"
+      - "Malcolm Crowe"
+      - "Hartigan"
+      - "General Joe Colton"
+      - "Lt. Muldoon"
+      - "David Dunn"
+      - "Jimmy Tudeski"
+      - "Harry S. Stamper"
+      - "The Jackal"
+      - "Korben Dallas"
+      - "John Smith"
+      - "Hudson Hawk"
+      - "James Cole"
+      - "Lieutenant A.K. Waters"
+      - "Old Joe"
+      - "Paul Kersey"
+      - "Valmora"
+      - "Leonard"
+      - "Steve Ford"
+    max-runs: 255
