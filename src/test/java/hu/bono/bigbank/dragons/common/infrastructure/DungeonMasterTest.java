@@ -4,9 +4,11 @@ import hu.bono.bigbank.dragons.TestUtils;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
+import hu.bono.bigbank.dragons.common.domain.RestClientClientException;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
@@ -14,7 +16,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.client.RestClientResponseException;
 
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -214,23 +219,189 @@ class DungeonMasterTest {
     }
 
     @Test
-    void testGoOnMissionWhenMissionWasNotFound() {
-
+    void testGoOnMissionWhenMessageWasNotFound() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final Message message = TestUtils.createMessage();
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenThrow(
+                new RestClientClientException(
+                    new RestClientResponseException(
+                        "No ad by this ID exists",
+                        HttpStatusCode.valueOf(400),
+                        "No ad by this ID exists",
+                        null,
+                        null,
+                        Charset.defaultCharset()
+                    )
+                )
+            );
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(api, Mockito.times(5))
+            .goOnMission(gameSession.getGameId(), message.adId());
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(any(), any(), any(), any());
     }
 
     @Test
     void testGoOnMissionWhenMissionDie() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            false,
+            0,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(api, Mockito.times(5))
+            .goOnMission(gameSession.getGameId(), message.adId());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLives())
+            .isEqualTo(missionOutcome.lives());
+        Assertions.assertThat(gameSession.getCharacterSheet().getGold())
+            .isEqualTo(missionOutcome.gold());
+        Assertions.assertThat(gameSession.getCharacterSheet().getScore())
+            .isEqualTo(missionOutcome.score());
+        Assertions.assertThat(gameSession.getCharacterSheet().getHighScore())
+            .isEqualTo(missionOutcome.highScore());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLives())
+            .isEqualTo(
+                3
+                    + (missionOutcome.success() ? 0 : -1)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getGold())
+            .isEqualTo(
+                10_000_000
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getScore())
+            .isEqualTo(
+                0
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(missionOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(1);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionFailure", message, missionOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "goOnMissionDie", message, missionOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "dieDieDie", missionOutcome, gameSession.getCharacterSheet());
     }
 
     @Test
     void testGoOnMissionWhenMissionFailure() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            false,
+            2,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(api, Mockito.times(5))
+            .goOnMission(gameSession.getGameId(), message.adId());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLives())
+            .isEqualTo(missionOutcome.lives());
+        Assertions.assertThat(gameSession.getCharacterSheet().getGold())
+            .isEqualTo(missionOutcome.gold());
+        Assertions.assertThat(gameSession.getCharacterSheet().getScore())
+            .isEqualTo(missionOutcome.score());
+        Assertions.assertThat(gameSession.getCharacterSheet().getHighScore())
+            .isEqualTo(missionOutcome.highScore());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLives())
+            .isEqualTo(
+                3
+                    + (missionOutcome.success() ? 0 : -1)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getGold())
+            .isEqualTo(
+                10_000_000
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getScore())
+            .isEqualTo(
+                0
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(missionOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(1);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "goOnMissionFailure", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionDie", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "dieDieDie", missionOutcome, gameSession.getCharacterSheet());
     }
 
     @Test
     void testGoOnMissionWhenMissionSuccess() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            true,
+            3,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(api, Mockito.times(5))
+            .goOnMission(gameSession.getGameId(), message.adId());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLives())
+            .isEqualTo(missionOutcome.lives());
+        Assertions.assertThat(gameSession.getCharacterSheet().getGold())
+            .isEqualTo(missionOutcome.gold());
+        Assertions.assertThat(gameSession.getCharacterSheet().getScore())
+            .isEqualTo(missionOutcome.score());
+        Assertions.assertThat(gameSession.getCharacterSheet().getHighScore())
+            .isEqualTo(missionOutcome.highScore());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLives())
+            .isEqualTo(
+                3
+                    + (missionOutcome.success() ? 0 : -1)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getGold())
+            .isEqualTo(
+                10_000_000
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getScore())
+            .isEqualTo(
+                0
+                    + (missionOutcome.success() ? message.reward() : 0)
+            );
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(missionOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(1);
+        Mockito.verify(logWriter)
+            .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionFailure", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "goOnMissionDie", message, missionOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "dieDieDie", missionOutcome, gameSession.getCharacterSheet());
     }
 
     @Test

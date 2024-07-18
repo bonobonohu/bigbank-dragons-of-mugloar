@@ -183,7 +183,8 @@ public class DungeonMaster {
     private boolean missionSuccess(
         final MissionOutcome missionOutcome
     ) {
-        return missionOutcome != null && missionOutcome.success();
+        return missionOutcome != null
+            && missionOutcome.success();
     }
 
     private boolean missionFailureSurvived(
