@@ -1,7 +1,6 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
-import hu.bono.bigbank.dragons.common.application.DungeonMasterConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -35,8 +34,7 @@ class DungeonMasterTest {
     private final Api api = Mockito.mock(Api.class);
     private final GameMapper gameMapper = Mockito.mock(GameMapper.class);
     private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final DungeonMasterConfiguration dungeonMasterConfiguration = TestUtils.createDungeonMasterConfiguration();
-    private final DungeonMaster underTest = new DungeonMaster(api, gameMapper, logWriter, dungeonMasterConfiguration);
+    private final DungeonMaster underTest = new DungeonMaster(api, gameMapper, logWriter);
 
     @BeforeEach
     void beforeEach() {

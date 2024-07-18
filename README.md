@@ -21,10 +21,6 @@ https://www.dragonsofmugloar.com/
 - `player.purchase-lives-threshold`: Below (inclusive) how many lives we should try to buy new lives (healing potions)
 - `player.extra-lives`: How many extra lives (healing potions) should be bought when we buy lives (healing potions)
 
-### DungeonMaster
-
-- `dungeon-master.max-api-attempts`: Due to flaky API, we have to call several endpoints repeatedly; this number regulates maximum no of attempts API should be called in such cases 
-
 ## CSV logs
 
 /game_logs

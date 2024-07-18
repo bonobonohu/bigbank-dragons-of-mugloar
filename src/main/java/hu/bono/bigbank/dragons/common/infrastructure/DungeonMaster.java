@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
-import hu.bono.bigbank.dragons.common.application.DungeonMasterConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -23,12 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DungeonMaster {
 
+    private static final int MAX_API_ATTEMPTS = 5;
+
     private static final Logger LOG = LoggerFactory.getLogger(DungeonMaster.class);
 
     private final Api api;
     private final GameMapper gameMapper;
     private final LogWriter logWriter;
-    private final DungeonMasterConfiguration dungeonMasterConfiguration;
 
     public GameSession startGame(
         final CharacterSheet characterSheet
@@ -64,7 +64,7 @@ public class DungeonMaster {
             attempts++;
         } while (
             !purchaseSuccess(purchaseOutcome)
-                && attempts < dungeonMasterConfiguration.getMaxApiAttempts()
+                && attempts < MAX_API_ATTEMPTS
         );
         if (purchaseSuccess(purchaseOutcome)) {
             updateCharacterSheetAfterPurchase(gameSession, shopItem, purchaseOutcome);
@@ -165,7 +165,7 @@ public class DungeonMaster {
                 // Sadly, this is kinda expected here, in order to tackle the effects of flakiness
             }
             attempts++;
-        } while (attempts < dungeonMasterConfiguration.getMaxApiAttempts());
+        } while (attempts < MAX_API_ATTEMPTS);
         if (missionOutcome != null) {
             updateCharacterSheetAfterMission(gameSession, message, missionOutcome);
             if (missionSuccess(missionOutcome)) {
