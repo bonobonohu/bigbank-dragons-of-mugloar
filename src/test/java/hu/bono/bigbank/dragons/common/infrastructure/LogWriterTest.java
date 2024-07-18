@@ -87,7 +87,7 @@ class LogWriterTest {
                 "null",
                 GAME_SESSION.toString(),
                 "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
-                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " reputation=Reputation[people=null, state=null, underworld=null],"
                     + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
         Assertions.assertThat(lines.get(2))
@@ -98,7 +98,7 @@ class LogWriterTest {
                 "null",
                 GAME_SESSION.toString(),
                 "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
-                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " reputation=Reputation[people=null, state=null, underworld=null],"
                     + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
     }
@@ -119,7 +119,7 @@ class LogWriterTest {
                 SHOP_ITEM.toString(),
                 PURCHASE_OUTCOME.toString(),
                 "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
-                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " reputation=Reputation[people=null, state=null, underworld=null],"
                     + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
         Assertions.assertThat(lines.get(2))
@@ -130,7 +130,7 @@ class LogWriterTest {
                 SHOP_ITEM.toString(),
                 PURCHASE_OUTCOME.toString(),
                 "CharacterSheet(name=Joseph Cornelius Hallenbeck, lives=3, gold=0, level=0, score=0, highScore=0,"
-                    + " reputation=Reputation[people=null, state=null, underworld=null], purchasedItems=[],"
+                    + " reputation=Reputation[people=null, state=null, underworld=null],"
                     + " myBook=CharacterSheet.MyBook(lives=3, gold=0, level=0, score=0))"
             );
     }

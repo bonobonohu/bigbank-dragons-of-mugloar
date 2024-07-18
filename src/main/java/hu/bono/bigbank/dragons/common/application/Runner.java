@@ -30,6 +30,7 @@ public class Runner {
         "Lieutenant A.K. Waters", "Old Joe", "Paul Kersey",
         "Valmora", "Leonard", "Steve Ford"
     );
+    private static final int MAX_RUNS = 255;
 
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
 
@@ -49,7 +50,7 @@ public class Runner {
                     final String characterName = getCharacterName(usedNames);
                     usedNames.add(characterName);
                     LOG.info("Starting to play with: {}", characterName);
-                    player.play(characterName);
+                    player.play(characterName, MAX_RUNS);
                 });
                 futures.add(future);
             }

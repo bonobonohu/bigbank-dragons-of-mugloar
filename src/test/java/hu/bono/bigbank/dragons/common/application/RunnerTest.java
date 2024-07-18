@@ -7,8 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 
 class RunnerTest {
 
@@ -30,6 +29,6 @@ class RunnerTest {
         Mockito.verify(playerFactory, Mockito.atLeastOnce())
             .createPlayer(any());
         Mockito.verify(player, Mockito.atLeastOnce())
-            .play(anyString());
+            .play(anyString(), anyInt());
     }
 }

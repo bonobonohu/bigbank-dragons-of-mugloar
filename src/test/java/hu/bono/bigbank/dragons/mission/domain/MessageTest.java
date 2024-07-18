@@ -29,7 +29,7 @@ class MessageTest {
 
     @ParameterizedTest
     @MethodSource(
-        "provideMessageExpectedPairsForPossiblyIncreasesPeopleReputation"
+        "possiblyIncreasesPeopleReputation"
     )
     void testPossiblyIncreasesPeopleReputation(
         final String message,
@@ -43,7 +43,7 @@ class MessageTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> provideMessageExpectedPairsForPossiblyIncreasesPeopleReputation() {
+    static Stream<Arguments> possiblyIncreasesPeopleReputation() {
         return Stream.of(
             Arguments.of(
                 "Escort Modestine Underhill to savannah in Razorwhyte where they can meet with their long lost cat",
@@ -65,7 +65,7 @@ class MessageTest {
 
     @ParameterizedTest
     @MethodSource(
-        "provideMessageExpectedPairsForPossiblyIncreasesStateReputation"
+        "possiblyIncreasesStateReputation"
     )
     void testPossiblyIncreasesStateReputation(
         final String message,
@@ -79,7 +79,7 @@ class MessageTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> provideMessageExpectedPairsForPossiblyIncreasesStateReputation() {
+    static Stream<Arguments> possiblyIncreasesStateReputation() {
         return Stream.of(
             Arguments.of(
                 "Escort Modestine Underhill to savannah in Razorwhyte where they can meet with their long lost cat",
@@ -95,7 +95,7 @@ class MessageTest {
 
     @ParameterizedTest
     @MethodSource(
-        "provideMessageExpectedPairsForPossiblyDecreasesStateReputation"
+        "possiblyDecreasesStateReputation"
     )
     void testPossiblyDecreasesStateReputation(
         final String message,
@@ -109,7 +109,7 @@ class MessageTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> provideMessageExpectedPairsForPossiblyDecreasesStateReputation() {
+    static Stream<Arguments> possiblyDecreasesStateReputation() {
         return Stream.of(
             Arguments.of(
                 "Escort Modestine Underhill to savannah in Razorwhyte where they can meet with their long lost cat",
@@ -134,7 +134,7 @@ class MessageTest {
 
     @ParameterizedTest
     @MethodSource(
-        "provideMessageExpectedPairsForItsATrap"
+        "itsATrap"
     )
     void testItsATrap(
         final String message,
@@ -148,7 +148,7 @@ class MessageTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> provideMessageExpectedPairsForItsATrap() {
+    static Stream<Arguments> itsATrap() {
         return Stream.of(
             Arguments.of(
                 "Escort Modestine Underhill to savannah in Razorwhyte where they can meet with their long lost cat",

@@ -2,10 +2,10 @@ package hu.bono.bigbank.dragons.common.domain;
 
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
+import hu.bono.bigbank.dragons.shop.domain.Shop;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.HashSet;
 
 @Component
@@ -33,7 +33,6 @@ public class GameMapper {
                     .score(game.score())
                     .highScore(game.highScore())
                     .reputation(Reputation.builder().build())
-                    .purchasedItems(new HashSet<>())
                     .myBook(
                         CharacterSheet.MyBook.builder()
                             .lives(game.lives())
@@ -44,8 +43,9 @@ public class GameMapper {
                     )
                     .build()
             )
+            .shop(new Shop())
             .turn(game.turn())
-            .shop(new HashMap<>())
+            .purchasedItems(new HashSet<>())
             .messages(new HashSet<>())
             .myBook(
                 GameSession.MyBook.builder()

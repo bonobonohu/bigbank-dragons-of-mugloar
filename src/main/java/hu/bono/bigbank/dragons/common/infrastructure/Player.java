@@ -13,8 +13,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class Player {
 
-    private static final int MAX_RUNS = 255;
-    static final int BUY_LIVES_THRESHOLD = 2;
+    static final int PURCHASE_LIVES_THRESHOLD = 2;
     static final int EXTRA_LIVES = 1;
 
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
@@ -22,7 +21,8 @@ public class Player {
     private final DungeonMaster dungeonMaster;
 
     public void play(
-        final String characterName
+        final String characterName,
+        final int maxRuns
     ) {
         final CharacterSheet characterSheet = CharacterSheet.builder()
             .name(characterName)
@@ -30,17 +30,17 @@ public class Player {
         final GameSession gameSession = dungeonMaster.startGame(characterSheet);
         dungeonMaster.loadShop(gameSession);
         int run = 0;
-        do {
-            run++;
+        while (
+            gameSession.getCharacterSheet().getLives() > 0
+                && run < maxRuns
+        ) {
             doActions(gameSession);
             LOG.info(
                 "{}@{}, do-while: {}/{}, turn: {}",
-                gameSession.getCharacterSheet().getName(), gameSession.getGameId(), run, MAX_RUNS, gameSession.getTurn()
+                gameSession.getCharacterSheet().getName(), gameSession.getGameId(), run, maxRuns, gameSession.getTurn()
             );
-        } while (
-            gameSession.getCharacterSheet().getLives() > 0
-                && run < MAX_RUNS
-        );
+            run++;
+        }
         LOG.info("Game over: {}", gameSession);
     }
 
@@ -58,17 +58,18 @@ public class Player {
         doLevelUp(gameSession);
     }
 
-    void doHeal(
+    private void doHeal(
         final GameSession gameSession
     ) {
-        if (needToHeal(gameSession) && haveMoney(gameSession, ShopItem.HEALING_POT_COST)) {
-            dungeonMaster.purchaseItem(gameSession, gameSession.getShop().get(ShopItem.HEALING_POT_ID));
+        if (needToHeal(gameSession) && haveMoney(gameSession, healingPotCost(gameSession))) {
+            final ShopItem healingPot = gameSession.getShop().getHPot();
+            dungeonMaster.purchaseItem(gameSession, healingPot);
             int extraPurchased = 0;
             while (
-                haveMoney(gameSession, ShopItem.HEALING_POT_COST)
+                haveMoney(gameSession, healingPotCost(gameSession))
                     && extraPurchased < EXTRA_LIVES
             ) {
-                dungeonMaster.purchaseItem(gameSession, gameSession.getShop().get(ShopItem.HEALING_POT_ID));
+                dungeonMaster.purchaseItem(gameSession, healingPot);
                 extraPurchased++;
             }
         }
@@ -77,7 +78,13 @@ public class Player {
     private boolean needToHeal(
         final GameSession gameSession
     ) {
-        return gameSession.getCharacterSheet().getLives() <= BUY_LIVES_THRESHOLD;
+        return gameSession.getCharacterSheet().getLives() <= PURCHASE_LIVES_THRESHOLD;
+    }
+
+    private int healingPotCost(
+        final GameSession gameSession
+    ) {
+        return gameSession.getShop().getHPot().cost();
     }
 
     private boolean haveMoney(
@@ -87,18 +94,15 @@ public class Player {
         return gameSession.getCharacterSheet().getGold() >= cost;
     }
 
-    void doLevelUp(
+    private void doLevelUp(
         final GameSession gameSession
     ) {
         ShopItem shopItemToPurchase = getShopItemToPurchase(gameSession);
-        ShopItem purchasedShopItem = null;
         while (
-            haveMoney(gameSession, levelUpMoneyThreshold(gameSession, shopItemToPurchase))
-                && shopItemToPurchase != null
-                && !shopItemToPurchase.equals(purchasedShopItem)
+            shopItemToPurchase != null
+                && haveMoney(gameSession, levelUpMoneyThreshold(gameSession, shopItemToPurchase))
         ) {
             dungeonMaster.purchaseItem(gameSession, shopItemToPurchase);
-            purchasedShopItem = shopItemToPurchase;
             shopItemToPurchase = getShopItemToPurchase(gameSession);
         }
     }
@@ -106,8 +110,8 @@ public class Player {
     private ShopItem getShopItemToPurchase(
         final GameSession gameSession
     ) {
-        final Set<ShopItem> shopItems = new HashSet<>(gameSession.getShop().values());
-        shopItems.removeAll(gameSession.getCharacterSheet().getPurchasedItems());
+        final Set<ShopItem> shopItems = gameSession.getShop().getItemsAsSet();
+        shopItems.removeAll(gameSession.getPurchasedItems());
         final Optional<ShopItem> shopItemToPurchase = shopItems.stream()
             .filter(shopItem -> shopItem.cost() == ShopItem.LEVEL_ONE_ITEM_COST)
             .findFirst()
@@ -125,11 +129,10 @@ public class Player {
         final GameSession gameSession,
         final ShopItem shopItem
     ) {
-        return (gameSession.getShop().get(ShopItem.HEALING_POT_ID).cost() * (EXTRA_LIVES + 1))
-            + shopItem.cost();
+        return (healingPotCost(gameSession) * (EXTRA_LIVES + 1)) + shopItem.cost();
     }
 
-    void doMission(
+    private void doMission(
         final GameSession gameSession
     ) {
         dungeonMaster.refreshMessages(gameSession);
@@ -175,8 +178,8 @@ public class Player {
         final Message.Probability threshold
     ) {
         return gameSession.getMessages().stream()
-            .filter(message -> !message.itsATrap())
             .filter(message -> message.probability().getValue() <= threshold.getValue())
+            .filter(message -> !message.itsATrap())
             .min(
                 Comparator.comparingInt(Message::reward).reversed()
                     .thenComparingInt(message -> message.probability().getValue())

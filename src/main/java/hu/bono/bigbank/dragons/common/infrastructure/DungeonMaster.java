@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -44,10 +43,7 @@ public class DungeonMaster {
         final GameSession gameSession
     ) {
         final List<ShopItem> shopItems = api.getShopItems(gameSession);
-        gameSession.setShop(
-            shopItems.stream()
-                .collect(Collectors.toMap(ShopItem::id, shopItem -> shopItem))
-        );
+        gameSession.getShop().setItems(shopItems);
         logWriter.log(gameSession, "loadShop", null, shopItems);
     }
 
@@ -132,9 +128,9 @@ public class DungeonMaster {
         final ShopItem shopItem
     ) {
         if (!shopItem.isHealingPot()) {
-            gameSession.getCharacterSheet().getPurchasedItems().add(shopItem);
+            gameSession.getPurchasedItems().add(shopItem);
             if (haveAllLevelUpItems(gameSession)) {
-                gameSession.getCharacterSheet().getPurchasedItems().clear();
+                gameSession.getPurchasedItems().clear();
             }
         }
     }
@@ -142,7 +138,8 @@ public class DungeonMaster {
     private boolean haveAllLevelUpItems(
         final GameSession gameSession
     ) {
-        return gameSession.getCharacterSheet().getPurchasedItems().size() == gameSession.getShop().size() - 1;
+        return gameSession.getPurchasedItems().size()
+            == gameSession.getShop().getLevelUpItemsCount();
     }
 
     public void refreshMessages(

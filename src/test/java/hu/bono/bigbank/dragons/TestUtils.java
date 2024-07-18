@@ -14,12 +14,26 @@ import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
 import hu.bono.bigbank.dragons.shop.application.GetShopResponseItem;
 import hu.bono.bigbank.dragons.shop.application.PostShopBuyItemResponse;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
+import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
 import java.util.*;
 
 public final class TestUtils {
+
+    public static final Map<String, ShopItem> SHOP_ITEMS = new HashMap<>();
+    public static final int HEALING_POT_COST = 50;
+    public static final ShopItem HEALING_POT =
+        createShopItem(ShopItem.HEALING_POT_ID, "Healing potion", HEALING_POT_COST);
+
+    static {
+        SHOP_ITEMS.put(ShopItem.HEALING_POT_ID, HEALING_POT);
+        SHOP_ITEMS.put("cs", TestUtils.createShopItem("cs", "Claw Sharpening", ShopItem.LEVEL_ONE_ITEM_COST));
+        SHOP_ITEMS.put("gas", TestUtils.createShopItem("gas", "Gas", ShopItem.LEVEL_ONE_ITEM_COST));
+        SHOP_ITEMS.put("rf", TestUtils.createShopItem("rf", "Rocket Fuel", ShopItem.LEVEL_TWO_ITEM_COST));
+        SHOP_ITEMS.put("iron", TestUtils.createShopItem("iron", "Iron Plating", ShopItem.LEVEL_TWO_ITEM_COST));
+    }
 
     private TestUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
@@ -43,8 +57,7 @@ public final class TestUtils {
 
     public static CharacterSheet createCharacterSheet(
         final String name,
-        final Reputation reputation,
-        final Set<ShopItem> purchasedItems
+        final Reputation reputation
     ) {
         return CharacterSheet.builder()
             .name(name)
@@ -54,7 +67,6 @@ public final class TestUtils {
             .score(0)
             .highScore(0)
             .reputation(reputation)
-            .purchasedItems(purchasedItems)
             .myBook(
                 CharacterSheet.MyBook.builder()
                     .lives(3)
@@ -69,33 +81,63 @@ public final class TestUtils {
     public static CharacterSheet createCharacterSheet(
         final String name
     ) {
-        return createCharacterSheet(name, Reputation.builder().build(), new HashSet<>());
+        return createCharacterSheet(name, Reputation.builder().build());
     }
 
     public static CharacterSheet createCharacterSheet() {
         return createCharacterSheet("Joseph Cornelius Hallenbeck");
     }
 
+    public static Shop createShop() {
+        return new Shop();
+    }
+
+    public static Shop createShopWithHealingPot() {
+        return new Shop().setItems(Set.of(HEALING_POT));
+    }
+
     public static GameSession createGameSession(
         final Instant creationTimestamp,
         final String gameId,
         final CharacterSheet characterSheet,
-        final Map<String, ShopItem> shop,
-        final Set<Message> messages
+        final Shop shop
     ) {
         return GameSession.builder()
             .creationTimestamp(creationTimestamp)
             .gameId(gameId)
             .characterSheet(characterSheet)
-            .turn(0)
             .shop(shop)
-            .messages(messages)
+            .turn(0)
+            .purchasedItems(new HashSet<>())
+            .messages(new HashSet<>())
             .myBook(
                 GameSession.MyBook.builder()
                     .turn(0)
                     .build()
             )
             .build();
+    }
+
+    public static GameSession createGameSession(
+        final CharacterSheet characterSheet
+    ) {
+        return createGameSession(
+            Instant.now(),
+            "GameId123",
+            characterSheet,
+            createShop()
+        );
+    }
+
+    public static GameSession createGameSessionWithHealingPot(
+        final CharacterSheet characterSheet
+    ) {
+        return createGameSession(
+            Instant.now(),
+            "GameId123",
+            characterSheet,
+            createShopWithHealingPot()
+        );
     }
 
     public static GameSession createGameSession(
@@ -106,8 +148,7 @@ public final class TestUtils {
             creationTimestamp,
             gameId,
             createCharacterSheet(),
-            new HashMap<>(),
-            new HashSet<>()
+            createShop()
         );
     }
 
@@ -245,14 +286,16 @@ public final class TestUtils {
     public static Message createMessage(
         final String adId,
         final String message,
+        final Integer reward,
+        final Integer expiresIn,
         final Integer encrypted,
         final Message.Probability probability
     ) {
         return Message.builder()
             .adId(adId)
             .message(message)
-            .reward(100)
-            .expiresIn(7)
+            .reward(reward)
+            .expiresIn(expiresIn)
             .encrypted(encrypted)
             .probability(probability)
             .build();
@@ -261,9 +304,28 @@ public final class TestUtils {
     public static Message createMessage(
         final String adId,
         final String message,
+        final Integer reward,
+        final Integer expiresIn,
         final Message.Probability probability
     ) {
-        return createMessage(adId, message, null, probability);
+        return createMessage(adId, message, reward, expiresIn, null, probability);
+    }
+
+    public static Message createMessage(
+        final String adId,
+        final String message,
+        final Message.Probability probability
+    ) {
+        return createMessage(adId, message, 100, 7, probability);
+    }
+
+    public static Message createMessage(
+        final String adId,
+        final String message,
+        final Integer encrypted,
+        final Message.Probability probability
+    ) {
+        return createMessage(adId, message, 100, 7, encrypted, probability);
     }
 
     public static Message createMessage() {

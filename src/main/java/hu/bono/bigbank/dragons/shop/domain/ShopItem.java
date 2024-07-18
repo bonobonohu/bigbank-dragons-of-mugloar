@@ -2,6 +2,8 @@ package hu.bono.bigbank.dragons.shop.domain;
 
 import lombok.Builder;
 
+import java.util.Set;
+
 @Builder
 public record ShopItem(
     String id,
@@ -10,9 +12,9 @@ public record ShopItem(
 ) {
 
     public static final String HEALING_POT_ID = "hpot";
-    public static final int HEALING_POT_COST = 50;
     public static final int LEVEL_ONE_ITEM_COST = 100;
     public static final int LEVEL_TWO_ITEM_COST = 300;
+    public static final Set<Integer> LEVEL_UP_ITEM_COSTS = Set.of(LEVEL_ONE_ITEM_COST, LEVEL_TWO_ITEM_COST);
 
     public boolean isHealingPot() {
         return id.equals(HEALING_POT_ID);
