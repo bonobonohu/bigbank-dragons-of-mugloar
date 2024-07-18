@@ -12,8 +12,7 @@ https://www.dragonsofmugloar.com/
 
 - `runner.no-of-characters`: How many threads should run parallel
 - `runner.character-names`: Names pool for the character names to choose from randomly
-- `runner.max-runs`: How many iterations we would like to run
-(In one iteration multiple actions can happen)
+- `runner.max-runs`: How many iterations we would like to run (In one iteration multiple actions can happen)
 
 ### Player
 
