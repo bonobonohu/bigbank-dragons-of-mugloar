@@ -7,6 +7,7 @@ import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.mission.domain.Message;
+import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import org.assertj.core.api.Assertions;
@@ -17,6 +18,7 @@ import org.mockito.Mockito;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -79,12 +81,121 @@ class DungeonMasterTest {
 
     @Test
     void testPurchaseItemWhenPurchaseFailure() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        final ShopItem shopItem = TestUtils.HEALING_POT;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(false);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        underTest.purchaseItem(gameSession, shopItem);
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(purchaseOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(5);
+        Mockito.verify(api, Mockito.times(5))
+            .purchaseItem(gameSession.getGameId(), shopItem.id());
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
     }
 
     @Test
-    void testPurchaseItemWhenPurchaseSuccess() {
+    void testPurchaseItemWhenHealingPotPurchaseSuccess() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        final ShopItem shopItem = TestUtils.HEALING_POT;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        underTest.purchaseItem(gameSession, shopItem);
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(purchaseOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(1);
+        Assertions.assertThat(gameSession.getCharacterSheet().getGold())
+            .isEqualTo(purchaseOutcome.gold());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLives())
+            .isEqualTo(purchaseOutcome.lives());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLevel())
+            .isEqualTo(purchaseOutcome.level());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getGold())
+            .isEqualTo(10_000_000 - shopItem.cost());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLives())
+            .isEqualTo(3 + shopItem.getLivesGain());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLevel())
+            .isEqualTo(0 + shopItem.getLevelGain());
+        Assertions.assertThat(gameSession.getPurchasedItems())
+            .doesNotContain(shopItem);
+        Mockito.verify(api, Mockito.times(1))
+            .purchaseItem(gameSession.getGameId(), shopItem.id());
+        Mockito.verify(logWriter, Mockito.times(1))
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
+    }
 
+    @Test
+    void testPurchaseItemWhenClawSharpeningPurchaseSuccess() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        final ShopItem shopItem = TestUtils.CLAW_SHARPENING;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        underTest.purchaseItem(gameSession, shopItem);
+        Assertions.assertThat(gameSession.getTurn())
+            .isEqualTo(purchaseOutcome.turn());
+        Assertions.assertThat(gameSession.getMyBook().getTurn())
+            .isEqualTo(1);
+        Assertions.assertThat(gameSession.getCharacterSheet().getGold())
+            .isEqualTo(purchaseOutcome.gold());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLives())
+            .isEqualTo(purchaseOutcome.lives());
+        Assertions.assertThat(gameSession.getCharacterSheet().getLevel())
+            .isEqualTo(purchaseOutcome.level());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getGold())
+            .isEqualTo(10_000_000 - shopItem.cost());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLives())
+            .isEqualTo(3 + shopItem.getLivesGain());
+        Assertions.assertThat(gameSession.getCharacterSheet().getMyBook().getLevel())
+            .isEqualTo(0 + shopItem.getLevelGain());
+        Assertions.assertThat(gameSession.getPurchasedItems())
+            .contains(shopItem);
+        Mockito.verify(api, Mockito.times(1))
+            .purchaseItem(gameSession.getGameId(), shopItem.id());
+        Mockito.verify(logWriter, Mockito.times(1))
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter)
+            .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
+    }
+
+    @Test
+    void testPurchaseItemWhenClawSharpeningPurchaseSuccessPurchasedItemsErased() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        final ShopItem shopItem = TestUtils.CLAW_SHARPENING;
+        final Set<ShopItem> purchasedItems = new HashSet<>(TestUtils.SHOP_ITEMS.values());
+        purchasedItems.remove(TestUtils.HEALING_POT);
+        purchasedItems.remove(shopItem);
+        gameSession.setPurchasedItems(purchasedItems);
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        underTest.purchaseItem(gameSession, shopItem);
+        Assertions.assertThat(gameSession.getPurchasedItems())
+            .isEmpty();
     }
 
     @Test

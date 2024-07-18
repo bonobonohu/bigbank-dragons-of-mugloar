@@ -29,13 +29,15 @@ public final class TestUtils {
     public static final int HEALING_POT_COST = 50;
     public static final ShopItem HEALING_POT =
         createShopItem(ShopItem.HEALING_POT_ID, "Healing potion", HEALING_POT_COST);
+    public static final ShopItem CLAW_SHARPENING =
+        createShopItem("cs", "Claw Sharpening", ShopItem.LEVEL_ONE_ITEM_COST);
 
     static {
         SHOP_ITEMS.put(ShopItem.HEALING_POT_ID, HEALING_POT);
-        SHOP_ITEMS.put("cs", TestUtils.createShopItem("cs", "Claw Sharpening", ShopItem.LEVEL_ONE_ITEM_COST));
-        SHOP_ITEMS.put("gas", TestUtils.createShopItem("gas", "Gas", ShopItem.LEVEL_ONE_ITEM_COST));
-        SHOP_ITEMS.put("rf", TestUtils.createShopItem("rf", "Rocket Fuel", ShopItem.LEVEL_TWO_ITEM_COST));
-        SHOP_ITEMS.put("iron", TestUtils.createShopItem("iron", "Iron Plating", ShopItem.LEVEL_TWO_ITEM_COST));
+        SHOP_ITEMS.put("cs", CLAW_SHARPENING);
+        SHOP_ITEMS.put("gas", createShopItem("gas", "Gas", ShopItem.LEVEL_ONE_ITEM_COST));
+        SHOP_ITEMS.put("rf", createShopItem("rf", "Rocket Fuel", ShopItem.LEVEL_TWO_ITEM_COST));
+        SHOP_ITEMS.put("iron", createShopItem("iron", "Iron Plating", ShopItem.LEVEL_TWO_ITEM_COST));
     }
 
     private TestUtils() {
@@ -556,7 +558,13 @@ public final class TestUtils {
             .build();
     }
 
+    public static PurchaseOutcome createPurchaseOutcome(
+        final Boolean shoppingSuccess
+    ) {
+        return createPurchaseOutcome(shoppingSuccess, 100, 3, 2, 42);
+    }
+
     public static PurchaseOutcome createPurchaseOutcome() {
-        return createPurchaseOutcome(true, 100, 3, 2, 42);
+        return createPurchaseOutcome(true);
     }
 }
