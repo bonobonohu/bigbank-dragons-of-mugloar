@@ -52,6 +52,7 @@ public class DungeonMaster {
         final ShopItem shopItem
     ) {
         if (notEnoughMoney(gameSession, shopItem.cost())) {
+            LOG.error("Not enough money for purchasing");
             return;
         }
         PurchaseOutcome purchaseOutcome;

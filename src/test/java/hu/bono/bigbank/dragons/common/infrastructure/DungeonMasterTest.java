@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 class DungeonMasterTest {
 
     private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
@@ -66,7 +68,13 @@ class DungeonMasterTest {
 
     @Test
     void testPurchaseItemWhenNotEnoughMoney() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(0);
+        underTest.purchaseItem(gameSession, TestUtils.HEALING_POT);
+        Mockito.verify(api, Mockito.times(0))
+            .purchaseItem(gameSession.getGameId(), TestUtils.HEALING_POT.id());
+        Mockito.verify(logWriter, Mockito.times(0))
+            .log(any(), any(), any(), any());
     }
 
     @Test
