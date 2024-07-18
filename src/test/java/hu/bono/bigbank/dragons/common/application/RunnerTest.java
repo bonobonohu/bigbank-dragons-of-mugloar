@@ -15,7 +15,7 @@ class RunnerTest {
     private final DungeonMaster dungeonMaster = Mockito.mock(DungeonMaster.class);
     private final PlayerFactory playerFactory = Mockito.mock(PlayerFactory.class);
     private final RunnerConfiguration runnerConfiguration = TestUtils.createRunnerConfiguration();
-    private final Runner underTest = new Runner(runnerConfiguration, dungeonMaster, playerFactory);
+    private final Runner underTest = new Runner(dungeonMaster, playerFactory, runnerConfiguration);
 
     @BeforeEach
     void beforeEach() {

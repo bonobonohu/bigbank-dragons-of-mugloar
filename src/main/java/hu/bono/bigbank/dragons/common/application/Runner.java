@@ -22,9 +22,9 @@ public class Runner {
 
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
 
-    private final RunnerConfiguration runnerConfiguration;
     private final DungeonMaster dungeonMaster;
     private final PlayerFactory playerFactory;
+    private final RunnerConfiguration runnerConfiguration;
 
     public void run() {
         final Instant start = Instant.now();
