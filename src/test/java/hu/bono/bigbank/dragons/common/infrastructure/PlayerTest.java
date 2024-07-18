@@ -392,16 +392,16 @@ class PlayerTest {
                     Message.Probability.QUITE_LIKELY
                 )
             ),
-            // Level below or 10
+            // Level below or 16
             Arguments.of(
-                10,
+                16,
                 Set.of(
                     TestUtils.createMessage(
                         "Ad1",
                         "Message 1",
                         1_000_000,
                         1,
-                        Message.Probability.PLAYING_WITH_FIRE
+                        Message.Probability.GAMBLE
                     ),
                     TestUtils.createMessage(
                         "Ad2",
@@ -419,9 +419,9 @@ class PlayerTest {
                     Message.Probability.RATHER_DETRIMENTAL
                 )
             ),
-            // Level below or 12
+            // Level below or 32
             Arguments.of(
-                11,
+                30,
                 Set.of(
                     TestUtils.createMessage(
                         "Ad1",
@@ -446,21 +446,21 @@ class PlayerTest {
                     Message.Probability.GAMBLE
                 )
             ),
-            // Level above 12 unlocks all Probabilities
+            // Level below or 48
             Arguments.of(
-                13,
+                40,
                 Set.of(
                     TestUtils.createMessage(
                         "Ad1",
                         "Message 1",
+                        1_000_000,
                         1,
-                        1,
-                        Message.Probability.PLAYING_WITH_FIRE
+                        Message.Probability.RISKY
                     ),
                     TestUtils.createMessage(
                         "Ad2",
                         "Message 2",
-                        1_000_000,
+                        1,
                         7,
                         Message.Probability.PLAYING_WITH_FIRE
                     )
@@ -468,9 +468,117 @@ class PlayerTest {
                 TestUtils.createMessage(
                     "Ad2",
                     "Message 2",
-                    1_000_000,
+                    1,
                     7,
                     Message.Probability.PLAYING_WITH_FIRE
+                )
+            ),
+            // Level below or 64
+            Arguments.of(
+                60,
+                Set.of(
+                    TestUtils.createMessage(
+                        "Ad1",
+                        "Message 1",
+                        1_000_000,
+                        1,
+                        Message.Probability.SUICIDE_MISSION
+                    ),
+                    TestUtils.createMessage(
+                        "Ad2",
+                        "Message 2",
+                        1,
+                        7,
+                        Message.Probability.RISKY
+                    )
+                ),
+                TestUtils.createMessage(
+                    "Ad2",
+                    "Message 2",
+                    1,
+                    7,
+                    Message.Probability.RISKY
+                )
+            ),
+            // Level below or 128
+            Arguments.of(
+                100,
+                Set.of(
+                    TestUtils.createMessage(
+                        "Ad1",
+                        "Message 1",
+                        1_000_000,
+                        1,
+                        Message.Probability.IMPOSSIBLE
+                    ),
+                    TestUtils.createMessage(
+                        "Ad2",
+                        "Message 2",
+                        1,
+                        7,
+                        Message.Probability.SUICIDE_MISSION
+                    )
+                ),
+                TestUtils.createMessage(
+                    "Ad2",
+                    "Message 2",
+                    1,
+                    7,
+                    Message.Probability.SUICIDE_MISSION
+                )
+            ),
+            // Level below or 256
+            Arguments.of(
+                200,
+                Set.of(
+                    TestUtils.createMessage(
+                        "Ad1",
+                        "Message 1",
+                        1_000_000,
+                        1,
+                        Message.Probability.HMMM
+                    ),
+                    TestUtils.createMessage(
+                        "Ad2",
+                        "Message 2",
+                        1,
+                        7,
+                        Message.Probability.IMPOSSIBLE
+                    )
+                ),
+                TestUtils.createMessage(
+                    "Ad2",
+                    "Message 2",
+                    1,
+                    7,
+                    Message.Probability.IMPOSSIBLE
+                )
+            ),
+            // Level above 256 unlocks all Probabilities
+            Arguments.of(
+                257,
+                Set.of(
+                    TestUtils.createMessage(
+                        "Ad1",
+                        "Message 1",
+                        1,
+                        7,
+                        Message.Probability.HMMM
+                    ),
+                    TestUtils.createMessage(
+                        "Ad2",
+                        "Message 2",
+                        1_000_000,
+                        1,
+                        Message.Probability.HMMM
+                    )
+                ),
+                TestUtils.createMessage(
+                    "Ad2",
+                    "Message 2",
+                    1_000_000,
+                    1,
+                    Message.Probability.HMMM
                 )
             )
         );

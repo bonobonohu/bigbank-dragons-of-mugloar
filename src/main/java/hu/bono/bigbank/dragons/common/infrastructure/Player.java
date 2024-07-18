@@ -157,18 +157,48 @@ public class Player {
         final int level = gameSession.getCharacterSheet().getLevel();
         if (level <= 8) {
             thresholds.add(Message.Probability.QUITE_LIKELY);
-        } else if (level <= 10) {
+        } else if (level <= 16) {
             thresholds.add(Message.Probability.QUITE_LIKELY);
             thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-        } else if (level <= 12) {
+        } else if (level <= 32) {
             thresholds.add(Message.Probability.QUITE_LIKELY);
             thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
             thresholds.add(Message.Probability.GAMBLE);
+        } else if (level <= 48) {
+            thresholds.add(Message.Probability.QUITE_LIKELY);
+            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
+            thresholds.add(Message.Probability.GAMBLE);
+            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+        } else if (level <= 64) {
+            thresholds.add(Message.Probability.QUITE_LIKELY);
+            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
+            thresholds.add(Message.Probability.GAMBLE);
+            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+            thresholds.add(Message.Probability.RISKY);
+        } else if (level <= 128) {
+            thresholds.add(Message.Probability.QUITE_LIKELY);
+            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
+            thresholds.add(Message.Probability.GAMBLE);
+            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+            thresholds.add(Message.Probability.RISKY);
+            thresholds.add(Message.Probability.SUICIDE_MISSION);
+        } else if (level <= 256) {
+            thresholds.add(Message.Probability.QUITE_LIKELY);
+            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
+            thresholds.add(Message.Probability.GAMBLE);
+            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+            thresholds.add(Message.Probability.RISKY);
+            thresholds.add(Message.Probability.SUICIDE_MISSION);
+            thresholds.add(Message.Probability.IMPOSSIBLE);
         } else {
             thresholds.add(Message.Probability.QUITE_LIKELY);
             thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
             thresholds.add(Message.Probability.GAMBLE);
             thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+            thresholds.add(Message.Probability.RISKY);
+            thresholds.add(Message.Probability.SUICIDE_MISSION);
+            thresholds.add(Message.Probability.IMPOSSIBLE);
+            thresholds.add(Message.Probability.HMMM);
         }
         return thresholds;
     }
