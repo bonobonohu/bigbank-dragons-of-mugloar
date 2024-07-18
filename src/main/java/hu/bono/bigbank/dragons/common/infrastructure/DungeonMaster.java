@@ -42,7 +42,7 @@ public class DungeonMaster {
     public void loadShop(
         final GameSession gameSession
     ) {
-        final List<ShopItem> shopItems = api.getShopItems(gameSession);
+        final List<ShopItem> shopItems = api.getShopItems(gameSession.getGameId());
         gameSession.getShop().setItems(shopItems);
         logWriter.log(gameSession, "loadShop", null, shopItems);
     }
@@ -57,7 +57,7 @@ public class DungeonMaster {
         PurchaseOutcome purchaseOutcome;
         int attempts = 0;
         do {
-            purchaseOutcome = api.purchaseItem(gameSession, shopItem);
+            purchaseOutcome = api.purchaseItem(gameSession.getGameId(), shopItem.id());
             logWriter.log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
             setTurn(gameSession, purchaseOutcome.turn());
             attempts++;
@@ -145,8 +145,8 @@ public class DungeonMaster {
     public void refreshMessages(
         final GameSession gameSession
     ) {
-        api.getMessages(gameSession);
-        final List<Message> messages = api.getMessages(gameSession);
+        api.getMessages(gameSession.getGameId());
+        final List<Message> messages = api.getMessages(gameSession.getGameId());
         gameSession.setMessages(new HashSet<>(messages));
         logWriter.log(gameSession, "refreshMessages", null, messages);
     }
@@ -159,7 +159,7 @@ public class DungeonMaster {
         int attempts = 0;
         do {
             try {
-                missionOutcome = api.goOnMission(gameSession, message);
+                missionOutcome = api.goOnMission(gameSession.getGameId(), message.adId());
             } catch (RestClientClientException exception) {
                 // Sadly, this is kinda expected here, in order to tackle the effects of flakiness
             }
@@ -234,8 +234,8 @@ public class DungeonMaster {
     public void investigateReputation(
         final GameSession gameSession
     ) {
-        api.investigateReputation(gameSession);
-        final Reputation reputation = api.investigateReputation(gameSession);
+        api.investigateReputation(gameSession.getGameId());
+        final Reputation reputation = api.investigateReputation(gameSession.getGameId());
         gameSession.getCharacterSheet().setReputation(reputation);
         logWriter.log(gameSession, "investigateReputation", null, reputation);
         setTurn(gameSession, gameSession.getTurn() + 1);

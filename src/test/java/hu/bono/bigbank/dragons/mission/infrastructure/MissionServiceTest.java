@@ -1,7 +1,6 @@
 package hu.bono.bigbank.dragons.mission.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.mission.application.GetMessagesResponseItem;
 import hu.bono.bigbank.dragons.mission.application.GetMessagesResponseItemMapper;
 import hu.bono.bigbank.dragons.mission.application.MissionClient;
@@ -13,13 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.Instant;
 import java.util.List;
 
 class MissionServiceTest {
 
-    private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
-    private static final Message MESSAGE = TestUtils.createMessage();
+    private static final String GAME_ID = "GameId123";
+    private static final String AD_ID = "AdId123";
 
     private final MissionClient missionClient = Mockito.mock(MissionClient.class);
     private final GetMessagesResponseItemMapper getMessagesResponseItemMapper =
@@ -35,7 +33,7 @@ class MissionServiceTest {
     void testGetMessages() {
         final List<GetMessagesResponseItem> getMessagesResponseItems = TestUtils.createGetMessagesResponseItems();
         final List<Message> expected = TestUtils.createMessages();
-        Mockito.when(missionClient.getMessages(GAME_SESSION.getGameId()))
+        Mockito.when(missionClient.getMessages(GAME_ID))
             .thenReturn(getMessagesResponseItems);
         Mockito.when(getMessagesResponseItemMapper.getMessagesResponseItemToMessage(getMessagesResponseItems.get(0)))
             .thenReturn(expected.get(0));
@@ -43,10 +41,10 @@ class MissionServiceTest {
             .thenReturn(expected.get(1));
         Mockito.when(getMessagesResponseItemMapper.getMessagesResponseItemToMessage(getMessagesResponseItems.get(2)))
             .thenReturn(expected.get(2));
-        final List<Message> actual = underTest.getMessages(GAME_SESSION);
+        final List<Message> actual = underTest.getMessages(GAME_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(missionClient)
-            .getMessages(GAME_SESSION.getGameId());
+            .getMessages(GAME_ID);
     }
 
     @Test
@@ -55,11 +53,11 @@ class MissionServiceTest {
             TestUtils.createPostSolveAdResponse(true, 3, 100, 200, 42);
         final MissionOutcome expected =
             TestUtils.createMissionOutcome(true, 3, 100, 200, 42);
-        Mockito.when(missionClient.postSolveAd(GAME_SESSION.getGameId(), MESSAGE.adId()))
+        Mockito.when(missionClient.postSolveAd(GAME_ID, AD_ID))
             .thenReturn(postSolveAdResponse);
-        final MissionOutcome actual = underTest.goOnMission(GAME_SESSION, MESSAGE);
+        final MissionOutcome actual = underTest.goOnMission(GAME_ID, AD_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(missionClient)
-            .postSolveAd(GAME_SESSION.getGameId(), MESSAGE.adId());
+            .postSolveAd(GAME_ID, AD_ID);
     }
 }

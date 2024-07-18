@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.mission.domain.Message;
@@ -18,24 +17,24 @@ public interface Api {
     Game startGame();
 
     Reputation investigateReputation(
-        GameSession gameSession
+        String gameId
     );
 
     List<Message> getMessages(
-        GameSession gameSession
+        String gameId
     );
 
     MissionOutcome goOnMission(
-        GameSession gameSession,
-        Message message
+        String gameId,
+        String adId
     );
 
     List<ShopItem> getShopItems(
-        GameSession gameSession
+        String gameId
     );
 
     PurchaseOutcome purchaseItem(
-        GameSession gameSession,
-        ShopItem shopItem
+        String gameId,
+        String shopItemId
     );
 }

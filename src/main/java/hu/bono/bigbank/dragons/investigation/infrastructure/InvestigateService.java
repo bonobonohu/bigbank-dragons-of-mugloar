@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.investigation.infrastructure;
 
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.investigation.application.InvestigateClient;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponse;
 import hu.bono.bigbank.dragons.investigation.application.PostInvestigateReputationResponseMapper;
@@ -15,10 +14,10 @@ public class InvestigateService {
     private final InvestigateClient investigateClient;
 
     public Reputation investigateReputation(
-        final GameSession gameSession
+        final String gameId
     ) {
         final PostInvestigateReputationResponse postInvestigateReputationResponse =
-            investigateClient.postInvestigateReputation(gameSession.getGameId());
+            investigateClient.postInvestigateReputation(gameId);
         return PostInvestigateReputationResponseMapper.MAPPER
             .postInvestigateReputationResponseToReputation(postInvestigateReputationResponse);
     }

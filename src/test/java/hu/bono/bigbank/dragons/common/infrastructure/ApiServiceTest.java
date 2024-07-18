@@ -1,7 +1,6 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.game.infrastructure.GameService;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
@@ -17,14 +16,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.Instant;
 import java.util.List;
 
 class ApiServiceTest {
 
-    private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
-    private static final Message MESSAGE = TestUtils.createMessage();
-    private static final ShopItem SHOP_ITEM = TestUtils.createShopItem();
+    private static final String GAME_ID = "GameId123";
+    private static final String AD_ID = "AdId123";
+    private static final String SHOP_ITEM_ID = "hpot";
 
     private final GameService gameService = Mockito.mock(GameService.class);
     private final InvestigateService investigateService = Mockito.mock(InvestigateService.class);
@@ -51,55 +49,55 @@ class ApiServiceTest {
     @Test
     void testInvestigateReputation() {
         final Reputation expected = TestUtils.createReputation();
-        Mockito.when(investigateService.investigateReputation(GAME_SESSION))
+        Mockito.when(investigateService.investigateReputation(GAME_ID))
             .thenReturn(expected);
-        final Reputation actual = underTest.investigateReputation(GAME_SESSION);
+        final Reputation actual = underTest.investigateReputation(GAME_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(investigateService)
-            .investigateReputation(GAME_SESSION);
+            .investigateReputation(GAME_ID);
     }
 
     @Test
     void testGetMessages() {
         final List<Message> expected = TestUtils.createMessages();
-        Mockito.when(missionService.getMessages(GAME_SESSION))
+        Mockito.when(missionService.getMessages(GAME_ID))
             .thenReturn(expected);
-        final List<Message> actual = underTest.getMessages(GAME_SESSION);
+        final List<Message> actual = underTest.getMessages(GAME_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(missionService)
-            .getMessages(GAME_SESSION);
+            .getMessages(GAME_ID);
     }
 
     @Test
     void testGoOnMission() {
         final MissionOutcome expected = TestUtils.createMissionOutcome();
-        Mockito.when(missionService.goOnMission(GAME_SESSION, MESSAGE))
+        Mockito.when(missionService.goOnMission(GAME_ID, AD_ID))
             .thenReturn(expected);
-        final MissionOutcome actual = underTest.goOnMission(GAME_SESSION, MESSAGE);
+        final MissionOutcome actual = underTest.goOnMission(GAME_ID, AD_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(missionService)
-            .goOnMission(GAME_SESSION, MESSAGE);
+            .goOnMission(GAME_ID, AD_ID);
     }
 
     @Test
     void testGetShopItems() {
         final List<ShopItem> expected = TestUtils.createShopItems();
-        Mockito.when(shopService.getItems(GAME_SESSION))
+        Mockito.when(shopService.getItems(GAME_ID))
             .thenReturn(expected);
-        final List<ShopItem> actual = underTest.getShopItems(GAME_SESSION);
+        final List<ShopItem> actual = underTest.getShopItems(GAME_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(shopService)
-            .getItems(GAME_SESSION);
+            .getItems(GAME_ID);
     }
 
     @Test
     void testPurchaseItem() {
         final PurchaseOutcome expected = TestUtils.createPurchaseOutcome();
-        Mockito.when(shopService.purchaseItem(GAME_SESSION, SHOP_ITEM))
+        Mockito.when(shopService.purchaseItem(GAME_ID, SHOP_ITEM_ID))
             .thenReturn(expected);
-        final PurchaseOutcome actual = underTest.purchaseItem(GAME_SESSION, SHOP_ITEM);
+        final PurchaseOutcome actual = underTest.purchaseItem(GAME_ID, SHOP_ITEM_ID);
         Assertions.assertThat(actual).isEqualTo(expected);
         Mockito.verify(shopService)
-            .purchaseItem(GAME_SESSION, SHOP_ITEM);
+            .purchaseItem(GAME_ID, SHOP_ITEM_ID);
     }
 }

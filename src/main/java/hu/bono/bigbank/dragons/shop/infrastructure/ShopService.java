@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.shop.infrastructure;
 
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.shop.application.*;
 import hu.bono.bigbank.dragons.shop.domain.PurchaseOutcome;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
@@ -16,20 +15,20 @@ public class ShopService {
     private final ShopClient shopClient;
 
     public List<ShopItem> getItems(
-        final GameSession gameSession
+        final String gameId
     ) {
-        final List<GetShopResponseItem> getShopResponseItems = shopClient.getShop(gameSession.getGameId());
+        final List<GetShopResponseItem> getShopResponseItems = shopClient.getShop(gameId);
         return getShopResponseItems.stream()
             .map(GetShopResponseItemMapper.MAPPER::getShopResponseItemToShopItem)
             .toList();
     }
 
     public PurchaseOutcome purchaseItem(
-        final GameSession gameSession,
-        final ShopItem shopItem
+        final String gameId,
+        final String shopItemId
     ) {
         final PostShopBuyItemResponse postShopBuyItemResponse =
-            shopClient.postShopBuyItem(gameSession.getGameId(), shopItem.id());
+            shopClient.postShopBuyItem(gameId, shopItemId);
         return PostShopBuyItemResponseMapper.MAPPER
             .postShopBuyItemResponseToPurchaseOutcome(postShopBuyItemResponse);
     }

@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
 import hu.bono.bigbank.dragons.game.infrastructure.GameService;
 import hu.bono.bigbank.dragons.investigation.domain.Reputation;
@@ -32,38 +31,38 @@ public class ApiService implements Api {
 
     @Override
     public Reputation investigateReputation(
-        final GameSession gameSession
+        final String gameId
     ) {
-        return investigateService.investigateReputation(gameSession);
+        return investigateService.investigateReputation(gameId);
     }
 
     @Override
     public List<Message> getMessages(
-        final GameSession gameSession
+        final String gameId
     ) {
-        return missionService.getMessages(gameSession);
+        return missionService.getMessages(gameId);
     }
 
     @Override
     public MissionOutcome goOnMission(
-        final GameSession gameSession,
-        final Message message
+        final String gameId,
+        final String adId
     ) {
-        return missionService.goOnMission(gameSession, message);
+        return missionService.goOnMission(gameId, adId);
     }
 
     @Override
     public List<ShopItem> getShopItems(
-        final GameSession gameSession
+        final String gameId
     ) {
-        return shopService.getItems(gameSession);
+        return shopService.getItems(gameId);
     }
 
     @Override
     public PurchaseOutcome purchaseItem(
-        final GameSession gameSession,
-        final ShopItem shopItem
+        final String gameId,
+        final String shopItemId
     ) {
-        return shopService.purchaseItem(gameSession, shopItem);
+        return shopService.purchaseItem(gameId, shopItemId);
     }
 }

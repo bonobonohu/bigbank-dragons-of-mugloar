@@ -1,6 +1,5 @@
 package hu.bono.bigbank.dragons.mission.infrastructure;
 
-import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.mission.application.*;
 import hu.bono.bigbank.dragons.mission.domain.Message;
 import hu.bono.bigbank.dragons.mission.domain.MissionOutcome;
@@ -17,21 +16,21 @@ public class MissionService {
     private final GetMessagesResponseItemMapper getMessagesResponseItemMapper;
 
     public List<Message> getMessages(
-        final GameSession gameSession
+        final String gameId
     ) {
         final List<GetMessagesResponseItem> getMessagesResponseItems =
-            missionClient.getMessages(gameSession.getGameId());
+            missionClient.getMessages(gameId);
         return getMessagesResponseItems.stream()
             .map(getMessagesResponseItemMapper::getMessagesResponseItemToMessage)
             .toList();
     }
 
     public MissionOutcome goOnMission(
-        final GameSession gameSession,
-        final Message message
+        final String gameId,
+        final String adId
     ) {
         final PostSolveAdResponse postSolveAdResponse =
-            missionClient.postSolveAd(gameSession.getGameId(), message.adId());
+            missionClient.postSolveAd(gameId, adId);
         return PostSolveAdResponseMapper.MAPPER
             .postSolveAdResponseToMissionOutcome(postSolveAdResponse);
     }
