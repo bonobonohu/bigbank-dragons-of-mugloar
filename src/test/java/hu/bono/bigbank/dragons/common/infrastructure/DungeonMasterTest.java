@@ -5,6 +5,7 @@ import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
+import hu.bono.bigbank.dragons.investigation.domain.Reputation;
 import hu.bono.bigbank.dragons.mission.domain.Message;
 import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
@@ -115,6 +116,16 @@ class DungeonMasterTest {
 
     @Test
     void testInvestigateReputation() {
-
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final Reputation reputation = TestUtils.createReputation();
+        Mockito.when(api.investigateReputation(gameSession.getGameId()))
+            .thenReturn(reputation);
+        underTest.investigateReputation(gameSession);
+        Assertions.assertThat(gameSession.getCharacterSheet().getReputation())
+            .isEqualTo(reputation);
+        Mockito.verify(api, Mockito.times(2))
+            .investigateReputation(gameSession.getGameId());
+        Mockito.verify(logWriter)
+            .log(gameSession, "investigateReputation", null, reputation);
     }
 }

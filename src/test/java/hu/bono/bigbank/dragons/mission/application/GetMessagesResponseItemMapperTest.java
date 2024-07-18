@@ -38,6 +38,22 @@ class GetMessagesResponseItemMapperTest {
     }
 
     @Test
+    void testGetMessagesResponseItemToMessageWhenGetMessagesResponseItemIsEncryptedWithUnknownEncryption() {
+        Assertions.assertThatThrownBy(() ->
+                underTest.getMessagesResponseItemToMessage(
+                    TestUtils.createGetMessagesResponseItem(
+                        "AdId123",
+                        "Infiltrate The Eagle Soldiers and recover their secrets.",
+                        "Playing with fire",
+                        8
+                    )
+                )
+            )
+            .isInstanceOf(RuntimeException.class)
+            .message().isEqualTo("Unknown encryption");
+    }
+
+    @Test
     void testGetMessagesResponseItemToMessageWhenGetMessagesResponseItemIsEncryptedWithBase64() {
         final Message expected = TestUtils.createMessage(
             "uaLjgkri",
