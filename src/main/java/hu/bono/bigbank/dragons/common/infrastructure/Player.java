@@ -1,5 +1,6 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
+import hu.bono.bigbank.dragons.common.application.PlayerConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.mission.domain.Message;
@@ -13,12 +14,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class Player {
 
-    static final int PURCHASE_LIVES_THRESHOLD = 2;
-    static final int EXTRA_LIVES = 1;
-
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
     private final DungeonMaster dungeonMaster;
+    private final PlayerConfiguration playerConfiguration;
 
     public void play(
         final String characterName,
@@ -67,7 +66,7 @@ public class Player {
             int extraPurchased = 0;
             while (
                 haveMoney(gameSession, healingPotCost(gameSession))
-                    && extraPurchased < EXTRA_LIVES
+                    && extraPurchased < playerConfiguration.getExtraLives()
             ) {
                 dungeonMaster.purchaseItem(gameSession, healingPot);
                 extraPurchased++;
@@ -78,7 +77,7 @@ public class Player {
     private boolean needToHeal(
         final GameSession gameSession
     ) {
-        return gameSession.getCharacterSheet().getLives() <= PURCHASE_LIVES_THRESHOLD;
+        return gameSession.getCharacterSheet().getLives() <= playerConfiguration.getPurchaseLivesThreshold();
     }
 
     private int healingPotCost(
@@ -129,7 +128,7 @@ public class Player {
         final GameSession gameSession,
         final ShopItem shopItem
     ) {
-        return (healingPotCost(gameSession) * (EXTRA_LIVES + 1)) + shopItem.cost();
+        return (healingPotCost(gameSession) * (playerConfiguration.getExtraLives() + 1)) + shopItem.cost();
     }
 
     private void doMission(

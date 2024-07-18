@@ -25,6 +25,7 @@ public class Runner {
     private final DungeonMaster dungeonMaster;
     private final PlayerFactory playerFactory;
     private final RunnerConfiguration runnerConfiguration;
+    private final PlayerConfiguration playerConfiguration;
 
     public void run() {
         final Instant start = Instant.now();
@@ -35,7 +36,7 @@ public class Runner {
             final List<Future<?>> futures = new ArrayList<>();
             for (int i = 0; i < runnerConfiguration.getNoOfCharacters(); i++) {
                 final Future<?> future = executorService.submit(() -> {
-                    final Player player = playerFactory.createPlayer(dungeonMaster);
+                    final Player player = playerFactory.createPlayer(dungeonMaster, playerConfiguration);
                     final String characterName = getCharacterName(usedNames);
                     usedNames.add(characterName);
                     LOG.info("Starting to play with: {}", characterName);

@@ -39,3 +39,8 @@ dragons:
       - "Leonard"
       - "Steve Ford"
     max-runs: 255
+  player:
+    purchase-lives-threshold: 2
+    extra-lives: 1
+  dungeon-master:
+    max-api-attempts: 5

@@ -1,6 +1,7 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
+import hu.bono.bigbank.dragons.common.application.PlayerConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.mission.domain.Message;
@@ -17,14 +18,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static hu.bono.bigbank.dragons.common.infrastructure.Player.EXTRA_LIVES;
-import static hu.bono.bigbank.dragons.common.infrastructure.Player.PURCHASE_LIVES_THRESHOLD;
 import static org.mockito.ArgumentMatchers.any;
 
 class PlayerTest {
 
     private final DungeonMaster dungeonMaster = Mockito.mock(DungeonMaster.class);
-    private final Player underTest = new Player(dungeonMaster);
+    private final PlayerConfiguration playerConfiguration = TestUtils.createPlayerConfiguration();
+    private final Player underTest = new Player(dungeonMaster, playerConfiguration);
 
     @BeforeEach
     void beforeEach() {
@@ -57,7 +57,7 @@ class PlayerTest {
     @Test
     void testDoHealShouldNotPurchaseLivesWhenNoNeedToHeal() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
-        characterSheet.setLives(PURCHASE_LIVES_THRESHOLD + 10);
+        characterSheet.setLives(playerConfiguration.getPurchaseLivesThreshold() + 10);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 100);
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         mockDungeonMasterStartGame(gameSession);
@@ -69,7 +69,7 @@ class PlayerTest {
     @Test
     void testDoHealShouldNotPurchaseLivesWhenDoNotHaveGold() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
-        characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
+        characterSheet.setLives(playerConfiguration.getPurchaseLivesThreshold() - 1);
         characterSheet.setGold(1);
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
@@ -82,7 +82,7 @@ class PlayerTest {
     @Test
     void testDoHealShouldNotPurchaseExtraLivesWhenDoNotHaveGold() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
-        characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
+        characterSheet.setLives(playerConfiguration.getPurchaseLivesThreshold() - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST + 1);
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
@@ -95,7 +95,7 @@ class PlayerTest {
     @Test
     void testDoHealShouldPurchaseExtraLivesWhenDoHaveGold() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
-        characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
+        characterSheet.setLives(playerConfiguration.getPurchaseLivesThreshold() - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 2);
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
@@ -108,13 +108,13 @@ class PlayerTest {
     @Test
     void testDoHealShouldPurchaseExtraLivesOnlyWithinThreshold() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
-        characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
+        characterSheet.setLives(playerConfiguration.getPurchaseLivesThreshold() - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 100);
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
-        Mockito.verify(dungeonMaster, Mockito.times(1 + EXTRA_LIVES))
+        Mockito.verify(dungeonMaster, Mockito.times(1 + playerConfiguration.getExtraLives()))
             .purchaseItem(any(), any());
     }
 
@@ -150,49 +150,50 @@ class PlayerTest {
     }
 
     static Stream<Arguments> doLevelUpShouldPurchaseItemsAsLongAsHaveThresholdGold() {
+        final PlayerConfiguration playerConfiguration = TestUtils.createPlayerConfiguration();
         return Stream.of(
             Arguments.of(
                 1,
                 0
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 100,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 100,
                 1
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 200,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 200,
                 2
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 500,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 500,
                 3
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 800,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 800,
                 4
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 900,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 900,
                 5
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 1000,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 1000,
                 6
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 1100,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 1100,
                 6
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 1200,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 1200,
                 6
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 1300,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 1300,
                 7
             ),
             Arguments.of(
-                (TestUtils.HEALING_POT_COST * (EXTRA_LIVES + 1)) + 1400,
+                (TestUtils.HEALING_POT_COST * (playerConfiguration.getExtraLives() + 1)) + 1400,
                 7
             )
         );

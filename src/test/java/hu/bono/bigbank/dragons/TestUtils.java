@@ -1,6 +1,8 @@
 package hu.bono.bigbank.dragons;
 
 import hu.bono.bigbank.dragons.common.application.ApiConfiguration;
+import hu.bono.bigbank.dragons.common.application.DungeonMasterConfiguration;
+import hu.bono.bigbank.dragons.common.application.PlayerConfiguration;
 import hu.bono.bigbank.dragons.common.application.RunnerConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -73,6 +75,19 @@ public final class TestUtils {
                 )
             )
             .maxRuns(255)
+            .build();
+    }
+
+    public static PlayerConfiguration createPlayerConfiguration() {
+        return PlayerConfiguration.builder()
+            .purchaseLivesThreshold(2)
+            .extraLives(1)
+            .build();
+    }
+
+    public static DungeonMasterConfiguration createDungeonMasterConfiguration() {
+        return DungeonMasterConfiguration.builder()
+            .maxApiAttempts(5)
             .build();
     }
 
