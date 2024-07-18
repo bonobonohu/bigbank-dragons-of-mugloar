@@ -19,14 +19,14 @@ public class LoggingClientHttpRequestInterceptor implements ClientHttpRequestInt
         final byte[] body,
         final ClientHttpRequestExecution execution
     ) throws IOException {
-        LOG.info("Request: {} {}", request.getMethod(), request.getURI());
+        // LOG.info("Request: {} {}", request.getMethod(), request.getURI());
         // request.getHeaders().forEach((name, values) ->
         //     values.forEach(value ->
         //         LOG.info("Request Header: {} : {}", name, value)
         //     )
         // );
         final ClientHttpResponse response = execution.execute(request, body);
-        LOG.info("Response: {}", response.getStatusCode());
+        // LOG.info("Response: {}", response.getStatusCode());
         // response.getHeaders().forEach((name, values) ->
         //     values.forEach(value ->
         //         // LOG.info("Response Header: {} : {}", name, value)
