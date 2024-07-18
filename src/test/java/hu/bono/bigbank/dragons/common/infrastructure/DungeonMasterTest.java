@@ -5,14 +5,19 @@ import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
+import hu.bono.bigbank.dragons.shop.domain.Shop;
+import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.util.List;
 
 class DungeonMasterTest {
+
+    private static final GameSession GAME_SESSION = TestUtils.createGameSession(Instant.now());
 
     private final Api api = Mockito.mock(Api.class);
     private final GameMapper gameMapper = Mockito.mock(GameMapper.class);
@@ -27,8 +32,8 @@ class DungeonMasterTest {
     @Test
     void testStartGame() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet("Joseph Cornelius Hallenbeck");
-        final Game game = TestUtils.createGame("GameId123");
-        final GameSession expected = TestUtils.createGameSession(Instant.now(), "GameId123");
+        final Game game = TestUtils.createGame(GAME_SESSION.getGameId());
+        final GameSession expected = GAME_SESSION;
         Mockito.when(api.startGame())
             .thenReturn(game);
         Mockito.when(gameMapper.gameToGameSession(game, characterSheet))
@@ -39,5 +44,20 @@ class DungeonMasterTest {
             .startGame();
         Mockito.verify(logWriter)
             .log(actual, "startGame", null, actual);
+    }
+
+    @Test
+    void testLoadShop() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final List<ShopItem> shopItems = TestUtils.SHOP_ITEMS.values().stream().toList();
+        Mockito.when(api.getShopItems(gameSession.getGameId()))
+            .thenReturn(shopItems);
+        underTest.loadShop(gameSession);
+        Assertions.assertThat(gameSession.getShop().getItems())
+            .isEqualTo(Shop.itemsCollectionToMap(shopItems));
+        Mockito.verify(api)
+            .getShopItems(gameSession.getGameId());
+        Mockito.verify(logWriter)
+            .log(gameSession, "loadShop", null, shopItems);
     }
 }

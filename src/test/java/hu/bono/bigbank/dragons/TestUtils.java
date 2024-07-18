@@ -18,7 +18,10 @@ import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 public final class TestUtils {
 
@@ -55,6 +58,28 @@ public final class TestUtils {
             .build();
     }
 
+    public static CharacterSheet.MyBook createCharacterSheetMyBook(
+        final Integer lives
+    ) {
+        return CharacterSheet.MyBook.builder()
+            .lives(3)
+            .gold(0)
+            .level(0)
+            .score(0)
+            .build();
+    }
+
+    public static CharacterSheet.MyBook clone(
+        final CharacterSheet.MyBook characterSheetMyBook
+    ) {
+        return CharacterSheet.MyBook.builder()
+            .lives(characterSheetMyBook.getLives())
+            .gold(characterSheetMyBook.getGold())
+            .level(characterSheetMyBook.getLevel())
+            .score(characterSheetMyBook.getScore())
+            .build();
+    }
+
     public static CharacterSheet createCharacterSheet(
         final String name,
         final Reputation reputation
@@ -67,14 +92,7 @@ public final class TestUtils {
             .score(0)
             .highScore(0)
             .reputation(reputation)
-            .myBook(
-                CharacterSheet.MyBook.builder()
-                    .lives(3)
-                    .gold(0)
-                    .level(0)
-                    .score(0)
-                    .build()
-            )
+            .myBook(createCharacterSheetMyBook(3))
             .build();
     }
 
@@ -88,12 +106,43 @@ public final class TestUtils {
         return createCharacterSheet("Joseph Cornelius Hallenbeck");
     }
 
+    public static CharacterSheet clone(
+        final CharacterSheet characterSheet
+    ) {
+        return CharacterSheet.builder()
+            .name(characterSheet.getName())
+            .lives(characterSheet.getLives())
+            .gold(characterSheet.getGold())
+            .level(characterSheet.getLevel())
+            .score(characterSheet.getScore())
+            .highScore(characterSheet.getHighScore())
+            .reputation(clone(characterSheet.getReputation()))
+            .myBook(clone(characterSheet.getMyBook()))
+            .build();
+    }
+
     public static Shop createShop() {
         return new Shop();
     }
 
-    public static Shop createShopWithHealingPot() {
-        return new Shop().setItems(Set.of(HEALING_POT));
+    public static Shop clone(
+        final Shop shop
+    ) {
+        return new Shop().setItems(shop.getItems());
+    }
+
+    public static GameSession.MyBook createGameSessionMyBook() {
+        return GameSession.MyBook.builder()
+            .turn(0)
+            .build();
+    }
+
+    public static GameSession.MyBook clone(
+        final GameSession.MyBook gameSessionMyBook
+    ) {
+        return GameSession.MyBook.builder()
+            .turn(gameSessionMyBook.getTurn())
+            .build();
     }
 
     public static GameSession createGameSession(
@@ -110,11 +159,7 @@ public final class TestUtils {
             .turn(0)
             .purchasedItems(new HashSet<>())
             .messages(new HashSet<>())
-            .myBook(
-                GameSession.MyBook.builder()
-                    .turn(0)
-                    .build()
-            )
+            .myBook(createGameSessionMyBook())
             .build();
     }
 
@@ -126,17 +171,6 @@ public final class TestUtils {
             "GameId123",
             characterSheet,
             createShop()
-        );
-    }
-
-    public static GameSession createGameSessionWithHealingPot(
-        final CharacterSheet characterSheet
-    ) {
-        return createGameSession(
-            Instant.now(),
-            "GameId123",
-            characterSheet,
-            createShopWithHealingPot()
         );
     }
 
@@ -156,6 +190,21 @@ public final class TestUtils {
         final Instant creationTimestamp
     ) {
         return createGameSession(creationTimestamp, "GameId123");
+    }
+
+    public static GameSession clone(
+        final GameSession gameSession
+    ) {
+        return GameSession.builder()
+            .creationTimestamp(Instant.from(gameSession.getCreationTimestamp()))
+            .gameId(gameSession.getGameId())
+            .characterSheet(clone(gameSession.getCharacterSheet()))
+            .shop(clone(gameSession.getShop()))
+            .turn(gameSession.getTurn())
+            .purchasedItems(new HashSet<>(gameSession.getPurchasedItems()))
+            .messages(new HashSet<>(gameSession.getMessages()))
+            .myBook(clone(gameSession.getMyBook()))
+            .build();
     }
 
     public static PostGameStartResponse createPostGameStartResponse(
@@ -222,6 +271,16 @@ public final class TestUtils {
 
     public static Reputation createReputation() {
         return createReputation(2.2, -1);
+    }
+
+    public static Reputation clone(
+        final Reputation reputation
+    ) {
+        return Reputation.builder()
+            .people(reputation.people())
+            .state(reputation.state())
+            .underworld(reputation.underworld())
+            .build();
     }
 
     public static GetMessagesResponseItem createGetMessagesResponseItem(

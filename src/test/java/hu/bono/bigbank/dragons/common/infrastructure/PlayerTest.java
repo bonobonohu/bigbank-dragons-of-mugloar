@@ -36,7 +36,7 @@ class PlayerTest {
     void testPlayShouldStopRunningWhenCharacterIsDead() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(0);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 255);
         Mockito.verify(dungeonMaster, Mockito.times(0))
@@ -47,7 +47,7 @@ class PlayerTest {
     void testPlayShouldStopRunningWhenMaxRunsReached() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(100);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 3);
         Mockito.verify(dungeonMaster, Mockito.times(3))
@@ -59,7 +59,7 @@ class PlayerTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(PURCHASE_LIVES_THRESHOLD + 10);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 100);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(0))
@@ -71,7 +71,8 @@ class PlayerTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
         characterSheet.setGold(1);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
+        gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(0))
@@ -83,7 +84,8 @@ class PlayerTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST + 1);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
+        gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(1))
@@ -95,7 +97,8 @@ class PlayerTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 2);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
+        gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(2))
@@ -107,7 +110,8 @@ class PlayerTest {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setLives(PURCHASE_LIVES_THRESHOLD - 1);
         characterSheet.setGold(TestUtils.HEALING_POT_COST * 100);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
+        gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(1 + EXTRA_LIVES))
@@ -118,7 +122,7 @@ class PlayerTest {
     void testDoLevelUpShouldNotPurchaseItemWhenNoPurchasableItems() {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setGold(10_000_000);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
         gameSession.setPurchasedItems(new HashSet<>(TestUtils.SHOP_ITEMS.values()));
         mockDungeonMasterStartGame(gameSession);
@@ -137,7 +141,7 @@ class PlayerTest {
     ) {
         final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         characterSheet.setGold(gold);
-        final GameSession gameSession = TestUtils.createGameSessionWithHealingPot(characterSheet);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
         mockDungeonMasterStartGame(gameSession);
         underTest.play(characterSheet.getName(), 1);

@@ -10,6 +10,18 @@ public class Shop {
 
     private final Map<String, ShopItem> items = new HashMap<>();
 
+    public static Map<String, ShopItem> itemsCollectionToMap(
+        final Collection<ShopItem> items
+    ) {
+        return items.stream()
+            .collect(
+                Collectors.toMap(
+                    ShopItem::id,
+                    item -> item
+                )
+            );
+    }
+
     public Set<ShopItem> getItemsAsSet() {
         return new HashSet<>(items.values());
     }
@@ -30,15 +42,7 @@ public class Shop {
     public Shop setItems(
         final Collection<ShopItem> items
     ) {
-        return this.setItems(
-            items.stream()
-                .collect(
-                    Collectors.toMap(
-                        ShopItem::id,
-                        item -> item
-                    )
-                )
-        );
+        return this.setItems(itemsCollectionToMap(items));
     }
 
     public ShopItem getHPot() {
