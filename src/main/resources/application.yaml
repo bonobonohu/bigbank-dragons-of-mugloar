@@ -1,6 +1,8 @@
 spring:
   application:
     name: "Dragons of Mugloar"
+  main:
+    web-application-type: "none"
 
 dragons:
   api:
