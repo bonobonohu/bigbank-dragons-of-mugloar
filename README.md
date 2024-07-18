@@ -1,1 +1,34 @@
-# bigbank-dragons-of-mugloar
+# Bigbank: Dragons of Mugloar challenge
+
+https://www.dragonsofmugloar.com/
+
+## How to start the game
+
+`./gradlew bootRun`
+
+## Configuration
+
+### Runner
+
+- `runner.no-of-characters`: How many threads should run parallel
+- `runner.character-names`: Names pool for the character names to choose from randomly
+- `runner.max-runs`: How many iterations we would like to run
+(In one iteration multiple actions can happen)
+
+### Player
+
+- `player.purchase-lives-threshold`: Below (inclusive) how many lives we should try to buy new lives (healing potions)
+- `player.extra-lives`: How many extra lives (healing potions) should be bought when we buy lives (healing potions)
+
+### DungeonMaster
+
+- `dungeon-master.max-api-attempts`: Due to flaky API, we have to call several endpoints repeatedly; this number regulates maximum no of attempts API should be called in such cases 
+
+## CSV logs
+
+/game_logs
+
+## Test coverage
+
+- http://localhost:63342/dragons/build/reports/jacoco/test/html/index.html
+- Minimum requirements: 90% (Instruction/Line/Branch)
