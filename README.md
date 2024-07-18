@@ -33,3 +33,7 @@ https://www.dragonsofmugloar.com/
 
 - http://localhost:63342/dragons/build/reports/jacoco/test/html/index.html
 - Minimum requirements: 90% (Instruction/Line/Branch)
+
+## Misc
+
+- Checkstyle; configuration based on Sun configuration (see: https://checkstyle.sourceforge.io/sun_style.html)
