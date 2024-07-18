@@ -5,6 +5,7 @@ import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
 import hu.bono.bigbank.dragons.game.domain.Game;
+import hu.bono.bigbank.dragons.mission.domain.Message;
 import hu.bono.bigbank.dragons.shop.domain.Shop;
 import hu.bono.bigbank.dragons.shop.domain.ShopItem;
 import org.assertj.core.api.Assertions;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 
 class DungeonMasterTest {
@@ -31,7 +33,7 @@ class DungeonMasterTest {
 
     @Test
     void testStartGame() {
-        final CharacterSheet characterSheet = TestUtils.createCharacterSheet("Joseph Cornelius Hallenbeck");
+        final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
         final Game game = TestUtils.createGame(GAME_SESSION.getGameId());
         final GameSession expected = GAME_SESSION;
         Mockito.when(api.startGame())
@@ -59,5 +61,60 @@ class DungeonMasterTest {
             .getShopItems(gameSession.getGameId());
         Mockito.verify(logWriter)
             .log(gameSession, "loadShop", null, shopItems);
+    }
+
+    @Test
+    void testPurchaseItemWhenNotEnoughMoney() {
+
+    }
+
+    @Test
+    void testPurchaseItemWhenPurchaseFailure() {
+
+    }
+
+    @Test
+    void testPurchaseItemWhenPurchaseSuccess() {
+
+    }
+
+    @Test
+    void testRefreshMessages() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final List<Message> messages = TestUtils.createMessages();
+        Mockito.when(api.getMessages(gameSession.getGameId()))
+            .thenReturn(messages);
+        underTest.refreshMessages(gameSession);
+        Assertions.assertThat(gameSession.getMessages())
+            .isEqualTo(new HashSet<>(messages));
+        Mockito.verify(api, Mockito.times(2))
+            .getMessages(gameSession.getGameId());
+        Mockito.verify(logWriter)
+            .log(gameSession, "refreshMessages", null, messages);
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionWasNotFound() {
+
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionDie() {
+
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionFailure() {
+
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionSuccess() {
+
+    }
+
+    @Test
+    void testInvestigateReputation() {
+
     }
 }
