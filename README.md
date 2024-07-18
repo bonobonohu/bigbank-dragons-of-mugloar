@@ -36,4 +36,4 @@ https://www.dragonsofmugloar.com/
 
 ## Misc
 
-- Checkstyle; configuration based on Sun configuration (see: https://checkstyle.sourceforge.io/sun_style.html)
+- Checkstyle; based on Sun configuration (see: https://checkstyle.sourceforge.io/sun_style.html)
