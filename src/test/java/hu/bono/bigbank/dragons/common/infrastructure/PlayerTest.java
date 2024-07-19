@@ -29,7 +29,6 @@ class PlayerTest {
     @BeforeEach
     void beforeEach() {
         Mockito.reset(dungeonMaster);
-        mockDungeonMasterPurchaseItem();
     }
 
     @Test
@@ -87,6 +86,7 @@ class PlayerTest {
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
+        mockDungeonMasterPurchaseItem();
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(1))
             .purchaseItem(any(), any());
@@ -100,6 +100,7 @@ class PlayerTest {
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
+        mockDungeonMasterPurchaseItem();
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(2))
             .purchaseItem(any(), any());
@@ -113,6 +114,7 @@ class PlayerTest {
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(Set.of(TestUtils.HEALING_POT));
         mockDungeonMasterStartGame(gameSession);
+        mockDungeonMasterPurchaseItem();
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(1 + playerConfiguration.getExtraLives()))
             .purchaseItem(any(), any());
@@ -144,6 +146,7 @@ class PlayerTest {
         final GameSession gameSession = TestUtils.createGameSession(characterSheet);
         gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
         mockDungeonMasterStartGame(gameSession);
+        mockDungeonMasterPurchaseItem();
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(noOfItemsPurchased))
             .purchaseItem(any(), any());
@@ -197,6 +200,18 @@ class PlayerTest {
                 7
             )
         );
+    }
+
+    @Test
+    void testDoLevelUpShouldStopTryingWhenPurchaseUnsuccessful() {
+        final CharacterSheet characterSheet = TestUtils.createCharacterSheet();
+        characterSheet.setGold(1_000_000);
+        final GameSession gameSession = TestUtils.createGameSession(characterSheet);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        mockDungeonMasterStartGame(gameSession);
+        underTest.play(characterSheet.getName(), 1);
+        Mockito.verify(dungeonMaster)
+            .purchaseItem(any(), any());
     }
 
     @Test

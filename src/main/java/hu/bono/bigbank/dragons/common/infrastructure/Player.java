@@ -97,11 +97,14 @@ public class Player {
         final GameSession gameSession
     ) {
         ShopItem shopItemToPurchase = getShopItemToPurchase(gameSession);
+        ShopItem purchasedShopItem = null;
         while (
             shopItemToPurchase != null
                 && haveMoney(gameSession, levelUpMoneyThreshold(gameSession, shopItemToPurchase))
+                && !shopItemToPurchase.equals(purchasedShopItem)
         ) {
             dungeonMaster.purchaseItem(gameSession, shopItemToPurchase);
+            purchasedShopItem = shopItemToPurchase;
             shopItemToPurchase = getShopItemToPurchase(gameSession);
         }
     }
