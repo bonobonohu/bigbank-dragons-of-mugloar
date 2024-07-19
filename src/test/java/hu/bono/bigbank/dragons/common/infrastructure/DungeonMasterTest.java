@@ -1,6 +1,7 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
 import hu.bono.bigbank.dragons.TestUtils;
+import hu.bono.bigbank.dragons.common.application.DungeonMasterConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -34,11 +35,13 @@ class DungeonMasterTest {
     private final Api api = Mockito.mock(Api.class);
     private final GameMapper gameMapper = Mockito.mock(GameMapper.class);
     private final LogWriter logWriter = Mockito.mock(LogWriter.class);
-    private final DungeonMaster underTest = new DungeonMaster(api, gameMapper, logWriter);
+    private final DungeonMasterConfiguration dungeonMasterConfiguration =
+        Mockito.mock(DungeonMasterConfiguration.class);
+    private final DungeonMaster underTest = new DungeonMaster(api, gameMapper, logWriter, dungeonMasterConfiguration);
 
     @BeforeEach
     void beforeEach() {
-        Mockito.reset(api, gameMapper, logWriter);
+        Mockito.reset(api, gameMapper, logWriter, dungeonMasterConfiguration);
     }
 
     @Test
@@ -92,6 +95,8 @@ class DungeonMasterTest {
         final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(false);
         Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
             .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.purchaseItem(gameSession, shopItem);
         Assertions.assertThat(gameSession.getTurn())
             .isEqualTo(purchaseOutcome.turn());
@@ -99,12 +104,27 @@ class DungeonMasterTest {
             .isEqualTo(5);
         Mockito.verify(api, Mockito.times(5))
             .purchaseItem(gameSession.getGameId(), shopItem.id());
-        Mockito.verify(logWriter, Mockito.times(5))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
+    }
+
+    @Test
+    void testPurchaseItemWhenPurchaseFailureWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        final ShopItem shopItem = TestUtils.HEALING_POT;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(false);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.purchaseItem(gameSession, shopItem);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
     }
 
     @Test
@@ -117,6 +137,8 @@ class DungeonMasterTest {
         final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
         Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
             .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.purchaseItem(gameSession, shopItem);
         Assertions.assertThat(gameSession.getTurn())
             .isEqualTo(purchaseOutcome.turn());
@@ -136,14 +158,31 @@ class DungeonMasterTest {
             .isEqualTo(0 + shopItem.getLevelGain());
         Assertions.assertThat(gameSession.getPurchasedItems())
             .doesNotContain(shopItem);
-        Mockito.verify(api, Mockito.times(1))
+        Mockito.verify(api)
             .purchaseItem(gameSession.getGameId(), shopItem.id());
-        Mockito.verify(logWriter, Mockito.times(1))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
+    }
+
+    @Test
+    void testPurchaseItemWhenHealingPotPurchaseSuccessWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        final ShopItem shopItem = TestUtils.HEALING_POT;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.purchaseItem(gameSession, shopItem);
+        Mockito.verify(logWriter)
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
     }
 
     @Test
@@ -156,6 +195,8 @@ class DungeonMasterTest {
         final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
         Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
             .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.purchaseItem(gameSession, shopItem);
         Assertions.assertThat(gameSession.getTurn())
             .isEqualTo(purchaseOutcome.turn());
@@ -175,14 +216,31 @@ class DungeonMasterTest {
             .isEqualTo(0 + shopItem.getLevelGain());
         Assertions.assertThat(gameSession.getPurchasedItems())
             .contains(shopItem);
-        Mockito.verify(api, Mockito.times(1))
+        Mockito.verify(api)
             .purchaseItem(gameSession.getGameId(), shopItem.id());
-        Mockito.verify(logWriter, Mockito.times(1))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "purchaseItemSuccess", shopItem, purchaseOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "purchaseItemFailure", shopItem, purchaseOutcome);
+    }
+
+    @Test
+    void testPurchaseItemWhenClawSharpeningPurchaseSuccessWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().setGold(10_000_000);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        gameSession.getShop().setItems(TestUtils.SHOP_ITEMS);
+        final ShopItem shopItem = TestUtils.CLAW_SHARPENING;
+        final PurchaseOutcome purchaseOutcome = TestUtils.createPurchaseOutcome(true);
+        Mockito.when(api.purchaseItem(gameSession.getGameId(), shopItem.id()))
+            .thenReturn(purchaseOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.purchaseItem(gameSession, shopItem);
+        Mockito.verify(logWriter)
+            .log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
     }
 
     @Test
@@ -209,15 +267,30 @@ class DungeonMasterTest {
         final List<Message> messages = TestUtils.createMessages();
         Mockito.when(api.getMessages(gameSession.getGameId()))
             .thenReturn(messages);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.refreshMessages(gameSession);
         Assertions.assertThat(gameSession.getMessages())
             .isEqualTo(new HashSet<>(messages));
         Mockito.verify(api, Mockito.times(2))
             .getMessages(gameSession.getGameId());
-        Mockito.verify(logWriter)
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "fakeMessages", null, messages);
         Mockito.verify(logWriter)
             .log(gameSession, "refreshMessages", null, messages);
+    }
+
+    @Test
+    void testRefreshMessagesWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final List<Message> messages = TestUtils.createMessages();
+        Mockito.when(api.getMessages(gameSession.getGameId()))
+            .thenReturn(messages);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.refreshMessages(gameSession);
+        Mockito.verify(logWriter)
+            .log(gameSession, "fakeMessages", null, messages);
     }
 
     @Test
@@ -258,6 +331,8 @@ class DungeonMasterTest {
         );
         Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
             .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.goOnMission(gameSession, message);
         Mockito.verify(api, Mockito.times(5))
             .goOnMission(gameSession.getGameId(), message.adId());
@@ -288,7 +363,7 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
-        Mockito.verify(logWriter, Mockito.times(5))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
@@ -298,6 +373,27 @@ class DungeonMasterTest {
             .log(gameSession, "goOnMissionDie", message, missionOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "dieDieDie", missionOutcome, gameSession.getCharacterSheet());
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionDieWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            false,
+            0,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
     }
 
     @Test
@@ -314,6 +410,8 @@ class DungeonMasterTest {
         );
         Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
             .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.goOnMission(gameSession, message);
         Mockito.verify(api, Mockito.times(5))
             .goOnMission(gameSession.getGameId(), message.adId());
@@ -344,7 +442,7 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
-        Mockito.verify(logWriter, Mockito.times(5))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
@@ -354,6 +452,27 @@ class DungeonMasterTest {
             .log(gameSession, "goOnMissionDie", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "dieDieDie", missionOutcome, gameSession.getCharacterSheet());
+    }
+
+    @Test
+    void testGoOnMissionWhenMissionFailureWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            false,
+            2,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
     }
 
     @Test
@@ -370,6 +489,8 @@ class DungeonMasterTest {
         );
         Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
             .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.goOnMission(gameSession, message);
         Mockito.verify(api, Mockito.times(5))
             .goOnMission(gameSession.getGameId(), message.adId());
@@ -400,7 +521,7 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
-        Mockito.verify(logWriter, Mockito.times(5))
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
@@ -413,19 +534,55 @@ class DungeonMasterTest {
     }
 
     @Test
+    void testGoOnMissionWhenMissionSuccessWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        gameSession.getCharacterSheet().getMyBook().setGold(10_000_000);
+        final Message message = TestUtils.createMessage();
+        final MissionOutcome missionOutcome = TestUtils.createMissionOutcome(
+            true,
+            3,
+            1,
+            1,
+            1
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenReturn(missionOutcome);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
+    }
+
+    @Test
     void testInvestigateReputation() {
         final GameSession gameSession = TestUtils.clone(GAME_SESSION);
         final Reputation reputation = TestUtils.createReputation();
         Mockito.when(api.investigateReputation(gameSession.getGameId()))
             .thenReturn(reputation);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         underTest.investigateReputation(gameSession);
         Assertions.assertThat(gameSession.getCharacterSheet().getReputation())
             .isEqualTo(reputation);
         Mockito.verify(api, Mockito.times(2))
             .investigateReputation(gameSession.getGameId());
-        Mockito.verify(logWriter)
+        Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "fakeReputation", null, reputation);
         Mockito.verify(logWriter)
             .log(gameSession, "investigateReputation", null, reputation);
+    }
+
+    @Test
+    void testInvestigateReputationWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final Reputation reputation = TestUtils.createReputation();
+        Mockito.when(api.investigateReputation(gameSession.getGameId()))
+            .thenReturn(reputation);
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        underTest.investigateReputation(gameSession);
+        Mockito.verify(logWriter)
+            .log(gameSession, "fakeReputation", null, reputation);
     }
 }

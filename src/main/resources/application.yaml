@@ -42,3 +42,5 @@ dragons:
   player:
     purchase-lives-threshold: 2
     extra-lives: 1
+  dungeon-master:
+    verbose-logging: false

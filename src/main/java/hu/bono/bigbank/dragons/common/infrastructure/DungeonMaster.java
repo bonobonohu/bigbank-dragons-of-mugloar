@@ -1,5 +1,6 @@
 package hu.bono.bigbank.dragons.common.infrastructure;
 
+import hu.bono.bigbank.dragons.common.application.DungeonMasterConfiguration;
 import hu.bono.bigbank.dragons.common.domain.CharacterSheet;
 import hu.bono.bigbank.dragons.common.domain.GameMapper;
 import hu.bono.bigbank.dragons.common.domain.GameSession;
@@ -29,6 +30,7 @@ public class DungeonMaster {
     private final Api api;
     private final GameMapper gameMapper;
     private final LogWriter logWriter;
+    private final DungeonMasterConfiguration dungeonMasterConfiguration;
 
     public GameSession startGame(
         final CharacterSheet characterSheet
@@ -59,7 +61,9 @@ public class DungeonMaster {
         int attempts = 0;
         do {
             purchaseOutcome = api.purchaseItem(gameSession.getGameId(), shopItem.id());
-            logWriter.log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
+            if (dungeonMasterConfiguration.getVerboseLogging()) {
+                logWriter.log(gameSession, "purchaseItemAttempt", shopItem, purchaseOutcome);
+            }
             setTurn(gameSession, purchaseOutcome.turn());
             attempts++;
         } while (
@@ -149,7 +153,9 @@ public class DungeonMaster {
         final List<Message> fakeMessages = api.getMessages(gameSession.getGameId());
         final List<Message> messages = api.getMessages(gameSession.getGameId());
         gameSession.setMessages(new HashSet<>(messages));
-        logWriter.log(gameSession, "fakeMessages", null, fakeMessages);
+        if (dungeonMasterConfiguration.getVerboseLogging()) {
+            logWriter.log(gameSession, "fakeMessages", null, fakeMessages);
+        }
         logWriter.log(gameSession, "refreshMessages", null, messages);
     }
 
@@ -162,7 +168,9 @@ public class DungeonMaster {
         do {
             try {
                 missionOutcome = api.goOnMission(gameSession.getGameId(), message.adId());
-                logWriter.log(gameSession, "goOnMissionAttempt", message, missionOutcome);
+                if (dungeonMasterConfiguration.getVerboseLogging()) {
+                    logWriter.log(gameSession, "goOnMissionAttempt", message, missionOutcome);
+                }
             } catch (RestClientClientException exception) {
                 // Sadly, this is kinda expected here, in order to tackle the effects of flakiness
             }
@@ -241,7 +249,9 @@ public class DungeonMaster {
         final Reputation fakeReputation = api.investigateReputation(gameSession.getGameId());
         final Reputation reputation = api.investigateReputation(gameSession.getGameId());
         gameSession.getCharacterSheet().setReputation(reputation);
-        logWriter.log(gameSession, "fakeReputation", null, fakeReputation);
+        if (dungeonMasterConfiguration.getVerboseLogging()) {
+            logWriter.log(gameSession, "fakeReputation", null, fakeReputation);
+        }
         logWriter.log(gameSession, "investigateReputation", null, reputation);
         setTurn(gameSession, gameSession.getTurn() + 1);
     }

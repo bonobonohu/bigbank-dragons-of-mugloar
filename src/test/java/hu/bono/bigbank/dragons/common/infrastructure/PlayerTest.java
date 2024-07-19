@@ -88,7 +88,7 @@ class PlayerTest {
         mockDungeonMasterStartGame(gameSession);
         mockDungeonMasterPurchaseItem();
         underTest.play(characterSheet.getName(), 1);
-        Mockito.verify(dungeonMaster, Mockito.times(1))
+        Mockito.verify(dungeonMaster)
             .purchaseItem(any(), any());
     }
 
@@ -225,7 +225,7 @@ class PlayerTest {
         underTest.play(characterSheet.getName(), 1);
         Mockito.verify(dungeonMaster, Mockito.times(0))
             .goOnMission(any(), any());
-        Mockito.verify(dungeonMaster, Mockito.times(1))
+        Mockito.verify(dungeonMaster)
             .investigateReputation(any());
     }
 
@@ -244,7 +244,7 @@ class PlayerTest {
         mockDungeonMasterStartGame(gameSession);
         mockDungeonMasterRefreshMessages(messages);
         underTest.play(characterSheet.getName(), 1);
-        Mockito.verify(dungeonMaster, Mockito.times(1))
+        Mockito.verify(dungeonMaster)
             .goOnMission(gameSession, expected);
         Mockito.verify(dungeonMaster, Mockito.times(0))
             .investigateReputation(any());
