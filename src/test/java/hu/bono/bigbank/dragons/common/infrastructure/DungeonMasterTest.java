@@ -215,6 +215,8 @@ class DungeonMasterTest {
         Mockito.verify(api, Mockito.times(2))
             .getMessages(gameSession.getGameId());
         Mockito.verify(logWriter)
+            .log(gameSession, "fakeMessages", null, messages);
+        Mockito.verify(logWriter)
             .log(gameSession, "refreshMessages", null, messages);
     }
 
@@ -286,6 +288,8 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
@@ -340,6 +344,8 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
         Mockito.verify(logWriter)
@@ -394,6 +400,8 @@ class DungeonMasterTest {
             .isEqualTo(missionOutcome.turn());
         Assertions.assertThat(gameSession.getMyBook().getTurn())
             .isEqualTo(1);
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMissionAttempt", message, missionOutcome);
         Mockito.verify(logWriter)
             .log(gameSession, "goOnMissionSuccess", message, missionOutcome);
         Mockito.verify(logWriter, Mockito.times(0))
@@ -415,6 +423,8 @@ class DungeonMasterTest {
             .isEqualTo(reputation);
         Mockito.verify(api, Mockito.times(2))
             .investigateReputation(gameSession.getGameId());
+        Mockito.verify(logWriter)
+            .log(gameSession, "fakeReputation", null, reputation);
         Mockito.verify(logWriter)
             .log(gameSession, "investigateReputation", null, reputation);
     }

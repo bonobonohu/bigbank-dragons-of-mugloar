@@ -146,9 +146,10 @@ public class DungeonMaster {
     public void refreshMessages(
         final GameSession gameSession
     ) {
-        api.getMessages(gameSession.getGameId());
+        final List<Message> fakeMessages = api.getMessages(gameSession.getGameId());
         final List<Message> messages = api.getMessages(gameSession.getGameId());
         gameSession.setMessages(new HashSet<>(messages));
+        logWriter.log(gameSession, "fakeMessages", null, fakeMessages);
         logWriter.log(gameSession, "refreshMessages", null, messages);
     }
 
@@ -161,6 +162,7 @@ public class DungeonMaster {
         do {
             try {
                 missionOutcome = api.goOnMission(gameSession.getGameId(), message.adId());
+                logWriter.log(gameSession, "goOnMissionAttempt", message, missionOutcome);
             } catch (RestClientClientException exception) {
                 // Sadly, this is kinda expected here, in order to tackle the effects of flakiness
             }
@@ -236,9 +238,10 @@ public class DungeonMaster {
     public void investigateReputation(
         final GameSession gameSession
     ) {
-        api.investigateReputation(gameSession.getGameId());
+        final Reputation fakeReputation = api.investigateReputation(gameSession.getGameId());
         final Reputation reputation = api.investigateReputation(gameSession.getGameId());
         gameSession.getCharacterSheet().setReputation(reputation);
+        logWriter.log(gameSession, "fakeReputation", null, fakeReputation);
         logWriter.log(gameSession, "investigateReputation", null, reputation);
         setTurn(gameSession, gameSession.getTurn() + 1);
     }
