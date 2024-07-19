@@ -297,6 +297,8 @@ class DungeonMasterTest {
     void testGoOnMissionWhenMessageWasNotFound() {
         final GameSession gameSession = TestUtils.clone(GAME_SESSION);
         final Message message = TestUtils.createMessage();
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(false);
         Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
             .thenThrow(
                 new RestClientClientException(
@@ -315,6 +317,29 @@ class DungeonMasterTest {
             .goOnMission(gameSession.getGameId(), message.adId());
         Mockito.verify(logWriter, Mockito.times(0))
             .log(any(), any(), any(), any());
+    }
+
+    @Test
+    void testGoOnMissionWhenMessageWasNotFoundWithVerboseLogging() {
+        final GameSession gameSession = TestUtils.clone(GAME_SESSION);
+        final Message message = TestUtils.createMessage();
+        Mockito.when(dungeonMasterConfiguration.getVerboseLogging())
+            .thenReturn(true);
+        final RestClientResponseException cause = new RestClientResponseException(
+            "No ad by this ID exists",
+            HttpStatusCode.valueOf(400),
+            "No ad by this ID exists",
+            null,
+            null,
+            Charset.defaultCharset()
+        );
+        Mockito.when(api.goOnMission(gameSession.getGameId(), message.adId()))
+            .thenThrow(new RestClientClientException(cause));
+        underTest.goOnMission(gameSession, message);
+        Mockito.verify(api, Mockito.times(5))
+            .goOnMission(gameSession.getGameId(), message.adId());
+        Mockito.verify(logWriter, Mockito.times(5))
+            .log(gameSession, "goOnMission4xx", message, cause);
     }
 
     @Test

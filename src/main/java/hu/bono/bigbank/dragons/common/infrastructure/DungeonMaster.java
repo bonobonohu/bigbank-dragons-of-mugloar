@@ -172,7 +172,9 @@ public class DungeonMaster {
                     logWriter.log(gameSession, "goOnMissionAttempt", message, missionOutcome);
                 }
             } catch (RestClientClientException exception) {
-                // Sadly, this is kinda expected here, in order to tackle the effects of flakiness
+                if (dungeonMasterConfiguration.getVerboseLogging()) {
+                    logWriter.log(gameSession, "goOnMission4xx", message, exception.getCause());
+                }
             }
             attempts++;
         } while (attempts < MAX_API_ATTEMPTS);
