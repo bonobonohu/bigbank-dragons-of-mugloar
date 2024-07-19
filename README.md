@@ -21,6 +21,10 @@ https://www.dragonsofmugloar.com/
 - `player.purchase-lives-threshold`: Below (inclusive) how many lives we should try to purchase new lives (healing potions)
 - `player.extra-lives`: How many extra lives should be purchased
 
+### DungeonMaster
+
+- `dungeon-master.verbose-logging`: Turn on verbose logging or leave it false for less noise
+
 ## CSV logs
 
 /game_logs
