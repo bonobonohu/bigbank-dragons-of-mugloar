@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
@@ -80,7 +81,7 @@ tasks.withType<Test> {
         showExceptions = true
         showCauses = true
         showStackTraces = true
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+        exceptionFormat = TestExceptionFormat.SHORT
     }
     finalizedBy(tasks.withType<JacocoReport>())
 }
