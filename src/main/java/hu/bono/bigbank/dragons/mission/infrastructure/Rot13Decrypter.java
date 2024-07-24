@@ -20,5 +20,4 @@ public class Rot13Decrypter implements Decrypter {
         }
         return result.toString();
     }
-
 }

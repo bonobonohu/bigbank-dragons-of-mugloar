@@ -12,5 +12,4 @@ public class Base64Decrypter implements Decrypter {
     ) {
         return new String(Base64.decodeBase64(input));
     }
-
 }
