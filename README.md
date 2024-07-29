@@ -4,6 +4,8 @@ https://www.dragonsofmugloar.com/
 
 (Choose "Scripting adventure / backend")
 
+https://www.dragonsofmugloar.com/doc/
+
 ## How to start the game
 
 `./gradlew bootRun`
