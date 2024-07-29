@@ -157,49 +157,29 @@ public class Player {
     ) {
         final List<Message.Probability> thresholds = new ArrayList<>();
         final int level = gameSession.getCharacterSheet().getLevel();
-        if (level <= 8) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-        } else if (level <= 16) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
+        thresholds.add(Message.Probability.SURE_THING);
+        thresholds.add(Message.Probability.PIECE_OF_CAKE);
+        thresholds.add(Message.Probability.WALK_IN_THE_PARK);
+        thresholds.add(Message.Probability.QUITE_LIKELY);
+        if (level > 8) {
             thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-        } else if (level <= 32) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
+        }
+        if (level > 16) {
             thresholds.add(Message.Probability.GAMBLE);
-        } else if (level <= 48) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-            thresholds.add(Message.Probability.GAMBLE);
+        }
+        if (level > 32) {
             thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
-        } else if (level <= 64) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-            thresholds.add(Message.Probability.GAMBLE);
-            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
+        }
+        if (level > 48) {
             thresholds.add(Message.Probability.RISKY);
-        } else if (level <= 128) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-            thresholds.add(Message.Probability.GAMBLE);
-            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
-            thresholds.add(Message.Probability.RISKY);
+        }
+        if (level > 64) {
             thresholds.add(Message.Probability.SUICIDE_MISSION);
-        } else if (level <= 256) {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-            thresholds.add(Message.Probability.GAMBLE);
-            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
-            thresholds.add(Message.Probability.RISKY);
-            thresholds.add(Message.Probability.SUICIDE_MISSION);
+        }
+        if (level > 128) {
             thresholds.add(Message.Probability.IMPOSSIBLE);
-        } else {
-            thresholds.add(Message.Probability.QUITE_LIKELY);
-            thresholds.add(Message.Probability.RATHER_DETRIMENTAL);
-            thresholds.add(Message.Probability.GAMBLE);
-            thresholds.add(Message.Probability.PLAYING_WITH_FIRE);
-            thresholds.add(Message.Probability.RISKY);
-            thresholds.add(Message.Probability.SUICIDE_MISSION);
-            thresholds.add(Message.Probability.IMPOSSIBLE);
+        }
+        if (level > 256) {
             thresholds.add(Message.Probability.HMMM);
         }
         return thresholds;
